@@ -112,4 +112,4 @@ dist
 .pnp.*
 
 # Typescript output
-build
+dist
