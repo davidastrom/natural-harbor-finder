@@ -10,15 +10,17 @@
 	"arrowParens": "always",
 	"overrides": [
 		{
-			"files": "*.component.html",
-			"options": {
-				"parser": "angular"
-			}
-		},
-		{
 			"files": "*.html",
 			"options": {
 				"parser": "html"
+			}
+		},
+		{
+			"files": "*.vue",
+			"options": {
+				"parser": "vue",
+				"singleQuote": false,
+				"useTabs": false
 			}
 		}
 	]

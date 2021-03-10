@@ -1,5 +1,18 @@
 {
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
+	},
+	"editor.tabCompletion": "onlySnippets",
+	"vetur.completion.scaffoldSnippetSources": {
+		"workspace": "from workspace defaults",
+		"user": "",
+		"vetur": ""
+	},
+	"emmet.triggerExpansionOnTab": true,
+	"emmet.showAbbreviationSuggestions": true,
+	"emmet.showExpandedAbbreviation": "always",
+	"emmet.includeLanguages": {
+		"vue-html": "html",
+		"vue": "html"
 	}
 }
