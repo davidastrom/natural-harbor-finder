@@ -2,6 +2,8 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
+	"vetur.validation.template": false,
+	"eslint.validate": ["javascript", "javascriptreact", "vue"],
 	"editor.tabCompletion": "onlySnippets",
 	"vetur.completion.scaffoldSnippetSources": {
 		"workspace": "from workspace defaults",

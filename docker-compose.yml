@@ -1,22 +1,22 @@
 services:
-  vue_client:
+  angular-client:
     build:
-      context: ./vue_client
+      context: ./angular-client
       target: 'develop-stage'
     ports:
       - '4200:4200'
     volumes:
-      - ./vue_client:/app
-    command: npm run serve
-  api_server:
+      - ./angular-client:/app
+    command: npm run start
+  api-server:
     build:
-      context: ./api_server
+      context: ./api-server
       target: 'develop-stage'
     ports:
       - '3000:3000'
     command: npm run start:dev
     volumes:
-      - ./api_server:/app
+      - ./api-server:/app
     environment:
       - MONGO_URL=mongodb://mongo_db:27017/natural-harbor-finder
     links:
