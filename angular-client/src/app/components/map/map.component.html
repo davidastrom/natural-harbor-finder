@@ -1,0 +1,23 @@
+<mgl-map
+	[style]="'mapbox://styles/mapbox/streets-v9'"
+	[zoom]="[7]"
+	[center]="center"
+	(mapLoad)="initMap($event)"
+	(mapClick)="selectLocation($event)"
+>
+	<mgl-control mglNavigation position="bottom-right"></mgl-control>
+	<mgl-control
+		mglGeolocate
+		[trackUserLocation]="true"
+		[showUserLocation]="true"
+		position="bottom-right"
+		(geolocate)="geolocate($event)"
+	></mgl-control>
+
+	<mgl-marker
+		*ngIf="selectedLocation"
+		[draggable]="true"
+		[lngLat]="selectedLocation"
+		(markerDragEnd)="onMarkerDragEnd($event)"
+	></mgl-marker>
+</mgl-map>
