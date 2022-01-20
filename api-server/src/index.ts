@@ -1,8 +1,21 @@
 import express from 'express';
+import fs from 'fs';
+import https from 'https';
+
+import router from './routes/routes';
+
+const key = fs.readFileSync(__dirname + '/../ssl/selfsigned.key');
+const cert = fs.readFileSync(__dirname + '/../ssl/selfsigned.crt');
+
+const credentials = { key: key, cert: cert };
 
 const app = express();
 const PORT = 3000;
-app.get('/', (req, res) => res.send('Express + TypeScript Server'));
-app.listen(PORT, () => {
-	console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+
+app.use('/', router);
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(PORT, () => {
+	console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
 });
