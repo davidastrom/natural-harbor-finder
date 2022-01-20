@@ -1,1 +1,88 @@
-<p>search-nearest-form works!</p>
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">Find nearest</h5>
+		<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+			<div class="mb-3 input-group">
+				<input
+					type="text"
+					class="form-control"
+					formControlName="location"
+					placeholder="Current Position"
+				/>
+				<button
+					type="button"
+					class="btn btn-outline-secondary"
+					(click)="clearChoice()"
+				>
+					<i class="bi-x"></i>
+				</button>
+			</div>
+			<div class="direction__selector mb-3" formGroupName="direction">
+				<label for="north" class="direction__input">
+					<input
+						id="north"
+						type="checkbox"
+						formControlName="north"
+						/>
+				</label>
+				<label for="north-east" class="direction__input">
+					<input
+						id="north-east"
+						type="checkbox"
+						formControlName="northEast"
+						/>
+				</label>
+				<label for="east" class="direction__input">
+					<input
+						id="east"
+						type="checkbox"
+						formControlName="east"
+						/>
+				</label>
+				<label for="south-east" class="direction__input">
+					<input
+						id="south-east"
+						type="checkbox"
+						formControlName="southEast"
+						/>
+				</label>
+				<label for="south" class="direction__input">
+					<input
+						id="south"
+						type="checkbox"
+						formControlName="south"
+						/>
+				</label>
+				<label for="south-west" class="direction__input">
+					<input
+						id="south-west"
+						type="checkbox"
+						formControlName="southWest"
+						/>
+				</label>
+				<label for="west" class="direction__input">
+					<input
+						id="west"
+						type="checkbox"
+						formControlName="west"
+						/>
+				</label>
+				<label for="north-west" class="direction__input">
+					<input
+						id="north-west"
+						type="checkbox"
+						formControlName="northWest"
+					/>
+				</label>
+        <div class="direction__center"
+			</div>
+			<button
+				type="submit"
+				class="btn btn-primary"
+				[disabled]="!searchForm.valid"
+			>
+				Search
+			</button>
+		</form>
+	</div>
+</div>

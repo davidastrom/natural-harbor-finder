@@ -1,0 +1,10 @@
+$size: 8rem;
+$border-width: 1rem;
+$selected-color: #3152be;
+
+.direction__selector {
+	height: $size;
+	width: $size;
+	position: relative;
+  border-radius: 50%;
+}

@@ -1,0 +1,49 @@
+{
+	"root": true,
+	"ignorePatterns": ["projects/**/*"],
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"parserOptions": {
+				"project": [
+					"angular-client/tsconfig.json",
+					"angular-client/e2e/tsconfig.json"
+				],
+				"createDefaultProgram": true
+			},
+			"extends": [
+				"plugin:@angular-eslint/ng-cli-compat",
+				"plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+				"prettier/@typescript-eslint",
+				"plugin:prettier/recommended"
+			],
+			"rules": {
+				"@angular-eslint/component-selector": [
+					"error",
+					{
+						"type": "element",
+						"prefix": "app",
+						"style": "kebab-case"
+					}
+				],
+				"@angular-eslint/directive-selector": [
+					"error",
+					{
+						"type": "attribute",
+						"prefix": "app",
+						"style": "camelCase"
+					}
+				]
+			}
+		},
+		{
+			"files": ["*.html"],
+			"extends": [
+				"plugin:@angular-eslint/template/recommended",
+				"prettier/@typescript-eslint",
+				"plugin:prettier/recommended"
+			],
+			"rules": {}
+		}
+	]
+}

@@ -1,4 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+
+html,
+body {
+	height: 100%;
+}
+
 body {
 	margin: 0;
+}
+
+.container-fluid {
+	padding: var(--bs-gutter-x, 0.75rem);
+	max-height: 100vh;
+}
+
+.passive-user-location-dot {
+	background-color: white;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+
+	&:after {
+		border-radius: 50%;
+		border: 2px solid rgb(19, 19, 19);
+		content: '';
+		height: 19px;
+		left: -2px;
+		position: absolute;
+		top: -2px;
+		width: 19px;
+		box-sizing: border-box;
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+	}
 }

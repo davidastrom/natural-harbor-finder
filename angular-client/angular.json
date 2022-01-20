@@ -32,8 +32,8 @@
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": [
 							"src/styles.scss",
-							"./node_modules/mapbox-gl/dist/mapbox-gl.css",
-							"./node_modules/@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css"
+							"node_modules/bootstrap/scss/bootstrap.scss",
+							"node_modules/mapbox-gl/dist/mapbox-gl.css"
 						],
 						"scripts": []
 					},
@@ -92,19 +92,18 @@
 						"tsConfig": "tsconfig.spec.json",
 						"karmaConfig": "karma.conf.js",
 						"assets": ["src/favicon.ico", "src/assets"],
-						"styles": ["src/styles.scss"],
+						"styles": [
+							"src/styles.scss",
+							"node_modules/bootstrap/scss/bootstrap.scss",
+							"node_modules/mapbox-gl/dist/mapbox-gl.css"
+						],
 						"scripts": []
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": [
-							"tsconfig.app.json",
-							"tsconfig.spec.json",
-							"e2e/tsconfig.json"
-						],
-						"exclude": ["**/node_modules/**"]
+						"lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
 					}
 				},
 				"e2e": {
