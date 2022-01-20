@@ -12,7 +12,8 @@
 		"lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
 	},
 	"dependencies": {
-		"express": "^4.17.1"
+		"express": "^4.17.1",
+		"mongoose": "^6.1.7"
 	},
 	"devDependencies": {
 		"@types/eslint": "^7.2.6",
