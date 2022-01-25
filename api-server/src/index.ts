@@ -2,23 +2,29 @@ import express from 'express';
 import fs from 'fs';
 import https from 'https';
 
-import connectDb from './db/db.connect';
+import dbSetup from './db/db-setup';
 import router from './routes/routes';
 
-const key = fs.readFileSync(__dirname + '/../ssl/selfsigned.key');
-const cert = fs.readFileSync(__dirname + '/../ssl/selfsigned.crt');
+async function main() {
+    const key = fs.readFileSync(__dirname + '/../ssl/selfsigned.key');
+    const cert = fs.readFileSync(__dirname + '/../ssl/selfsigned.crt');
 
-const credentials = { key: key, cert: cert };
+    const credentials = { key: key, cert: cert };
 
-const app = express();
-connectDb();
+    const app = express();
+    await dbSetup();
 
-const PORT = 3000;
+    const PORT = 3000;
 
-app.use('/', router);
+    app.use('/', router);
 
-const httpsServer = https.createServer(credentials, app);
+    const httpsServer = https.createServer(credentials, app);
 
-httpsServer.listen(PORT, () => {
-	console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
-});
+    httpsServer.listen(PORT, () => {
+        console.log(
+            `⚡️[server]: Server is running at https://localhost:${PORT}`
+        );
+    });
+}
+
+main();
