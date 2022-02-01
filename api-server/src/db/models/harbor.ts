@@ -3,14 +3,20 @@ import { getModelForClass, prop } from '@typegoose/typegoose';
 import { Location } from '../classes/location';
 
 export enum Direction {
-    North,
-    NorthEast,
-    East,
-    SouthEast,
-    South,
-    SouthWest,
-    West,
-    NorthWest,
+    NORTH,
+    NORTHEAST,
+    EAST,
+    SOUTHEAST,
+    SOUTH,
+    SOUTHWEST,
+    WEST,
+    NORTHWEST,
+}
+
+export enum HarborType {
+    NATURAL,
+    SMALL_BOATS,
+    YACHTS,
 }
 
 export class Harbor {
@@ -25,6 +31,9 @@ export class Harbor {
 
     @prop()
     public chartNumber!: number;
+
+    @prop({ enum: HarborType })
+    public harborType!: HarborType;
 }
 
 export class HarborDetail {
@@ -32,10 +41,19 @@ export class HarborDetail {
     public name!: string;
 
     @prop({ enum: Direction })
-    public directions?: Direction[];
+    public shieldedDirections?: Direction[];
 
     @prop({ default: false })
     public anchor!: boolean;
+
+    @prop({ default: false })
+    public SXKBuoy!: boolean;
+
+    @prop()
+    public location?: Location;
+
+    @prop({ enum: HarborType })
+    public harborType?: HarborType;
 }
 
 export const HarborModel = getModelForClass(Harbor);

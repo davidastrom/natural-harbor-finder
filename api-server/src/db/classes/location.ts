@@ -6,4 +6,15 @@ export class Location {
 
     @prop()
     public latitude!: number;
+
+    public asRadians(): Location {
+        return {
+            longitude: this.decimalToRadians(this.longitude),
+            latitude: this.decimalToRadians(this.latitude),
+        } as Location;
+    }
+
+    public decimalToRadians(dec: number): number {
+        return (dec * Math.PI) / 180;
+    }
 }

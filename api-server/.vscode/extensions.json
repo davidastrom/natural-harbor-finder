@@ -27,7 +27,5 @@
         "esbenp.prettier-vscode",
         "syler.sass-indented",
         "mike-co.import-sorter",
-        "redhat.vscode-yaml",
-        "ms-vsonline.vsonline"
-    ]
+        "redhat.vscode-yaml"    ]
 }
