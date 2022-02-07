@@ -19,6 +19,17 @@ export enum HarborType {
     YACHTS,
 }
 
+export class BookRef {
+    @prop()
+    public title!: string;
+
+    @prop()
+    public page?: number;
+
+    @prop()
+    public ref?: string;
+}
+
 export class Harbor {
     @prop()
     public name!: string;
@@ -34,6 +45,9 @@ export class Harbor {
 
     @prop({ enum: HarborType })
     public harborType!: HarborType;
+
+    @prop()
+    public book?: BookRef;
 }
 
 export class HarborDetail {
