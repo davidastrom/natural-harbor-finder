@@ -1,17 +1,17 @@
 import { prop } from '@typegoose/typegoose';
 
-export class Location {
+export class Position {
     @prop()
     public longitude!: number;
 
     @prop()
     public latitude!: number;
 
-    public asRadians(): Location {
+    public asRadians(): Position {
         return {
             longitude: this.decimalToRadians(this.longitude),
             latitude: this.decimalToRadians(this.latitude),
-        } as Location;
+        } as Position;
     }
 
     public decimalToRadians(dec: number): number {

@@ -1,14 +1,14 @@
-import { Location } from '../db/classes/location';
+import { Position } from '../models/position.model';
 
-export function haversineNautical(pos1: Location, pos2: Location): number {
+export function haversineNautical(pos1: Position, pos2: Position): number {
     return haversineDistance(pos1, pos2, 3440.06479);
 }
 
-export function haversineKilometer(pos1: Location, pos2: Location): number {
+export function haversineKilometer(pos1: Position, pos2: Position): number {
     return haversineDistance(pos1, pos2, 6371);
 }
 
-function haversineDistance(pos1: Location, pos2: Location, r: number): number {
+function haversineDistance(pos1: Position, pos2: Position, r: number): number {
     const pos1Rad = pos1.asRadians();
     const pos2Rad = pos2.asRadians();
 

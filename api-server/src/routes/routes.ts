@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 
-import api from './api';
+import harbors from './harbors.routes';
 
 const router = express.Router();
 
@@ -10,6 +10,6 @@ router.use(bodyParser.json());
 
 router.get('/', (req, res) => res.send('Express + TypeScript Server'));
 
-router.use('/api', api);
+router.use('/api/harbors', harbors);
 
 export default router;

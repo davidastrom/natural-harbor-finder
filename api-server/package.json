@@ -12,11 +12,12 @@
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
     },
     "dependencies": {
-        "@typegoose/typegoose": "^9.5.0",
+        "dotenv": "^16.0.0",
         "express": "^4.17.1",
         "mongoose": "^6.1.7"
     },
     "devDependencies": {
+        "@typegoose/typegoose": "^9.5.0",
         "@types/eslint": "^7.2.6",
         "@types/express": "^4.17.11",
         "@types/node": "^14.14.27",

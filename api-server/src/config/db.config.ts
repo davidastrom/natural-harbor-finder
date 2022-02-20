@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-export default (db: string): void => {
+export default async (db: string): Promise<void> => {
     const connect = () => {
         mongoose
-            .connect(db, { useNewUrlParser: true })
+            .connect(db)
             .then(() => {
                 return console.info(`Successfully connected to ${db}`);
             })
@@ -12,7 +12,7 @@ export default (db: string): void => {
                 return process.exit(1);
             });
     };
-    connect();
+    await connect();
 
     mongoose.connection.on('disconnected', connect);
 };
