@@ -1,6 +1,8 @@
 import { prop } from '@typegoose/typegoose';
 
-export class BookRef {
+import { BaseModel } from './base.model';
+
+export class BookRef extends BaseModel {
     @prop()
     public title!: string;
 

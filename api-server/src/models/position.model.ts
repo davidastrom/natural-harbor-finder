@@ -1,6 +1,8 @@
 import { prop } from '@typegoose/typegoose';
 
-export class Position {
+import { BaseModel } from './base.model';
+
+export class Position extends BaseModel {
     @prop()
     public longitude!: number;
 

@@ -1,14 +1,11 @@
-import { ObjectId } from 'mongoose';
-
 import { prop } from '@typegoose/typegoose';
 
-import { Direction } from '../enums/direction';
+import { Direction } from '../../types/enums/direction';
+import { HarborType } from '../../types/enums/harbor-type';
+import { BaseModel } from '../base.model';
 import { Position } from '../position.model';
-import { HarborType } from './harbor-type';
 
-export class HarborDetail {
-    readonly _id!: ObjectId;
-
+export class HarborDetail extends BaseModel {
     @prop()
     public name!: string;
 
