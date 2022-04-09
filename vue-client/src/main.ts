@@ -1,4 +1,15 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import './src/assets/base.css';
+import 'leaflet/dist/leaflet.css';
 
-createApp(App).mount('#app')
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+
+import App from './App.vue';
+import router from './router';
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');
