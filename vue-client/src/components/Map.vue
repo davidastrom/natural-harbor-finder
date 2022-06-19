@@ -1,57 +1,74 @@
 <template>
-  <l-map
-    ref="map"
-    class="map map-fullscreen"
-    style="width: 100%; height: 100vh"
-    :zoom="zoom"
-    v-model:center="center"
-    :zoom-animation="true"
-  >
-    <l-tile-layer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      layer-type="base"
-      name="OpenStreetMap"
-    ></l-tile-layer>
-    <l-control class="leaflet-bar" :position="'bottomright'">
-      <a href="#" role="button">A</a>
-    </l-control>
-  </l-map>
+  <div ref="map" class="w-full h-full min-h-full z-0"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { LMap, LTileLayer, LControl } from '@vue-leaflet/vue-leaflet';
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import { usePositionStore } from '../stores/position';
-import { latLng } from 'leaflet';
+import L, { latLng } from 'leaflet';
+import 'leaflet.locatecontrol';
 
 export default defineComponent({
   name: 'MapComponent',
-  components: {
-    LMap,
-    LTileLayer,
-    LControl,
-  },
   setup() {
     const positionStore = usePositionStore();
-    return { positionStore };
-  },
-  data() {
-    return {
-      zoom: 8,
-      center: latLng(0, 0),
-      watchPositionId: 0,
-    };
-  },
-  mounted() {
-    this.watchPositionId = this.positionStore.watchPosition();
-    this.positionStore.fetchPositionOnce().then(() => {
-      const center = this.positionStore.getUserPosition;
-      console.log(center);
-      this.center = center;
+    let lMap: L.Map | null = null;
+    const watchPositionId = ref(0);
+    const center = ref(latLng(0, 0));
+    const zoom = ref(12);
+
+    const map = ref<HTMLElement>();
+
+    onMounted(() => {
+      watchPositionId.value = positionStore.watchPosition();
+
+      if (map.value) {
+        lMap = L.map(map.value, {
+          zoomControl: false,
+        });
+
+        positionStore.fetchPositionOnce().then(() => {
+          center.value = positionStore.getUserPosition;
+          lMap?.setView(center.value, zoom.value);
+        });
+
+        lMap.addLayer(
+          L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 17,
+            attribution:
+              'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+          })
+        );
+
+        lMap.addLayer(
+          L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+            attribution:
+              'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+          })
+        );
+
+        lMap.addControl(L.control.zoom({ position: 'bottomright' }));
+        lMap.addControl(
+          L.control.locate({
+            position: 'bottomright',
+            clickBehavior: {
+              inView: 'stop',
+              outOfView: 'setView',
+              inViewNotFollowing: 'setView',
+            },
+            setView: 'untilPan',
+            flyTo: true,
+            icon: 'fa-solid fa-location-crosshairs fa-fw text-xl',
+          })
+        );
+      }
     });
-  },
-  beforeUnmount() {
-    this.positionStore.stopWatchingPosition(this.watchPositionId);
+
+    onBeforeUnmount(() => {
+      positionStore.stopWatchingPosition(watchPositionId.value);
+    });
+
+    return { positionStore, lMap, map, watchPositionId, center, zoom };
   },
 });
 </script>

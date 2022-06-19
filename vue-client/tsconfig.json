@@ -4,6 +4,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -11,7 +14,8 @@
     "allowJs": true,
     "typeRoots": ["types/**/*"],
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
   },
 
   "references": [
