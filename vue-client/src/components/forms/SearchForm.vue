@@ -22,12 +22,12 @@
       </div>
       <form-kit
         type="button"
-        input-class="relative rounded-full w-full px-auto py-2 bg-stone-200 capitalize font-medium"
+        input-class="relative w-full py-2 font-medium capitalize rounded-full px-auto bg-stone-200"
         @click="setLocation"
       >
         Use my location
         <template #suffix>
-          <div class="absolute right-3 top-1/2 -translate-y-1/2">
+          <div class="absolute -translate-y-1/2 right-3 top-1/2">
             <i
               class="text-xl"
               :class="
@@ -43,7 +43,7 @@
         v-model="directions"
         type="checkbox"
         :options="directionValuesComputed"
-        outer-class="w-100 mt-4"
+        outer-class="mt-4 w-100"
         wrapper-class="flex flex-row justify-start align-center"
         label-class="ml-2"
         name="directions"
@@ -51,7 +51,7 @@
       </form-kit>
       <form-kit
         type="submit"
-        input-class="rounded-full w-full px-auto py-2 bg-blue-500 text-stone-100 capitalize font-medium"
+        input-class="w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full px-auto text-stone-100"
       >
       </form-kit>
     </form-kit>
@@ -64,6 +64,7 @@ import { FormKit } from '@formkit/vue';
 import { latLng, type LatLng } from 'leaflet';
 import { Direction } from '../../../types/direction';
 import { usePositionStore } from '../../stores/position';
+import { useHarborStore } from '../../stores/harbors';
 
 export default defineComponent({
   name: 'SearchForm',
@@ -72,13 +73,20 @@ export default defineComponent({
   },
   setup() {
     const positionStore = usePositionStore();
+    const harborStore = useHarborStore();
 
     let location: LatLng = reactive(latLng(0, 0));
     let directions: Direction[] = reactive([]);
 
     let locationLoading = ref(false);
 
-    return { positionStore, location, directions, locationLoading };
+    return {
+      positionStore,
+      harborStore,
+      location,
+      directions,
+      locationLoading,
+    };
   },
   computed: {
     directionValuesComputed() {
@@ -106,10 +114,9 @@ export default defineComponent({
         console.log(this.location);
       });
     },
-    submitForm(data: any) {
+    async submitForm(data: unknown) {
       let formData = data as FormResults;
-
-      console.log(formData);
+      await this.harborStore.fetchHarbors(formData);
     },
   },
 });

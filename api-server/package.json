@@ -8,16 +8,18 @@
     "scripts": {
         "build": "tsc -p ./",
         "start": "NODE_PATH=./dist node dist/index.js",
-        "start:dev": "nodemon",
+        "dev": "nodemon",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "dotenv": "^16.0.0",
         "express": "^4.17.1",
         "mongoose": "^6.1.7"
     },
     "devDependencies": {
         "@typegoose/typegoose": "^9.5.0",
+        "@types/cors": "^2.8.12",
         "@types/eslint": "^7.2.6",
         "@types/express": "^4.17.11",
         "@types/node": "^14.14.27",

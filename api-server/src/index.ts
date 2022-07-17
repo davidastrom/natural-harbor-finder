@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs';
@@ -19,6 +20,9 @@ async function main() {
     await dbSetup(process.env.MONGODB_CONNECTION_STRING ?? '');
 
     const PORT = 3000;
+
+    app.use(cors({ origin: '*' }));
+    app.use(express.json());
 
     app.use('/', router);
 

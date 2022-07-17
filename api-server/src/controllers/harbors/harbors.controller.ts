@@ -11,7 +11,8 @@ export async function getAllHarbors(
     req: Request,
     res: Response
 ): Promise<void> {
-    const input = req.body as getAllHarborInputModel;
+    const input = req.query as getAllHarborInputModel;
+    console.log(input);
     const harbors = await HarborModel.getHarbors(
         input.position,
         input.shieldedDirections,
