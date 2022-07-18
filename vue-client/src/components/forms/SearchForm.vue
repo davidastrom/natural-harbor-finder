@@ -41,91 +41,91 @@
       </form-kit>
       <form-kit
         v-model="directions"
+        label="Shielded directions"
         type="checkbox"
         :options="directionValuesComputed"
         outer-class="mt-4 w-100"
-        wrapper-class="flex flex-row justify-start align-center"
+        inner-class="flex items-center"
+        wrapper-class="flex flex-row items-center justify-start"
         label-class="ml-2"
         name="directions"
-      >
-      </form-kit>
+      ></form-kit>
       <form-kit
         type="submit"
         input-class="w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full px-auto text-stone-100"
-      >
-      </form-kit>
+      ></form-kit>
     </form-kit>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import { FormKit } from '@formkit/vue';
-import { latLng, type LatLng } from 'leaflet';
-import { Direction } from '../../../types/direction';
-import { usePositionStore } from '../../stores/position';
-import { useHarborStore } from '../../stores/harbors';
+  import { defineComponent, reactive, ref } from 'vue';
+  import { FormKit } from '@formkit/vue';
+  import { latLng, type LatLng } from 'leaflet';
+  import { Direction } from '../../../types/direction';
+  import { usePositionStore } from '../../stores/position';
+  import { useHarborStore } from '../../stores/harbors';
 
-export default defineComponent({
-  name: 'SearchForm',
-  components: {
-    FormKit,
-  },
-  setup() {
-    const positionStore = usePositionStore();
-    const harborStore = useHarborStore();
+  export default defineComponent({
+    name: 'SearchForm',
+    components: {
+      FormKit,
+    },
+    setup() {
+      const positionStore = usePositionStore();
+      const harborStore = useHarborStore();
 
-    let location: LatLng = reactive(latLng(0, 0));
-    let directions: Direction[] = reactive([]);
+      let location: LatLng = reactive(latLng(0, 0));
+      let directions: Direction[] = reactive([]);
 
-    let locationLoading = ref(false);
+      let locationLoading = ref(false);
 
-    return {
-      positionStore,
-      harborStore,
-      location,
-      directions,
-      locationLoading,
-    };
-  },
-  computed: {
-    directionValuesComputed() {
-      const values = Object.entries(Direction)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .filter(([text, value]) => isNaN(Number(value)) === false)
-        .map(([text, val]) => {
-          return {
-            value: val,
-            label: text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(),
-          };
+      return {
+        positionStore,
+        harborStore,
+        location,
+        directions,
+        locationLoading,
+      };
+    },
+    computed: {
+      directionValuesComputed() {
+        const values = Object.entries(Direction)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([text, value]) => isNaN(Number(value)) === false)
+          .map(([text, val]) => {
+            return {
+              value: val,
+              label: text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(),
+            };
+          });
+        return values;
+      },
+    },
+    methods: {
+      async setLocation() {
+        this.locationLoading = true;
+        await this.positionStore.fetchPositionOnce().then(() => {
+          let location = this.positionStore.getUserPosition;
+
+          this.location.lat = location.lat;
+          this.location.lng = location.lng;
+          this.locationLoading = false;
+          console.log(this.location);
         });
-      return values;
+      },
+      async submitForm(data: unknown) {
+        let formData = data as FormResults;
+        await this.harborStore.fetchHarbors(formData);
+      },
     },
-  },
-  methods: {
-    async setLocation() {
-      this.locationLoading = true;
-      await this.positionStore.fetchPositionOnce().then(() => {
-        let location = this.positionStore.getUserPosition;
+  });
 
-        this.location.lat = location.lat;
-        this.location.lng = location.lng;
-        this.locationLoading = false;
-        console.log(this.location);
-      });
-    },
-    async submitForm(data: unknown) {
-      let formData = data as FormResults;
-      await this.harborStore.fetchHarbors(formData);
-    },
-  },
-});
-
-interface FormResults {
-  latitude: number;
-  longitude: number;
-  directions: Direction[];
-}
+  interface FormResults {
+    latitude: number;
+    longitude: number;
+    directions: Direction[];
+  }
 </script>
 
 <style scoped></style>
