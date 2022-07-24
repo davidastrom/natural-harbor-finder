@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col">
     <h2 class="text-2xl font-medium">Add Harbor</h2>
-    <form-kit type="form" :actions="false" @submit="submitForm">
+    <form-kit
+      type="form"
+      :actions="false"
+      @submit="submitForm"
+    >
       <form-kit
         v-model="harbor.name"
         type="text"
@@ -10,24 +14,7 @@
         name="name"
       ></form-kit>
 
-      <form-kit v-model="harbor.location" type="group" name="location">
-        <div class="flex flex-wrap pb-2">
-          <form-kit
-            type="text"
-            label="Latitude"
-            outer-class="w-1/2 pr-1"
-            input-class="w-full rounded-full"
-            name="lat"
-          ></form-kit>
-          <form-kit
-            type="text"
-            label="Longitude"
-            outer-class="w-1/2 pl-1"
-            input-class="w-full rounded-full"
-            name="lng"
-          ></form-kit>
-        </div>
-      </form-kit>
+      <position-form-group v-model="harbor.location"></position-form-group>
 
       <form-kit
         v-model="harbor.chartNumber"
@@ -53,7 +40,7 @@
         label-class="ml-2"
         outer-class="mt-4"
         inner-class="flex items-center"
-        wrapper-class="flex flex-row justify-start align-center"
+        wrapper-class="align-center flex flex-row justify-start"
         name="hasBookRef"
       ></form-kit>
 
@@ -89,112 +76,26 @@
         </div>
       </form-kit>
 
-      <form-kit v-model="harbor.details" type="list" name="details">
-        <form-kit
+      <form-kit
+        v-model="harbor.details"
+        type="list"
+        name="details"
+      >
+        <div
           v-for="(detail, index) in harbor.details"
           :key="`detail-${index}`"
-          type="group"
+          class="bg-slate-50 w-full p-4 mb-8 rounded-lg"
         >
-          <form-kit
-            type="text"
-            label="Name"
-            input-class="w-full rounded-full"
-            name="name"
-          ></form-kit>
-
-          <form-kit
-            label="Shielded directions"
-            type="checkbox"
-            :options="directionValuesComputed"
-            outer-class="mt-4"
-            inner-class="flex items-center"
-            wrapper-class="flex flex-row items-center justify-start"
-            label-class="ml-2"
-            name="shieldedDirections"
-          ></form-kit>
-
-          <div class="flex flex-wrap w-full pb-2">
-            <form-kit
-              type="checkbox"
-              label="Anchor"
-              outer-class="mt-4 grow"
-              inner-class="flex items-center"
-              wrapper-class="flex flex-row items-center justify-start"
-              label-class="ml-2"
-              name="anchor"
-            ></form-kit>
-            <form-kit
-              type="checkbox"
-              label="SXK buoy"
-              outer-class="mt-4 grow"
-              inner-class="flex items-center"
-              wrapper-class="flex flex-row items-center justify-start"
-              label-class="ml-2"
-              name="SXKBuoy"
-            ></form-kit>
-          </div>
-
-          <form-kit
-            v-model="detail.hasSpecificLocation"
-            type="checkbox"
-            label="Has specific location"
-            label-class="ml-2"
-            outer-class="mt-4"
-            inner-class="flex items-center"
-            wrapper-class="flex flex-row justify-start align-center"
-            name="hasSpecificLocation"
-          ></form-kit>
-
-          <form-kit
-            v-if="detail.hasSpecificLocation"
-            v-model="detail.location"
-            type="group"
-            name="location"
-          >
-            <div class="flex flex-wrap pb-2">
-              <form-kit
-                type="text"
-                label="Latitude"
-                outer-class="w-1/2 pr-1"
-                input-class="w-full rounded-full"
-                name="lat"
-              ></form-kit>
-              <form-kit
-                type="text"
-                label="Longitude"
-                outer-class="w-1/2 pl-1"
-                input-class="w-full rounded-full"
-                name="lng"
-              ></form-kit>
-            </div>
-          </form-kit>
-
-          <form-kit
-            v-model="detail.hasSpecificHarborType"
-            type="checkbox"
-            label="Is specific harbor type"
-            label-class="ml-2"
-            outer-class="mt-4"
-            inner-class="flex items-center"
-            wrapper-class="flex flex-row justify-start align-center"
-            name="hasSpecificHarborType"
-          ></form-kit>
-
-          <form-kit
-            v-if="detail.hasSpecificHarborType"
-            v-model="detail.harborType"
-            type="select"
-            :options="harborTypeValuesComputed"
-            label="Harbor type"
-            input-class="w-full rounded-full"
-            name="harborType"
-          ></form-kit>
-        </form-kit>
+          <h3>New detail</h3>
+          <harbor-detail-form-group
+            v-model="harbor.details[index]"
+          ></harbor-detail-form-group>
+        </div>
       </form-kit>
 
       <form-kit
         type="button"
-        input-class="relative w-full py-2 font-medium capitalize rounded-full px-auto bg-stone-200"
+        input-class="px-auto bg-stone-200 relative w-full py-2 font-medium capitalize rounded-full"
         @click="addDetail"
       >
         <i class="fas fa-plus" />
@@ -203,7 +104,7 @@
 
       <form-kit
         type="submit"
-        input-class="w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full px-auto text-stone-100"
+        input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
       ></form-kit>
     </form-kit>
   </div>
@@ -213,57 +114,61 @@
   import { defineComponent, reactive } from 'vue';
   import { FormKit } from '@formkit/vue';
   import {
-    createHarborInputModel,
-    createHarborDetailInputModel,
-    createBookRefInputModel,
+    CreateHarborFormModel,
+    CreateHarborDetailFormModel,
+    CreateBookRefInputModel,
+    type ICreateHarborFormModel,
   } from 'types/harborInputModels';
-  import { HarborType } from 'types/harborType';
-  import { Direction } from 'types/direction';
+  import { directionValues, harborTypeValues } from '@/helpers/enumHelpers';
+  import PositionFormGroup from './formComponents/PositionFormGroup.vue';
+  import HarborDetailFormGroup from './formComponents/HarborDetailFormGroup.vue';
+  import axios from 'axios';
 
   export default defineComponent({
     name: 'AddHarborForm',
-    components: { FormKit },
+    components: { FormKit, PositionFormGroup, HarborDetailFormGroup },
     setup() {
-      let harbor: createHarborInputModel = reactive(
-        new createHarborInputModel()
-      );
-      harbor.book = new createBookRefInputModel();
+      let harbor: CreateHarborFormModel = reactive(new CreateHarborFormModel());
+      harbor.book = new CreateBookRefInputModel();
       return { harbor };
     },
     computed: {
       directionValuesComputed() {
-        const values = Object.entries(Direction)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          .filter(([text, value]) => isNaN(Number(value)) === false)
-          .map(([text, val]) => {
-            return {
-              value: val,
-              label: text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(),
-            };
-          });
-        return values;
+        return directionValues();
       },
       harborTypeValuesComputed() {
-        const values = Object.entries(HarborType)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          .filter(([text, value]) => isNaN(Number(value)) === false)
-          .map(([text, val]) => {
-            return {
-              value: val,
-              label: (
-                text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
-              ).replace(/_/g, ' '),
-            };
-          });
-        return values;
+        return harborTypeValues();
       },
     },
     methods: {
       async submitForm(data: unknown) {
-        console.log(data);
+        let interfaceData = data as ICreateHarborFormModel;
+        let formData = CreateHarborFormModel.fromInterface(interfaceData);
+
+        console.log(formData);
+
+        let inputData = formData.toInputModel();
+
+        const url = import.meta.env.VITE_API_URL + '/harbors/create';
+
+        console.log(inputData);
+
+        await axios
+          .post(url, inputData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       },
       addDetail() {
-        this.harbor.details.push(new createHarborDetailInputModel());
+        let detail = new CreateHarborDetailFormModel();
+
+        detail.harborType = this.harbor.harborType;
+        detail.location = this.harbor.location;
+
+        this.harbor.details.push(detail);
       },
     },
   });

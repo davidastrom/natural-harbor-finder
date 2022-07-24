@@ -4,15 +4,15 @@ import { BaseModel } from './base.model';
 
 export class Position extends BaseModel {
     @prop()
-    public longitude!: number;
+    public lng!: number;
 
     @prop()
-    public latitude!: number;
+    public lat!: number;
 
     public asRadians(): Position {
         return {
-            longitude: this.decimalToRadians(this.longitude),
-            latitude: this.decimalToRadians(this.latitude),
+            lng: this.decimalToRadians(this.lng),
+            lat: this.decimalToRadians(this.lat),
         } as Position;
     }
 

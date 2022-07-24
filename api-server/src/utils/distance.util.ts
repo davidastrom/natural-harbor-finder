@@ -12,13 +12,13 @@ function haversineDistance(pos1: Position, pos2: Position, r: number): number {
     const pos1Rad = pos1.asRadians();
     const pos2Rad = pos2.asRadians();
 
-    const dLon = pos2Rad.longitude - pos1Rad.longitude;
-    const dLat = pos2Rad.latitude - pos1Rad.latitude;
+    const dLon = pos2Rad.lng - pos1Rad.lng;
+    const dLat = pos2Rad.lat - pos1Rad.lat;
 
     const a =
         Math.pow(Math.sin(dLat / 2), 2) +
-        Math.cos(pos1Rad.latitude) *
-            Math.cos(pos2Rad.latitude) *
+        Math.cos(pos1Rad.lat) *
+            Math.cos(pos2Rad.lat) *
             Math.pow(Math.sin(dLon / 2), 2);
 
     const c = 2 * Math.asin(Math.sqrt(a));

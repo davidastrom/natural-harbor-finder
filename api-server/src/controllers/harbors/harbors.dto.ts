@@ -33,6 +33,6 @@ export interface createBookRefInputModel {
 }
 
 export interface createPositionInputModel {
-    longitude: number;
-    latitude: number;
+    lng: number;
+    lat: number;
 }

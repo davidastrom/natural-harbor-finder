@@ -1,33 +1,21 @@
 <template>
   <div class="flex flex-col">
     <h2 class="text-2xl font-medium">Find nearest harbor</h2>
-    <form-kit type="form" :actions="false" @submit="submitForm">
-      <div class="flex flex-wrap pb-2">
-        <form-kit
-          v-model="location.lat"
-          type="text"
-          label="Latitude"
-          outer-class="w-1/2 pr-1"
-          input-class="w-full rounded-full"
-          name="latitude"
-        ></form-kit>
-        <form-kit
-          v-model="location.lng"
-          type="text"
-          label="Longitude"
-          outer-class="w-1/2 pl-1"
-          input-class="w-full rounded-full"
-          name="longitude"
-        ></form-kit>
-      </div>
+    <form-kit
+      type="form"
+      :actions="false"
+      @submit="submitForm"
+    >
+      <position-form-group v-model="location"></position-form-group>
+
       <form-kit
         type="button"
-        input-class="relative w-full py-2 font-medium capitalize rounded-full px-auto bg-stone-200"
+        input-class="px-auto bg-stone-200 relative w-full py-2 font-medium capitalize rounded-full"
         @click="setLocation"
       >
         Use my location
         <template #suffix>
-          <div class="absolute -translate-y-1/2 right-3 top-1/2">
+          <div class="right-3 top-1/2 absolute -translate-y-1/2">
             <i
               class="text-xl"
               :class="
@@ -39,20 +27,15 @@
           </div>
         </template>
       </form-kit>
-      <form-kit
+
+      <direction-form-input
         v-model="directions"
-        label="Shielded directions"
-        type="checkbox"
-        :options="directionValuesComputed"
-        outer-class="mt-4 w-100"
-        inner-class="flex items-center"
-        wrapper-class="flex flex-row items-center justify-start"
-        label-class="ml-2"
         name="directions"
-      ></form-kit>
+      ></direction-form-input>
+
       <form-kit
         type="submit"
-        input-class="w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full px-auto text-stone-100"
+        input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
       ></form-kit>
     </form-kit>
   </div>
@@ -61,21 +44,30 @@
 <script lang="ts">
   import { defineComponent, reactive, ref } from 'vue';
   import { FormKit } from '@formkit/vue';
-  import { latLng, type LatLng } from 'leaflet';
-  import { Direction } from '../../../types/direction';
   import { usePositionStore } from '../../stores/position';
   import { useHarborStore } from '../../stores/harbors';
+  import type { Direction } from 'types/direction';
+  import PositionFormGroup from './formComponents/PositionFormGroup.vue';
+  import DirectionFormInput from './formComponents/DirectionFormInput.vue';
+  import type { StringLocation } from 'types/stringLocation';
+  import type { FetchHarborIM } from 'types/harborInputModels';
+  import {
+    DdToDms,
+    StringLocationToDdLocation,
+  } from '../../helpers/locationHelpers';
 
   export default defineComponent({
     name: 'SearchForm',
     components: {
       FormKit,
+      PositionFormGroup,
+      DirectionFormInput,
     },
     setup() {
       const positionStore = usePositionStore();
       const harborStore = useHarborStore();
 
-      let location: LatLng = reactive(latLng(0, 0));
+      let location: StringLocation = reactive({ lat: '', lng: '' });
       let directions: Direction[] = reactive([]);
 
       let locationLoading = ref(false);
@@ -88,42 +80,37 @@
         locationLoading,
       };
     },
-    computed: {
-      directionValuesComputed() {
-        const values = Object.entries(Direction)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          .filter(([text, value]) => isNaN(Number(value)) === false)
-          .map(([text, val]) => {
-            return {
-              value: val,
-              label: text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(),
-            };
-          });
-        return values;
-      },
-    },
+    computed: {},
     methods: {
       async setLocation() {
         this.locationLoading = true;
-        await this.positionStore.fetchPositionOnce().then(() => {
+        return this.positionStore.fetchPositionOnce().then(() => {
           let location = this.positionStore.getUserPosition;
 
-          this.location.lat = location.lat;
-          this.location.lng = location.lng;
+          this.location.lat = DdToDms(location.lat, true);
+          this.location.lng = DdToDms(location.lng, false);
           this.locationLoading = false;
-          console.log(this.location);
         });
       },
       async submitForm(data: unknown) {
         let formData = data as FormResults;
-        await this.harborStore.fetchHarbors(formData);
+        console.log(formData);
+        let ddLocation = StringLocationToDdLocation(
+          formData.location.lat,
+          formData.location.lng
+        );
+        let fetchData: FetchHarborIM = {
+          lat: ddLocation.lat,
+          lng: ddLocation.lng,
+          directions: formData.directions,
+        };
+        await this.harborStore.fetchHarbors(fetchData);
       },
     },
   });
 
   interface FormResults {
-    latitude: number;
-    longitude: number;
+    location: StringLocation;
     directions: Direction[];
   }
 </script>

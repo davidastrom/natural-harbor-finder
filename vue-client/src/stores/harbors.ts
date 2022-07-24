@@ -1,12 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 
-import type { Direction } from 'types/direction';
-interface FetchHarborIM {
-  latitude: number;
-  longitude: number;
-  directions: Direction[];
-}
+import type { FetchHarborIM } from 'types/harborInputModels';
 
 export const useHarborStore = defineStore({
   id: 'harbors',
@@ -14,7 +9,11 @@ export const useHarborStore = defineStore({
   getters: {},
   actions: {
     async fetchHarbors(data: FetchHarborIM) {
-      const position = { latitude: data.latitude, longitude: data.longitude };
+      let position;
+
+      if (data.lat && data.lng) {
+        position = { lat: data.lat, lng: data.lng };
+      }
 
       const url = import.meta.env.VITE_API_URL + '/harbors/';
 
