@@ -1,8 +1,9 @@
 import { latLng } from 'leaflet';
 
 export function DmsToDd(dms: string) {
-  const values = dms.match(/\d+\.*\d+/g);
+  const values = dms.match(/\d+(\.*\d+)?/g);
   const dir = dms.match(/[NESW]/);
+  console.log(values, dir);
 
   if (values?.length !== 3 || dir?.length !== 1) {
     throw new Error('not a valid DMS string');

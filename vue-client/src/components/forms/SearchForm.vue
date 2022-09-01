@@ -84,13 +84,19 @@
     methods: {
       async setLocation() {
         this.locationLoading = true;
-        return this.positionStore.fetchPositionOnce().then(() => {
-          let location = this.positionStore.getUserPosition;
-
-          this.location.lat = DdToDms(location.lat, true);
-          this.location.lng = DdToDms(location.lng, false);
-          this.locationLoading = false;
-        });
+        return this.positionStore.fetchPositionOnce(
+          (position) => {
+            this.location.lat = DdToDms(position.coords.latitude, true);
+            this.location.lng = DdToDms(position.coords.longitude, false);
+            this.locationLoading = false;
+          },
+          () => {
+            const location = this.positionStore.getUserPosition;
+            this.location.lat = DdToDms(location.lat, true);
+            this.location.lng = DdToDms(location.lng, false);
+            this.locationLoading = false;
+          }
+        );
       },
       async submitForm(data: unknown) {
         let formData = data as FormResults;

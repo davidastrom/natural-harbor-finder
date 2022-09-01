@@ -1,6 +1,12 @@
 import { latLng } from 'leaflet';
 import { defineStore } from 'pinia';
 
+const geolocationOptions = {
+  enableHighAccuracy: true,
+  timeout: 2000,
+  maximumAge: 2000,
+};
+
 export const usePositionStore = defineStore({
   id: 'position',
   state: () => ({
@@ -19,23 +25,27 @@ export const usePositionStore = defineStore({
           this.userLat = position.coords.latitude;
           this.userLong = position.coords.longitude;
         },
-        (error) => console.log(error)
+        () => {
+          return;
+        },
+        geolocationOptions
       );
     },
-    async fetchPositionOnce() {
-      return new Promise<void>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            this.userLat = position.coords.latitude;
-            this.userLong = position.coords.longitude;
-            resolve();
-          },
-          (error) => {
-            console.log(error);
-            reject();
-          }
-        );
-      });
+    fetchPositionOnce(
+      successFunc: (arg0: GeolocationPosition) => void,
+      errorFunc?: () => void
+    ) {
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.userLat = position.coords.latitude;
+          this.userLong = position.coords.longitude;
+          successFunc(position);
+        },
+        () => {
+          errorFunc ? errorFunc() : null;
+        },
+        geolocationOptions
+      );
     },
     stopWatchingPosition(watchPositionId: number) {
       navigator.geolocation.clearWatch(watchPositionId);
