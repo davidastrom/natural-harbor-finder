@@ -11,7 +11,7 @@
       <form-kit
         type="button"
         input-class="px-auto bg-stone-200 relative w-full py-2 font-medium capitalize rounded-full"
-        @click="setLocation"
+        @click="setCurrentLocation"
       >
         Use my location
         <template #suffix>
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref } from 'vue';
+  import { defineComponent, reactive, ref, type PropType } from 'vue';
   import { FormKit } from '@formkit/vue';
   import { usePositionStore } from '../../stores/position';
   import { useHarborStore } from '../../stores/harbors';
@@ -51,6 +51,7 @@
   import DirectionFormInput from './formComponents/DirectionFormInput.vue';
   import type { StringLocation } from 'types/stringLocation';
   import type { FetchHarborIM } from 'types/harborInputModels';
+  import type { LatLng } from 'leaflet';
   import {
     DdToDms,
     StringLocationToDdLocation,
@@ -62,6 +63,12 @@
       FormKit,
       PositionFormGroup,
       DirectionFormInput,
+    },
+    props: {
+      externalLocation: {
+        type: Object as PropType<LatLng | null>,
+        default: null,
+      },
     },
     setup() {
       const positionStore = usePositionStore();
@@ -81,8 +88,15 @@
       };
     },
     computed: {},
+    watch: {
+      externalLocation(newLocation: LatLng | null, oldLocation: LatLng | null) {
+        if (newLocation && newLocation !== oldLocation) {
+          this.setSelectedLocation(newLocation);
+        }
+      },
+    },
     methods: {
-      async setLocation() {
+      async setCurrentLocation() {
         this.locationLoading = true;
         return this.positionStore.fetchPositionOnce(
           (position) => {
@@ -111,6 +125,10 @@
           directions: formData.directions,
         };
         await this.harborStore.fetchHarbors(fetchData);
+      },
+      setSelectedLocation(location: LatLng) {
+        this.location.lat = DdToDms(location.lat, true);
+        this.location.lng = DdToDms(location.lng, false);
       },
     },
   });

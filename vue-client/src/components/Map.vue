@@ -8,12 +8,18 @@
 <script lang="ts">
   import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
   import { usePositionStore } from '../stores/position';
-  import L, { LatLng, latLng } from 'leaflet';
+  import L, { LatLng, latLng, type LeafletMouseEvent } from 'leaflet';
   import 'leaflet.locatecontrol';
 
   export default defineComponent({
     name: 'MapComponent',
-    setup() {
+    props: {},
+    emits: {
+      mapClick(payload: LeafletMouseEvent) {
+        return payload;
+      },
+    },
+    setup(props, { emit }) {
       const positionStore = usePositionStore();
       let lMap: L.Map | null = null;
       const watchPositionId = ref(0);
@@ -22,20 +28,30 @@
 
       const map = ref<HTMLElement>();
 
+      let clickMarker = null as L.Marker | null;
+
+      function onMapClick(e: LeafletMouseEvent) {
+        emit('mapClick', e);
+        if (lMap) {
+          if (!clickMarker) {
+            clickMarker = new L.Marker(e.latlng, {
+              icon: new L.DivIcon({
+                className: 'fa-solid fa-sailboat fa-2x',
+                iconSize: [27, 24],
+              }),
+            }).addTo(lMap);
+          } else {
+            clickMarker.setLatLng(e.latlng);
+          }
+        }
+      }
+
       onMounted(() => {
         watchPositionId.value = positionStore.watchPosition();
 
         if (map.value) {
           lMap = L.map(map.value, {
             zoomControl: false,
-          });
-
-          positionStore.fetchPositionOnce((position) => {
-            center.value = new LatLng(
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            lMap?.setView(center.value, zoom.value);
           });
 
           lMap.addLayer(
@@ -57,25 +73,36 @@
           );
 
           lMap.addControl(L.control.zoom({ position: 'bottomright' }));
-          lMap.addControl(
-            L.control.locate({
-              position: 'bottomright',
-              clickBehavior: {
-                inView: 'stop',
-                outOfView: 'setView',
-                inViewNotFollowing: 'setView',
-              },
-              setView: 'untilPan',
-              flyTo: true,
-              icon: 'fa-solid fa-location-crosshairs fa-fw text-xl',
-              cacheLocation: true,
-              locateOptions: {
-                enableHighAccuracy: true,
-                watch: true,
-                maximumAge: 2000,
-              },
-            })
-          );
+          var locationControl = L.control.locate({
+            position: 'bottomright',
+            clickBehavior: {
+              inView: 'stop',
+              outOfView: 'setView',
+              inViewNotFollowing: 'setView',
+            },
+            setView: 'untilPan',
+            flyTo: true,
+            icon: 'fa-solid fa-location-crosshairs fa-fw text-xl',
+            cacheLocation: true,
+            locateOptions: {
+              enableHighAccuracy: true,
+              watch: true,
+              maximumAge: 2000,
+            },
+          });
+          lMap.addControl(locationControl);
+
+          positionStore.fetchPositionOnce((position) => {
+            center.value = new LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            );
+            lMap?.setView(center.value, zoom.value);
+          });
+
+          locationControl.start();
+
+          lMap.on('click', onMapClick);
         }
       });
 
@@ -83,8 +110,17 @@
         positionStore.stopWatchingPosition(watchPositionId.value);
       });
 
-      return { positionStore, lMap, map, watchPositionId, center, zoom };
+      return {
+        positionStore,
+        lMap,
+        map,
+        watchPositionId,
+        center,
+        zoom,
+        clickMarker,
+      };
     },
+    methods: {},
   });
 </script>
 
