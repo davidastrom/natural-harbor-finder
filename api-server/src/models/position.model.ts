@@ -3,6 +3,12 @@ import { prop } from '@typegoose/typegoose';
 import { BaseModel } from './base.model';
 
 export class Position extends BaseModel {
+    constructor(lat: number, lng: number) {
+        super();
+        this.lat = lat;
+        this.lng = lng;
+    }
+
     @prop()
     public lng!: number;
 

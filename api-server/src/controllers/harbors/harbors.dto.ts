@@ -3,7 +3,8 @@ import { Direction } from '../../types/enums/direction';
 import { HarborType } from '../../types/enums/harbor-type';
 
 export interface getAllHarborInputModel {
-    position?: Position;
+    lat?: number;
+    lng?: number;
     shieldedDirections?: Direction[];
     take?: number;
 }

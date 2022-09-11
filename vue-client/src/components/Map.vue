@@ -1,19 +1,30 @@
 <template>
   <div
     ref="map"
-    class="w-full h-full min-h-full z-0"
+    class="z-0 w-full h-full min-h-full"
   ></div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
+  import {
+    defineComponent,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    type PropType,
+  } from 'vue';
   import { usePositionStore } from '../stores/position';
-  import L, { LatLng, latLng, type LeafletMouseEvent } from 'leaflet';
+  import L, { LatLng, latLng, Marker, type LeafletMouseEvent } from 'leaflet';
   import 'leaflet.locatecontrol';
 
   export default defineComponent({
     name: 'MapComponent',
-    props: {},
+    props: {
+      markers: {
+        type: Array as PropType<Marker[]>,
+        default: () => [],
+      },
+    },
     emits: {
       mapClick(payload: LeafletMouseEvent) {
         return payload;
@@ -21,7 +32,7 @@
     },
     setup(props, { emit }) {
       const positionStore = usePositionStore();
-      let lMap: L.Map | null = null;
+      let lMap = ref<L.Map>();
       const watchPositionId = ref(0);
       const center = ref(latLng(0, 0));
       const zoom = ref(12);
@@ -29,17 +40,18 @@
       const map = ref<HTMLElement>();
 
       let clickMarker = null as L.Marker | null;
+      let markerLayer = new L.FeatureGroup();
 
       function onMapClick(e: LeafletMouseEvent) {
         emit('mapClick', e);
-        if (lMap) {
+        if (lMap.value) {
           if (!clickMarker) {
             clickMarker = new L.Marker(e.latlng, {
               icon: new L.DivIcon({
                 className: 'fa-solid fa-sailboat fa-2x',
                 iconSize: [27, 24],
               }),
-            }).addTo(lMap);
+            }).addTo(lMap.value);
           } else {
             clickMarker.setLatLng(e.latlng);
           }
@@ -50,29 +62,27 @@
         watchPositionId.value = positionStore.watchPosition();
 
         if (map.value) {
-          lMap = L.map(map.value, {
+          lMap.value = L.map(map.value, {
             zoomControl: false,
+            maxZoom: 17,
           });
 
-          lMap.addLayer(
-            L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+          lMap.value.addLayer(
+            L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
               maxZoom: 17,
               attribution:
                 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
             })
           );
 
-          lMap.addLayer(
-            L.tileLayer(
-              'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
-              {
-                attribution:
-                  'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
-              }
-            )
+          lMap.value.addLayer(
+            L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
+              attribution:
+                'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+            })
           );
 
-          lMap.addControl(L.control.zoom({ position: 'bottomright' }));
+          lMap.value.addControl(L.control.zoom({ position: 'bottomright' }));
           var locationControl = L.control.locate({
             position: 'bottomright',
             clickBehavior: {
@@ -90,19 +100,20 @@
               maximumAge: 2000,
             },
           });
-          lMap.addControl(locationControl);
+          lMap.value.addControl(locationControl);
 
           positionStore.fetchPositionOnce((position) => {
             center.value = new LatLng(
               position.coords.latitude,
               position.coords.longitude
             );
-            lMap?.setView(center.value, zoom.value);
+            lMap.value?.setView(center.value, zoom.value);
+            locationControl.start();
           });
 
-          locationControl.start();
+          lMap.value.on('click', onMapClick);
 
-          lMap.on('click', onMapClick);
+          markerLayer.addTo(lMap.value);
         }
       });
 
@@ -118,7 +129,21 @@
         center,
         zoom,
         clickMarker,
+        markerLayer,
       };
+    },
+    watch: {
+      markers(newMarkers: Marker[]) {
+        console.log(this.lMap);
+        this.markerLayer.clearLayers();
+        newMarkers.forEach((marker) => {
+          this.markerLayer.addLayer(marker);
+        });
+        if (newMarkers.length > 0 && this.lMap) {
+          console.log('fly');
+          this.lMap.flyTo(newMarkers[0].getLatLng());
+        }
+      },
     },
     methods: {},
   });

@@ -145,13 +145,9 @@
         let interfaceData = data as ICreateHarborFormModel;
         let formData = CreateHarborFormModel.fromInterface(interfaceData);
 
-        console.log(formData);
-
         let inputData = formData.toInputModel();
 
         const url = import.meta.env.VITE_API_URL + '/harbors/create';
-
-        console.log(inputData);
 
         await axios
           .post(url, inputData)

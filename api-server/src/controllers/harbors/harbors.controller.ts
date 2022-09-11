@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { Harbor, HarborModel } from '../../models/harbors/harbor.model';
+import { Position } from '../../models/position.model';
 import {
   createHarborDetailInputModel,
   createHarborInputModel,
@@ -12,9 +13,12 @@ export async function getAllHarbors(
     res: Response
 ): Promise<void> {
     const input = req.query as getAllHarborInputModel;
-    console.log(input);
+    let position = undefined as undefined | Position;
+    if (input.lat && input.lng) {
+        position = new Position(input.lat, input.lng);
+    }
     const harbors = await HarborModel.getHarbors(
-        input.position,
+        position,
         input.shieldedDirections,
         input.take
     );

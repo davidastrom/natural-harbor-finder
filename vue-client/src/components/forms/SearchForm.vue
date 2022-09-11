@@ -114,7 +114,6 @@
       },
       async submitForm(data: unknown) {
         let formData = data as FormResults;
-        console.log(formData);
         let ddLocation = StringLocationToDdLocation(
           formData.location.lat,
           formData.location.lng
