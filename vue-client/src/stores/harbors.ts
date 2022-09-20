@@ -1,21 +1,29 @@
 import axios from 'axios';
-import { LatLng, Marker } from 'leaflet';
+import { LatLng } from 'leaflet';
 import { defineStore } from 'pinia';
+
+import { HarborMarker } from '../../types/harborMarker';
 
 import type { FetchHarborIM } from 'types/harborInputModels';
 import type { Harbor } from 'types/harborModels';
-
 export const useHarborStore = defineStore({
   id: 'harbors',
   state: () => ({
-    harbors: [] as Harbor[],
+    harbors: new Map<string, Harbor>(),
+    selectedHarbor: null as string | null,
   }),
   getters: {
     getHarborsAsMarkers(state) {
-      return state.harbors.map(
-        (harbor) =>
-          new Marker(new LatLng(harbor.location.lat, harbor.location.lng))
+      const harbors = new Array<HarborMarker>();
+      state.harbors.forEach((harbor) =>
+        harbors.push(
+          new HarborMarker(
+            new LatLng(harbor.location.lat, harbor.location.lng),
+            harbor._id
+          )
+        )
       );
+      return harbors;
     },
   },
   actions: {
@@ -32,9 +40,18 @@ export const useHarborStore = defineStore({
           params: { ...position, shieldedDirections: data.directions },
         });
 
-        this.harbors = res.data;
+        this.harbors.clear();
+        this.selectedHarbor = null;
+        res.data.forEach((harbor) => {
+          this.harbors.set(harbor._id, harbor);
+        });
       } catch (error) {
         console.log(error);
+      }
+    },
+    selectHarbor(id: string) {
+      if (this.harbors.has(id)) {
+        this.selectedHarbor = id;
       }
     },
   },

@@ -14,19 +14,23 @@
     type PropType,
   } from 'vue';
   import { usePositionStore } from '../stores/position';
-  import L, { LatLng, latLng, Marker, type LeafletMouseEvent } from 'leaflet';
+  import L, { LatLng, latLng, type LeafletMouseEvent } from 'leaflet';
   import 'leaflet.locatecontrol';
+  import type { HarborMarker } from 'types/harborMarker';
 
   export default defineComponent({
     name: 'MapComponent',
     props: {
       markers: {
-        type: Array as PropType<Marker[]>,
+        type: Array as PropType<HarborMarker[]>,
         default: () => [],
       },
     },
     emits: {
       mapClick(payload: LeafletMouseEvent) {
+        return payload;
+      },
+      markerClick(payload: HarborMarker) {
         return payload;
       },
     },
@@ -41,21 +45,35 @@
 
       let clickMarker = null as L.Marker | null;
       let markerLayer = new L.FeatureGroup();
+      let _dblClickTimer = null as number | null;
 
       function onMapClick(e: LeafletMouseEvent) {
-        emit('mapClick', e);
-        if (lMap.value) {
-          if (!clickMarker) {
-            clickMarker = new L.Marker(e.latlng, {
-              icon: new L.DivIcon({
-                className: 'fa-solid fa-sailboat fa-2x',
-                iconSize: [27, 24],
-              }),
-            }).addTo(lMap.value);
-          } else {
-            clickMarker.setLatLng(e.latlng);
-          }
+        if (_dblClickTimer !== null) {
+          return;
         }
+        _dblClickTimer = setTimeout(() => {
+          if (lMap.value) {
+            emit('mapClick', e);
+            if (!clickMarker) {
+              clickMarker = new L.Marker(e.latlng, {
+                icon: new L.DivIcon({
+                  className: 'fa-solid fa-sailboat fa-2x',
+                  iconSize: [27, 24],
+                }),
+              }).addTo(lMap.value);
+            } else {
+              clickMarker.setLatLng(e.latlng);
+            }
+          }
+
+          _dblClickTimer = null;
+        }, 300);
+      }
+      function onMapDblClick() {
+        if (_dblClickTimer) {
+          clearTimeout(_dblClickTimer);
+        }
+        _dblClickTimer = null;
       }
 
       onMounted(() => {
@@ -111,7 +129,7 @@
             locationControl.start();
           });
 
-          lMap.value.on('click', onMapClick);
+          lMap.value.on('click', onMapClick).on('dblclick', onMapDblClick);
 
           markerLayer.addTo(lMap.value);
         }
@@ -133,14 +151,17 @@
       };
     },
     watch: {
-      markers(newMarkers: Marker[]) {
+      markers(newMarkers: HarborMarker[]) {
         console.log(this.lMap);
         this.markerLayer.clearLayers();
         newMarkers.forEach((marker) => {
+          marker.on('click', (event: LeafletMouseEvent) => {
+            let target = event.target as HarborMarker;
+            this.$emit('markerClick', target);
+          });
           this.markerLayer.addLayer(marker);
         });
         if (newMarkers.length > 0 && this.lMap) {
-          console.log('fly');
           this.lMap.flyTo(newMarkers[0].getLatLng());
         }
       },

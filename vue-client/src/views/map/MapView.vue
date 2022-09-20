@@ -14,6 +14,7 @@
       <map-component
         :markers="harborStore.getHarborsAsMarkers"
         @map-click="setSelectedPosition"
+        @marker-click="setSelectedHarbor"
       ></map-component>
     </div>
   </div>
@@ -26,6 +27,7 @@
   import SearchForm from '../../components/forms/SearchForm.vue';
   import type { LatLng, LeafletMouseEvent } from 'leaflet';
   import { useHarborStore } from '../../stores/harbors';
+  import type { HarborMarker } from 'types/harborMarker';
 
   export default defineComponent({
     name: 'MapView',
@@ -47,6 +49,10 @@
     methods: {
       setSelectedPosition(e: LeafletMouseEvent) {
         this.mapSelectedPosition = e.latlng;
+      },
+      setSelectedHarbor(marker: HarborMarker) {
+        console.log(marker.harborId);
+        this.harborStore.selectHarbor(marker.harborId);
       },
     },
   });
