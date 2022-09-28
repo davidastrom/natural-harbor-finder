@@ -60,7 +60,9 @@
                   className: 'fa-solid fa-sailboat fa-2x',
                   iconSize: [27, 24],
                 }),
-              }).addTo(lMap.value);
+              })
+                .on('click', clearClickMarker)
+                .addTo(lMap.value);
             } else {
               clickMarker.setLatLng(e.latlng);
             }
@@ -69,11 +71,19 @@
           _dblClickTimer = null;
         }, 300);
       }
+
       function onMapDblClick() {
         if (_dblClickTimer) {
           clearTimeout(_dblClickTimer);
         }
         _dblClickTimer = null;
+      }
+
+      function clearClickMarker() {
+        if (clickMarker && lMap.value) {
+          clickMarker.removeFrom(lMap.value);
+          clickMarker = null;
+        }
       }
 
       onMounted(() => {
@@ -148,6 +158,7 @@
         zoom,
         clickMarker,
         markerLayer,
+        clearClickMarker,
       };
     },
     watch: {

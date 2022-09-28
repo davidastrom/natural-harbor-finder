@@ -8,10 +8,14 @@
       id="side-bar"
       class="w-96 bg-slate-50 drop-shadow z-40 flex flex-col flex-none h-full max-h-full p-4 overflow-y-auto"
     >
-      <search-form :external-location="mapSelectedPosition"></search-form>
+      <search-form
+        :external-location="mapSelectedPosition"
+        @current-position-chosen="clearMapClickMarker"
+      ></search-form>
     </div>
     <div class="z-0 flex-auto h-full max-h-full">
       <map-component
+        ref="map"
         :markers="harborStore.getHarborsAsMarkers"
         @map-click="setSelectedPosition"
         @marker-click="setSelectedHarbor"
@@ -21,7 +25,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import MapComponent from '../../components/Map.vue';
   import NavBar from '../../components/NavBar.vue';
   import SearchForm from '../../components/forms/SearchForm.vue';
@@ -39,7 +43,9 @@
     setup() {
       const harborStore = useHarborStore();
 
-      return { harborStore };
+      const map = ref<InstanceType<typeof MapComponent>>();
+
+      return { harborStore, map };
     },
     data() {
       return {
@@ -53,6 +59,9 @@
       setSelectedHarbor(marker: HarborMarker) {
         console.log(marker.harborId);
         this.harborStore.selectHarbor(marker.harborId);
+      },
+      clearMapClickMarker() {
+        if (this.map) this.map.clearClickMarker();
       },
     },
   });

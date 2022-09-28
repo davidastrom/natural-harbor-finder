@@ -70,6 +70,7 @@
         default: null,
       },
     },
+    emits: ['currentPositionChosen'],
     setup() {
       const positionStore = usePositionStore();
       const harborStore = useHarborStore();
@@ -98,6 +99,7 @@
     methods: {
       async setCurrentLocation() {
         this.locationLoading = true;
+        this.$emit('currentPositionChosen');
         return this.positionStore.fetchPositionOnce(
           (position) => {
             this.location.lat = DdToDms(position.coords.latitude, true);
