@@ -28,16 +28,30 @@
         </template>
       </form-kit>
 
-      <direction-form-input
-        v-model="directions"
-        name="directions"
-      ></direction-form-input>
+      <transition>
+        <div v-show="!hideForm">
+          <direction-form-input
+            v-model="directions"
+            name="directions"
+          ></direction-form-input>
 
-      <form-kit
-        type="submit"
-        input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
-      ></form-kit>
+          <form-kit
+            type="submit"
+            input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
+          ></form-kit>
+        </div>
+      </transition>
     </form-kit>
+    <transition>
+      <button
+        v-show="hideForm"
+        class="px-auto w-full py-2 mt-4 font-medium bg-transparent"
+        @click="hideForm = false"
+      >
+        Expand
+        <i class="fa-solid fa-caret-down"></i>
+      </button>
+    </transition>
   </div>
 </template>
 
@@ -79,6 +93,7 @@
       let directions: Direction[] = reactive([]);
 
       let locationLoading = ref(false);
+      let hideForm = ref(false);
 
       return {
         positionStore,
@@ -86,6 +101,7 @@
         location,
         directions,
         locationLoading,
+        hideForm,
       };
     },
     computed: {},
@@ -100,6 +116,7 @@
       async setCurrentLocation() {
         this.locationLoading = true;
         this.$emit('currentPositionChosen');
+        this.hideForm = false;
         return this.positionStore.fetchPositionOnce(
           (position) => {
             this.location.lat = DdToDms(position.coords.latitude, true);
@@ -126,6 +143,7 @@
           directions: formData.directions,
         };
         await this.harborStore.fetchHarbors(fetchData);
+        this.hideForm = true;
       },
       setSelectedLocation(location: LatLng) {
         this.location.lat = DdToDms(location.lat, true);
