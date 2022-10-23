@@ -6,12 +6,16 @@
   >
     <div
       id="side-bar"
-      class="w-96 bg-slate-50 drop-shadow z-40 flex flex-col flex-none h-full max-h-full p-4 overflow-y-auto"
+      class="w-96 bg-stone-50 drop-shadow z-40 flex flex-col flex-none h-full max-h-full p-4 overflow-y-auto"
     >
       <search-form
         :external-location="mapSelectedPosition"
+        class="mb-4"
         @current-position-chosen="clearMapClickMarker"
       ></search-form>
+      <harbor-card-list
+        :harbors="Array.from(harborStore.$state.harbors.values())"
+      ></harbor-card-list>
     </div>
     <div class="z-0 flex-auto h-full max-h-full">
       <map-component
@@ -32,6 +36,7 @@
   import type { LatLng, LeafletMouseEvent } from 'leaflet';
   import { useHarborStore } from '../../stores/harbors';
   import type { HarborMarker } from 'types/harborMarker';
+  import HarborCardList from '../../components/HarborCardList.vue';
 
   export default defineComponent({
     name: 'MapView',
@@ -39,6 +44,7 @@
       MapComponent,
       NavBar,
       SearchForm,
+      HarborCardList,
     },
     setup() {
       const harborStore = useHarborStore();
@@ -57,7 +63,6 @@
         this.mapSelectedPosition = e.latlng;
       },
       setSelectedHarbor(marker: HarborMarker) {
-        console.log(marker.harborId);
         this.harborStore.selectHarbor(marker.harborId);
       },
       clearMapClickMarker() {

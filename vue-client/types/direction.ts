@@ -8,3 +8,14 @@ export enum Direction {
   WEST,
   NORTHWEST,
 }
+
+export enum DirectionShort {
+  N,
+  NE,
+  E,
+  SE,
+  S,
+  SW,
+  W,
+  NW,
+}

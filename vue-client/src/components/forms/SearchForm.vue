@@ -45,7 +45,7 @@
     <transition>
       <button
         v-show="hideForm"
-        class="px-auto w-full py-2 mt-4 font-medium bg-transparent"
+        class="px-auto w-full py-2 mt-2 font-medium bg-transparent"
         @click="hideForm = false"
       >
         Expand

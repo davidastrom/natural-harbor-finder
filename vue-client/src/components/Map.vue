@@ -96,10 +96,10 @@
           });
 
           lMap.value.addLayer(
-            L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-              maxZoom: 17,
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
               attribution:
-                'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             })
           );
 
@@ -163,7 +163,6 @@
     },
     watch: {
       markers(newMarkers: HarborMarker[]) {
-        console.log(this.lMap);
         this.markerLayer.clearLayers();
         newMarkers.forEach((marker) => {
           marker.on('click', (event: LeafletMouseEvent) => {
