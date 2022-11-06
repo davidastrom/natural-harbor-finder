@@ -21,16 +21,16 @@
         </span>
       </div>
     </div>
-    <div class="flex flex-wrap gap-1">
+    <div class="flex flex-wrap gap-1 text-xs">
       <div
         v-if="detail.SXKBuoy"
-        class="p-1 bg-blue-500 text-white"
+        class="px-2 py-1 text-white bg-blue-500 rounded-full"
       >
         SXK-buoy
       </div>
       <div
         v-if="detail.anchor"
-        class="p-1 bg-green-500 text-white"
+        class="px-2 py-1 text-white bg-green-500 rounded-full"
       >
         Anchor
       </div>
