@@ -128,7 +128,9 @@
     name: 'AddHarborForm',
     components: { FormKit, PositionFormGroup, HarborDetailFormGroup },
     setup() {
-      let harbor: CreateHarborFormModel = reactive(new CreateHarborFormModel());
+      const harbor: CreateHarborFormModel = reactive(
+        new CreateHarborFormModel()
+      );
       harbor.book = new CreateBookRefInputModel();
       return { harbor };
     },
@@ -142,10 +144,10 @@
     },
     methods: {
       async submitForm(data: unknown) {
-        let interfaceData = data as ICreateHarborFormModel;
-        let formData = CreateHarborFormModel.fromInterface(interfaceData);
+        const interfaceData = data as ICreateHarborFormModel;
+        const formData = CreateHarborFormModel.fromInterface(interfaceData);
 
-        let inputData = formData.toInputModel();
+        const inputData = formData.toInputModel();
 
         const url = import.meta.env.VITE_API_URL + '/harbors/create';
 
@@ -159,7 +161,7 @@
           });
       },
       addDetail() {
-        let detail = new CreateHarborDetailFormModel();
+        const detail = new CreateHarborDetailFormModel();
 
         detail.harborType = this.harbor.harborType;
         detail.location = this.harbor.location;

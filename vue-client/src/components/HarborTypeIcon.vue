@@ -8,14 +8,17 @@
 
 <script lang="ts">
   import { HarborType } from 'types/harborType';
-  import { defineComponent, type PropType } from 'vue';
+  import { defineComponent } from 'vue';
 
   export default defineComponent({
     name: 'HarborTypeIcon',
     props: {
       harborType: {
-        type: Object as PropType<HarborType>,
+        type: Number,
         required: true,
+        validator: (val: number) => {
+          return !!HarborType[val];
+        },
       },
     },
     computed: {

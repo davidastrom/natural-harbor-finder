@@ -147,6 +147,12 @@
 
       onBeforeUnmount(() => {
         positionStore.stopWatchingPosition(watchPositionId.value);
+        if (markerLayer) {
+          markerLayer.remove();
+        }
+        if (map.value) {
+          map.value.remove();
+        }
       });
 
       return {

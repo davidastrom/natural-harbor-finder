@@ -24,6 +24,38 @@
         </span>
       </div>
     </div>
+    <template v-if="true">
+      <div
+        v-if="harbor.book"
+        class="flex"
+      >
+        <i class="fa-solid fa-book fa-fw text-stone-800 mr-1 text-sm"></i>
+        <span class="text-stone-800 text-sm">
+          {{ harbor.book.title }}
+        </span>
+        <span
+          v-if="harbor.book.page"
+          class="text-stone-600 text-sm"
+        >
+          &nbsp;- p.{{ harbor.book.page }}
+        </span>
+        <span
+          v-if="harbor.book.ref"
+          class="text-stone-600 text-sm"
+        >
+          &nbsp;| #{{ harbor.book.ref }}
+        </span>
+      </div>
+      <ul>
+        <li
+          v-for="(detail, index) in harbor.details"
+          :key="`d-${index}`"
+          class="hover:bg-stone-50 ml-2 rounded-md"
+        >
+          <harbor-detail-card :detail="detail"></harbor-detail-card>
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
 
@@ -33,9 +65,14 @@
   import { defineComponent, type PropType } from 'vue';
   import HarborTypeIcon from './HarborTypeIcon.vue';
   import { DirectionShort } from '../../types/direction';
+  import HarborDetailCard from './HarborDetailCard.vue';
 
   export default defineComponent({
     name: 'HarborCard',
+    components: {
+      HarborTypeIcon,
+      HarborDetailCard,
+    },
     props: {
       harbor: {
         type: Object as PropType<Harbor>,
@@ -55,14 +92,12 @@
         const set = [
           ...new Set(this.harbor.details.flatMap((d) => d.shieldedDirections)),
         ];
-        console.log(set);
         return set
           .sort()
           .map((d) => DirectionShort[d])
           .join(' | ');
       },
     },
-    components: { HarborTypeIcon },
   });
 </script>
 

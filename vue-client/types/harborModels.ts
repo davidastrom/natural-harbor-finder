@@ -9,7 +9,7 @@ export type Harbor = {
   location: LatLng;
   chartNumber: number;
   harborType: HarborType;
-  book: BookRef;
+  book?: BookRef;
 };
 
 export type HarborDetail = {
