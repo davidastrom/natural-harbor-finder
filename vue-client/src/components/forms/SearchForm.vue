@@ -89,11 +89,11 @@
       const positionStore = usePositionStore();
       const harborStore = useHarborStore();
 
-      let location: StringLocation = reactive({ lat: '', lng: '' });
-      let directions: Direction[] = reactive([]);
+      const location: StringLocation = reactive({ lat: '', lng: '' });
+      const directions: Direction[] = reactive([]);
 
-      let locationLoading = ref(false);
-      let hideForm = ref(false);
+      const locationLoading = ref(false);
+      const hideForm = ref(false);
 
       return {
         positionStore,
@@ -132,12 +132,12 @@
         );
       },
       async submitForm(data: unknown) {
-        let formData = data as FormResults;
-        let ddLocation = StringLocationToDdLocation(
+        const formData = data as FormResults;
+        const ddLocation = StringLocationToDdLocation(
           formData.location.lat,
           formData.location.lng
         );
-        let fetchData: FetchHarborIM = {
+        const fetchData: FetchHarborIM = {
           lat: ddLocation.lat,
           lng: ddLocation.lng,
           directions: formData.directions,

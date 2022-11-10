@@ -110,9 +110,9 @@
           <div class="ml-3 relative">
             <div>
               <button
+                id="user-menu-button"
                 type="button"
                 class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                id="user-menu-button"
                 aria-expanded="false"
                 aria-haspopup="true"
               >
@@ -130,7 +130,7 @@
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="sm:hidden" id="mobile-menu">
+    <div id="mobile-menu" class="sm:hidden">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
         <a

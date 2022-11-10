@@ -1,5 +1,8 @@
 <template>
-  <div class="drop-shadow flex flex-col p-4 bg-white rounded-md">
+  <div
+    class="drop-shadow flex flex-col p-4 bg-white rounded-md"
+    @click="selectCard"
+  >
     <div class="flex items-start justify-between">
       <h3 class="text-xl font-normal">{{ harbor.name }}</h3>
       <div class="text-stone-800 flex gap-2 text-base">
@@ -24,7 +27,7 @@
         </span>
       </div>
     </div>
-    <template v-if="true">
+    <template v-if="selected">
       <div
         v-if="harbor.book"
         class="flex"
@@ -80,6 +83,15 @@
           return {};
         },
       },
+      selected: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    emits: {
+      selectHarbor(payload: string) {
+        return payload;
+      },
     },
     computed: {
       latitudeComputed() {
@@ -96,6 +108,11 @@
           .sort()
           .map((d) => DirectionShort[d])
           .join(' | ');
+      },
+    },
+    methods: {
+      selectCard() {
+        this.$emit('selectHarbor', this.harbor._id);
       },
     },
   });

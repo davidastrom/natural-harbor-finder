@@ -58,17 +58,30 @@
         mapSelectedPosition: null as null | LatLng,
       };
     },
+    computed: {
+      selectedHarborComputed() {
+        return this.harborStore.selectedHarbor;
+      }
+    },
+    watch: {
+      selectedHarborComputed(newHarborId: string, oldHarborId: string) {
+        if (newHarborId !== oldHarborId) {
+          this.map?.panToHarbor(newHarborId)
+        }
+      }
+    },
     methods: {
       setSelectedPosition(e: LeafletMouseEvent) {
         this.mapSelectedPosition = e.latlng;
       },
       setSelectedHarbor(marker: HarborMarker) {
         this.harborStore.selectHarbor(marker.harborId);
+        this.map?.panToHarbor(marker.harborId);
       },
       clearMapClickMarker() {
         if (this.map) this.map.clearClickMarker();
       },
-    },
+    }
   });
 </script>
 

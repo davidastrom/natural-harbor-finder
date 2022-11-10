@@ -36,7 +36,7 @@
     },
     setup(props, { emit }) {
       const positionStore = usePositionStore();
-      let lMap = ref<L.Map>();
+      const lMap = ref<L.Map>();
       const watchPositionId = ref(0);
       const center = ref(latLng(0, 0));
       const zoom = ref(12);
@@ -44,7 +44,7 @@
       const map = ref<HTMLElement>();
 
       let clickMarker = null as L.Marker | null;
-      let markerLayer = new L.FeatureGroup();
+      const markerLayer = new L.FeatureGroup();
       let _dblClickTimer = null as number | null;
 
       function onMapClick(e: LeafletMouseEvent) {
@@ -111,7 +111,7 @@
           );
 
           lMap.value.addControl(L.control.zoom({ position: 'bottomright' }));
-          var locationControl = L.control.locate({
+          const locationControl = L.control.locate({
             position: 'bottomright',
             clickBehavior: {
               inView: 'stop',
@@ -172,7 +172,7 @@
         this.markerLayer.clearLayers();
         newMarkers.forEach((marker) => {
           marker.on('click', (event: LeafletMouseEvent) => {
-            let target = event.target as HarborMarker;
+            const target = event.target as HarborMarker;
             this.$emit('markerClick', target);
           });
           this.markerLayer.addLayer(marker);
@@ -182,7 +182,16 @@
         }
       },
     },
-    methods: {},
+    methods: {
+      panToHarbor(harborId: string) {
+        const harborMarker = this.markers.find(
+          (marker) => marker.harborId === harborId
+        );
+        if (harborMarker && this.lMap) {
+          this.lMap.panTo(harborMarker.getLatLng());
+        }
+      },
+    },
   });
 </script>
 

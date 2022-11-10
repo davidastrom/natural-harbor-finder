@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="px-4 py-2">
     <h4>{{ detail.name }}</h4>
     <div class="gap-x-2 flex flex-wrap">
       <div
