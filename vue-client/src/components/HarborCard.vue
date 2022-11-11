@@ -1,6 +1,7 @@
 <template>
   <div
     class="drop-shadow flex flex-col p-4 bg-white rounded-md"
+    :class="cardClassComputed"
     @click="selectCard"
   >
     <div class="flex items-start justify-between">
@@ -108,6 +109,12 @@
           .sort()
           .map((d) => DirectionShort[d])
           .join(' | ');
+      },
+      cardClassComputed() {
+        if (!this.selected) {
+          return ['hover:bg-stone-50', 'active:bg-stone-100', 'cursor-pointer'];
+        }
+        return [];
       },
     },
     methods: {

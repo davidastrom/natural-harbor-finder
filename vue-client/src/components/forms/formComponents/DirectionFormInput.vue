@@ -8,6 +8,7 @@
     inner-class="flex items-center"
     wrapper-class="flex flex-row items-center justify-start"
     label-class="ml-2"
+    input-class="hover:shadow-inner hover:shadow-stone-200 hover:checked:shadow-blue-700 rounded-sm cursor-pointer"
     :name="name"
   ></form-kit>
 </template>

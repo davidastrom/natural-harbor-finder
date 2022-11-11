@@ -10,7 +10,7 @@
 
       <form-kit
         type="button"
-        input-class="px-auto bg-stone-200 relative w-full py-2 font-medium capitalize rounded-full"
+        input-class="px-auto bg-stone-200 hover:bg-stone-300 active:bg-stone-400 relative w-full py-2 font-medium capitalize rounded-full"
         @click="setCurrentLocation"
       >
         Use my location
@@ -37,7 +37,7 @@
 
           <form-kit
             type="submit"
-            input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
+            input-class="px-auto text-stone-100 hover:bg-blue-600 active:bg-blue-700 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
           ></form-kit>
         </div>
       </transition>
