@@ -59,6 +59,7 @@
                 icon: new L.DivIcon({
                   className: 'fa-solid fa-sailboat fa-2x',
                   iconSize: [27, 24],
+                  iconAnchor: [13.5, 16],
                 }),
               })
                 .on('click', clearClickMarker)

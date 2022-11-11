@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { LatLng } from 'leaflet';
+import { Icon, LatLng } from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { defineStore } from 'pinia';
 
 import { HarborMarker } from '../../types/harborMarker';
@@ -19,7 +21,15 @@ export const useHarborStore = defineStore({
         harbors.push(
           new HarborMarker(
             new LatLng(harbor.location.lat, harbor.location.lng),
-            harbor._id
+            harbor._id,
+            {
+              icon: new Icon({
+                iconUrl: icon,
+                shadowUrl: iconShadow,
+                iconSize: [24, 36],
+                iconAnchor: [12, 36],
+              }),
+            }
           )
         )
       );
