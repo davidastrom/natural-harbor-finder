@@ -1,8 +1,8 @@
 <template>
-  <nav-bar></nav-bar>
+  <!-- <nav-bar></nav-bar> -->
   <div
     id="page-container"
-    class="flex flex-row h-screen max-h-screen pt-16 -mt-16"
+    class="flex flex-row h-screen max-h-screen"
   >
     <div
       id="side-bar"
@@ -31,7 +31,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import MapComponent from '../../components/Map.vue';
-  import NavBar from '../../components/NavBar.vue';
+  // import NavBar from '../../components/NavBar.vue';
   import SearchForm from '../../components/forms/SearchForm.vue';
   import type { LatLng, LeafletMouseEvent } from 'leaflet';
   import { useHarborStore } from '../../stores/harbors';
@@ -42,7 +42,7 @@
     name: 'MapView',
     components: {
       MapComponent,
-      NavBar,
+      // NavBar,
       SearchForm,
       HarborCardList,
     },
@@ -61,14 +61,14 @@
     computed: {
       selectedHarborComputed() {
         return this.harborStore.selectedHarbor;
-      }
+      },
     },
     watch: {
       selectedHarborComputed(newHarborId: string, oldHarborId: string) {
         if (newHarborId !== oldHarborId) {
-          this.map?.panToHarbor(newHarborId)
+          this.map?.panToHarbor(newHarborId);
         }
-      }
+      },
     },
     methods: {
       setSelectedPosition(e: LeafletMouseEvent) {
@@ -81,7 +81,7 @@
       clearMapClickMarker() {
         if (this.map) this.map.clearClickMarker();
       },
-    }
+    },
   });
 </script>
 
