@@ -1,0 +1,30 @@
+{
+  "harbor": {
+    "sxk": "SXK-buoy",
+    "anchor": "Anchor",
+    "shieldedDirections": "Shielded directions"
+  },
+  "location": {
+    "useMyLocation": "Use my location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "latitudeShort": "Lat",
+    "longitudeShort": "Lng"
+  },
+  "directions": {
+    "long": [
+      "North",
+      "Northeast",
+      "East",
+      "Southeast",
+      "South",
+      "Southwest",
+      "West",
+      "Northwest"
+    ],
+    "short": ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+  },
+  "ui": {
+    "expand": "Expand"
+  }
+}

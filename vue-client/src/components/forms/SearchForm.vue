@@ -13,7 +13,7 @@
         input-class="px-auto bg-stone-200 hover:bg-stone-300 active:bg-stone-400 relative w-full py-2 font-medium capitalize rounded-full"
         @click="setCurrentLocation"
       >
-        Use my location
+        {{ $t('location.useMyLocation') }}
         <template #suffix>
           <div class="right-3 top-1/2 absolute -translate-y-1/2">
             <i
@@ -48,7 +48,7 @@
         class="px-auto w-full py-2 mt-2 font-medium bg-transparent"
         @click="hideForm = false"
       >
-        Expand
+        $t('location.useMyLocation')
         <i class="fa-solid fa-caret-down"></i>
       </button>
     </transition>

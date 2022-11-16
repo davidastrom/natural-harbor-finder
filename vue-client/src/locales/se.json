@@ -1,0 +1,12 @@
+{
+  "harbor": {
+    "sxk": "SXK-boj",
+    "anchor": "Svajankring"
+  },
+  "location": {
+    "useMyLocation": "Använd min position"
+  },
+  "ui": {
+    "expand": "Expandera"
+  }
+}
