@@ -2,29 +2,53 @@
   "harbor": {
     "sxk": "SXK-buoy",
     "anchor": "Anchor",
-    "shieldedDirections": "Shielded directions"
+    "shieldedDirections": "Shielded directions",
+    "name": "Name",
+    "detail": {
+      "specificLocation": "Has specific location",
+      "specificHarborType": "Is specific harbor type"
+    },
+    "harborType": "Harbor type",
+    "position": "Location",
+    "chartNum": "Chart #",
+    "book": {
+      "hasBookRef": "Has book reference",
+      "title": "Title",
+      "page": "Page",
+      "ref": "Ref"
+    }
   },
   "location": {
     "useMyLocation": "Use my location",
     "latitude": "Latitude",
     "longitude": "Longitude",
     "latitudeShort": "Lat",
-    "longitudeShort": "Lng"
+    "longitudeShort": "Long"
   },
   "directions": {
-    "long": [
-      "North",
-      "Northeast",
-      "East",
-      "Southeast",
-      "South",
-      "Southwest",
-      "West",
-      "Northwest"
-    ],
-    "short": ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    "long": {
+      "0": "North",
+      "1": "Northeast",
+      "2": "East",
+      "3": "Southeast",
+      "4": "South",
+      "5": "Southwest",
+      "6": "West",
+      "7": "Northwest"
+    },
+    "short": {
+      "0": "N",
+      "1": "NE",
+      "2": "E",
+      "3": "SE",
+      "4": "S",
+      "5": "SW",
+      "6": "W",
+      "7": "NW"
+    }
   },
   "ui": {
-    "expand": "Expand"
+    "expand": "Expand",
+    "findNearestHarbor": "Find nearest harbor"
   }
 }

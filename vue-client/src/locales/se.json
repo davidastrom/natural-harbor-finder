@@ -1,12 +1,47 @@
 {
   "harbor": {
     "sxk": "SXK-boj",
-    "anchor": "Svajankring"
+    "anchor": "Svajankring",
+    "shieldedDirections": "Skyddade väderstreck",
+    "name": "Namn",
+    "position": "Position",
+    "harborType": "Hamntyp",
+    "detail": {
+      "specificHarborType": "Har särskild position",
+      "specificLocation": "Är särskild hamntyp"
+    }
   },
   "location": {
-    "useMyLocation": "Använd min position"
+    "useMyLocation": "Använd min position",
+    "latitude": "Latitud",
+    "latitudeShort": "Lat",
+    "longitude": "Longitud",
+    "longitudeShort": "Lon"
   },
   "ui": {
-    "expand": "Expandera"
+    "expand": "Expandera",
+    "findNearestHarbor": "Hitta närmsta hamn"
+  },
+  "directions": {
+    "long": {
+      "0": "Norr",
+      "1": "Nordost",
+      "2": "Öster",
+      "3": "Sydost",
+      "4": "Söder",
+      "5": "Sydväst",
+      "6": "Väster",
+      "7": "Nordväst"
+    },
+    "short": {
+      "0": "N",
+      "1": "NO",
+      "2": "Ö",
+      "3": "SO",
+      "4": "S",
+      "5": "SV",
+      "6": "V",
+      "7": "NV"
+    }
   }
 }

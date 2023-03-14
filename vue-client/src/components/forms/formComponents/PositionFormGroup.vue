@@ -7,7 +7,7 @@
       <form-kit
         v-model="location.lat"
         type="text"
-        label="Latitude"
+        :label="$t('location.latitude')"
         outer-class="w-1/2 pr-1"
         input-class="w-full rounded-full"
         name="lat"
@@ -15,7 +15,7 @@
       <form-kit
         v-model="location.lng"
         type="text"
-        label="Longitude"
+        :label="$t('location.longitude')"
         outer-class="w-1/2 pl-1"
         input-class="w-full rounded-full"
         name="lng"

@@ -1,7 +1,7 @@
 <template>
   <form-kit
     v-model="directions"
-    label="Shielded directions"
+    :label="$t('harbor.shieldedDirections')"
     type="checkbox"
     :options="directionValuesComputed"
     outer-class="mt-4"

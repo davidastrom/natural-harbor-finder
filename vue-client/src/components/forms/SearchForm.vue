@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <h2 class="text-2xl font-medium">Find nearest harbor</h2>
+    <h2 class="text-2xl font-medium">{{ $t('ui.findNearestHarbor') }}</h2>
     <form-kit
       type="form"
       :actions="false"
@@ -48,7 +48,7 @@
         class="px-auto w-full py-2 mt-2 font-medium bg-transparent"
         @click="hideForm = false"
       >
-        $t('location.useMyLocation')
+        {{ $t('location.useMyLocation') }}
         <i class="fa-solid fa-caret-down"></i>
       </button>
     </transition>

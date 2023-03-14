@@ -5,7 +5,7 @@
   >
     <form-kit
       type="text"
-      label="Name"
+      :label="$t('harbor.name')"
       input-class="w-full rounded-full"
       name="name"
     ></form-kit>
@@ -15,7 +15,7 @@
     <div class="flex flex-wrap w-full pb-2">
       <form-kit
         type="checkbox"
-        label="Anchor"
+        :label="$t('harbor.anchor')"
         outer-class="grow mt-4"
         inner-class="flex items-center"
         wrapper-class="flex flex-row items-center justify-start"
@@ -24,7 +24,7 @@
       ></form-kit>
       <form-kit
         type="checkbox"
-        label="SXK buoy"
+        :label="$t('harbor.sxk')"
         outer-class="grow mt-4"
         inner-class="flex items-center"
         wrapper-class="flex flex-row items-center justify-start"
@@ -36,7 +36,7 @@
     <form-kit
       v-model="detail.hasSpecificLocation"
       type="checkbox"
-      label="Has specific location"
+      :label="$t('harbor.detail.specificLocation')"
       label-class="ml-2"
       outer-class="mt-4"
       inner-class="flex items-center"
@@ -52,7 +52,7 @@
     <form-kit
       v-model="detail.hasSpecificHarborType"
       type="checkbox"
-      label="Is specific harbor type"
+      :label="$t('harbor.detail.specificLocation')"
       label-class="ml-2"
       outer-class="mt-4"
       inner-class="flex items-center"
@@ -65,7 +65,7 @@
       v-model="detail.harborType"
       type="select"
       :options="harborTypeValuesComputed"
-      label="Harbor type"
+      :label="$t('harbor.harborType')"
       input-class="w-full rounded-full"
       name="harborType"
     ></form-kit>

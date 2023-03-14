@@ -9,7 +9,7 @@
       <form-kit
         v-model="harbor.name"
         type="text"
-        label="Name"
+        :label="$t('harbor.name')"
         input-class="w-full rounded-full"
         name="name"
       ></form-kit>
@@ -19,7 +19,7 @@
       <form-kit
         v-model="harbor.chartNumber"
         type="number"
-        label="Chart number"
+        :label="$t('harbor.chartNum')"
         input-class="w-full rounded-full"
         name="chartNumber"
       ></form-kit>
@@ -28,7 +28,7 @@
         v-model="harbor.harborType"
         type="select"
         :options="harborTypeValuesComputed"
-        label="Harbor type"
+        :label="$t('harbor.harborType')"
         input-class="w-full rounded-full"
         name="harborType"
       ></form-kit>
@@ -36,7 +36,7 @@
       <form-kit
         v-model="harbor.hasBookRef"
         type="checkbox"
-        label="Reference book"
+        :label="$t('harbor.book.hasBookRef')"
         label-class="ml-2"
         outer-class="mt-4"
         inner-class="flex items-center"
@@ -52,7 +52,7 @@
       >
         <form-kit
           type="text"
-          label="Title"
+          :label="$t('harbor.book.title')"
           outer-class="mt-2"
           input-class="w-full rounded-full"
           name="title"
@@ -61,14 +61,14 @@
         <div class="flex flex-wrap pb-2">
           <form-kit
             type="number"
-            label="Page"
+            :label="$t('harbor.book.page')"
             outer-class="w-1/2 pr-1"
             input-class="w-full rounded-full"
             name="page"
           ></form-kit>
           <form-kit
             type="text"
-            label="Ref"
+            :label="$t('harbor.book.ref')"
             outer-class="w-1/2 pl-1"
             input-class="w-full rounded-full"
             name="ref"
