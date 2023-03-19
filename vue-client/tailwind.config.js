@@ -8,6 +8,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
+      backgroundImage: {
+        fullscreen: "url('./public/img/archibelago-bg.jpg')",
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import AddDetailView from '../views/add/AddDetailView.vue';
 import AddHarborView from '../views/add/AddHarborView.vue';
+import SignInView from '../views/auth/SignInView.vue';
 import MapView from '../views/map/MapView.vue';
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
       name: 'addDetail',
       component: AddDetailView,
     },
+    {
+      path: '/signin',
+      name: 'signIn',
+      component: SignInView,
+    }
   ],
 });
 

@@ -50,5 +50,8 @@
   "ui": {
     "expand": "Expand",
     "findNearestHarbor": "Find nearest harbor"
+  },
+  "auth": {
+    "signIn": "Sign in"
   }
 }
