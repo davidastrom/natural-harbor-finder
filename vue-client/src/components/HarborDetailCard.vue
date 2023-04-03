@@ -43,6 +43,7 @@
   import type { HarborDetail } from 'types/harborModels';
   import { DdToDms } from '@/helpers/locationHelpers';
   import { DirectionShort } from 'types/direction';
+  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: 'HarborDetailCard',
@@ -53,6 +54,10 @@
           return {};
         },
       },
+    },
+    setup() {
+      const { t } = useI18n();
+      return { t };
     },
     computed: {
       latitudeComputed() {

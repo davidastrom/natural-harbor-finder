@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <h2 class="text-2xl font-medium">{{ $t('ui.findNearestHarbor') }}</h2>
+    <h2 class="text-2xl font-medium">{{ t('ui.findNearestHarbor') }}</h2>
     <form-kit
       type="form"
       :actions="false"
@@ -13,7 +13,7 @@
         input-class="px-auto bg-stone-200 hover:bg-stone-300 active:bg-stone-400 relative w-full py-2 font-medium capitalize rounded-full"
         @click="setCurrentLocation"
       >
-        {{ $t('location.useMyLocation') }}
+        {{ t('location.useMyLocation') }}
         <template #suffix>
           <div class="right-3 top-1/2 absolute -translate-y-1/2">
             <i
@@ -48,7 +48,7 @@
         class="px-auto w-full py-2 mt-2 font-medium bg-transparent"
         @click="hideForm = false"
       >
-        {{ $t('location.useMyLocation') }}
+        {{ t('location.useMyLocation') }}
         <i class="fa-solid fa-caret-down"></i>
       </button>
     </transition>
@@ -66,6 +66,7 @@
   import type { StringLocation } from 'types/stringLocation';
   import type { FetchHarborIM } from 'types/harborInputModels';
   import type { LatLng } from 'leaflet';
+  import { useI18n } from 'vue-i18n';
   import {
     DdToDms,
     StringLocationToDdLocation,
@@ -86,6 +87,8 @@
     },
     emits: ['currentPositionChosen'],
     setup() {
+      const { t } = useI18n();
+
       const positionStore = usePositionStore();
       const harborStore = useHarborStore();
 
@@ -96,6 +99,7 @@
       const hideForm = ref(false);
 
       return {
+        t,
         positionStore,
         harborStore,
         location,

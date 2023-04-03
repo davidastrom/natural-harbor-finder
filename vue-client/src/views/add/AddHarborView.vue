@@ -5,21 +5,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+  import { defineComponent } from 'vue';
 
-import AddHarborForm from '@/components/forms/AddHarborForm.vue';
+  import AddHarborForm from '@/components/forms/AddHarborForm.vue';
+  import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  name: 'AddHarborView',
-  components: {
-    AddHarborForm,
-  },
-  setup() {
-    return {
-      defineComponent,
-    };
-  },
-});
+  export default defineComponent({
+    name: 'AddHarborView',
+    components: {
+      AddHarborForm,
+    },
+    setup() {
+      return {
+        defineComponent,
+      };
+    },
+  });
 </script>
 
 <style lang="scss"></style>

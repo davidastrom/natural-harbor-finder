@@ -1,7 +1,7 @@
 <template>
   <form-kit
     v-model="directions"
-    :label="$t('harbor.shieldedDirections')"
+    :label="t('harbor.shieldedDirections')"
     type="checkbox"
     :options="directionValuesComputed"
     outer-class="mt-4"
@@ -17,6 +17,7 @@
   import { defineComponent, type PropType } from 'vue';
   import type { Direction } from 'types/direction';
   import { directionValues } from '@/helpers/enumHelpers';
+  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: 'DirectionFormInput',
@@ -31,6 +32,10 @@
       },
     },
     emits: ['update:modelValue'],
+    setup() {
+      const { t } = useI18n();
+      return { t };
+    },
     computed: {
       directions: {
         get() {

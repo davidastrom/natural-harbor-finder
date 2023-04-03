@@ -37,6 +37,7 @@
   import { useHarborStore } from '../../stores/harbors';
   import type { HarborMarker } from 'types/harborMarker';
   import HarborCardList from '../../components/HarborCardList.vue';
+  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: 'MapView',
@@ -47,11 +48,12 @@
       HarborCardList,
     },
     setup() {
+      const { t } = useI18n();
       const harborStore = useHarborStore();
 
       const map = ref<InstanceType<typeof MapComponent>>();
 
-      return { harborStore, map };
+      return { harborStore, map, t };
     },
     data() {
       return {

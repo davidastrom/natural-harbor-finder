@@ -7,7 +7,7 @@
       <form-kit
         v-model="location.lat"
         type="text"
-        :label="$t('location.latitude')"
+        :label="t('location.latitude')"
         outer-class="w-1/2 pr-1"
         input-class="w-full rounded-full"
         name="lat"
@@ -15,7 +15,7 @@
       <form-kit
         v-model="location.lng"
         type="text"
-        :label="$t('location.longitude')"
+        :label="t('location.longitude')"
         outer-class="w-1/2 pl-1"
         input-class="w-full rounded-full"
         name="lng"
@@ -27,6 +27,7 @@
 <script lang="ts">
   import { defineComponent, type PropType } from 'vue';
   import { StringLocation } from 'types/stringLocation';
+  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: 'PositionFormGroup',
@@ -43,6 +44,10 @@
       },
     },
     emits: ['update:modelValue'],
+    setup() {
+      const { t } = useI18n();
+      return { t };
+    },
     computed: {
       location: {
         get() {
