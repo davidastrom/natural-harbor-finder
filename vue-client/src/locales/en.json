@@ -52,6 +52,9 @@
     "findNearestHarbor": "Find nearest harbor"
   },
   "auth": {
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "google": {
+      "signIn": "Sign in with Google"
+    }
   }
 }
