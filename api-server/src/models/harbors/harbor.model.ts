@@ -38,7 +38,7 @@ export class Harbor extends BaseModel {
         if (shieldedDirections && shieldedDirections.length > 0) {
             query = query
                 .where('details.shieldedDirections')
-                .all(shieldedDirections);
+                .in(shieldedDirections);
         }
 
         let res = await query.exec();

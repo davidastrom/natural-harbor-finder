@@ -1,5 +1,5 @@
 import { latLng } from 'leaflet';
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -52,3 +52,7 @@ export const usePositionStore = defineStore({
     },
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePositionStore, import.meta.hot))
+}

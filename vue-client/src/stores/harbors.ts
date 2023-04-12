@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Icon, LatLng } from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 import { HarborMarker } from '../../types/harborMarker';
 
@@ -66,3 +66,7 @@ export const useHarborStore = defineStore({
     },
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useHarborStore, import.meta.hot))
+}
