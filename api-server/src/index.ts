@@ -2,7 +2,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs';
+import helmet from 'helmet';
 import https from 'https';
+import nocache from 'nocache';
 
 import dbSetup from './config/db.config';
 import router from './routes/routes';
@@ -19,10 +21,46 @@ async function main() {
     const app = express();
     await dbSetup(process.env.MONGODB_CONNECTION_STRING ?? '');
 
-    const PORT = 3000;
+    const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 
     app.use(cors({ origin: '*' }));
     app.use(express.json());
+    app.set("json spaces", 2);
+
+    app.use(
+        helmet({
+            hsts: {
+                maxAge: 31536000,
+            },
+            contentSecurityPolicy: {
+                useDefaults: false,
+                directives: {
+                    "default-src": ["'none'"],
+                    "frame-ancestors": ["'none'"],
+                },
+            },
+            frameguard: {
+                action: "deny",
+            },
+        })
+    );
+
+    app.use((req, res, next) => {
+        res.contentType("application/json; charset=utf-8");
+        next();
+    });
+
+    app.use(nocache());
+    
+    app.use(
+        cors({
+            origin: CLIENT_ORIGIN_URL,
+            methods: ["GET"],
+            allowedHeaders: ["Authorization", "Content-Type"],
+            maxAge: 86400,
+        })
+    );
 
     app.use('/', router);
 

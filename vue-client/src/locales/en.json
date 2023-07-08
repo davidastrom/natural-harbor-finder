@@ -53,8 +53,8 @@
   },
   "auth": {
     "signIn": "Sign in",
-    "google": {
-      "signIn": "Sign in with Google"
-    }
+    "signOut": "Sign out",
+    "signUp": "Create account",
+    "pleaseSignIn": "Please sign in"
   }
 }

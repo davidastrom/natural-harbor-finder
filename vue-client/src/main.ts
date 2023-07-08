@@ -4,7 +4,7 @@ import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css';
 
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
-import vue3GoogleLogin from 'vue3-google-login';
+import { createAuth0 } from '@auth0/auth0-vue'
 
 import { defaultConfig, plugin } from '@formkit/vue';
 
@@ -18,8 +18,14 @@ app.use(createPinia());
 app.use(router);
 app.use(plugin, defaultConfig);
 app.use(i18n)
-app.use(vue3GoogleLogin, {
-  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-})
+app.use(
+  createAuth0({
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
+    authorizationParams: {
+      redirect_uri: import.meta.env.VITE_AUTH0_CALLBACK_URL,
+    },
+  })
+)
 
 app.mount('#app');
