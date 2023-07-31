@@ -54,5 +54,5 @@ export const usePositionStore = defineStore({
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(usePositionStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(usePositionStore as any, import.meta.hot))
 }

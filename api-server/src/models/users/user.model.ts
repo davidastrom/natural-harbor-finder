@@ -1,58 +1,33 @@
+import { JWTPayload } from 'express-oauth2-jwt-bearer';
+
 import { getModelForClass, prop, ReturnModelType } from '@typegoose/typegoose';
 
-import { AuthenticationClient } from '../../types/enums/authenticationClient';
-import { AuthorizationRoles } from '../../types/enums/authorizationRoles';
 import { BaseModel } from '../base.model';
-import { AuthClientUserId } from './auth-client-user-id.model';
 
 export class User extends BaseModel {
-    @prop()
-    public userName!: string;
-
-    @prop()
-    public email!: string;
+    @prop({required: true})
+    public userId!: string
 
     @prop()
     public profilePicture?: string;
 
-    @prop({type: Number, enum: AuthorizationRoles})
-    public roles!: AuthorizationRoles[]
-
-    @prop({type: () => AuthClientUserId})
-    public clientUserIds!: AuthClientUserId[]
-
     public static async getOrCreateUser(
         this: ReturnModelType<typeof User>,
-        userData: UserData, 
+        tokenPayload: JWTPayload, 
         create = false): Promise<User | null> {
-            let user = await this.findOne({'clientUserIds.client': userData.authClient, 'clientUserIds.userId': userData.authUserId}).exec();
-            if (user) {
-                return user;
-            }
-
-            if (!userData.email) {
+            if (!tokenPayload.sub) {
                 return null;
             }
 
-            user = await this.findOne({'email': userData.email})
+            let user = await this.findOne({'userId': tokenPayload.sub})
+
             if (user) {
-                if (user.clientUserIds.find(cui => cui.client === userData.authClient)) {
-                    return null
-                }
-                user.clientUserIds.push({client: userData.authClient, userId: userData.authUserId})
-                user.userName = user.userName ?? userData.userName ?? userData.email;
-                user.profilePicture = user.profilePicture ?? userData.profilePicture;
-                user.save()
                 return user;
             }
 
             if (create) {
                 user = new UserModel({
-                    userName: userData.userName ?? userData.email,
-                    email: userData.email,
-                    profilePicture: userData.profilePicture,
-                    roles: [AuthorizationRoles.USER],
-                    clientUserIds: [{client: userData.authClient, userId: userData.authUserId}],
+                    userId: tokenPayload.sub,
                 })
                 user.save();
                 return user;
@@ -60,14 +35,6 @@ export class User extends BaseModel {
 
             return null;
     }
-}
-
-export interface UserData {
-    authClient: AuthenticationClient,
-    authUserId: string,
-    userName?: string,
-    email?: string,
-    profilePicture?: string,
 }
 
 export const UserModel = getModelForClass(User);

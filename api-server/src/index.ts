@@ -7,6 +7,9 @@ import https from 'https';
 import nocache from 'nocache';
 
 import dbSetup from './config/db.config';
+import { validateAccessToken } from './middleware/auth0.middleware';
+import { errorHandler } from './middleware/error.middleware';
+import { notFoundHandler } from './middleware/not-found.middleware';
 import router from './routes/routes';
 
 async function main() {
@@ -62,7 +65,12 @@ async function main() {
         })
     );
 
+    app.use(validateAccessToken)
+
     app.use('/', router);
+
+    app.use(errorHandler)
+    app.use(notFoundHandler)
 
     const httpsServer = https.createServer(credentials, app);
 

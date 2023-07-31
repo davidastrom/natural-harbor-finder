@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 export const notFoundHandler = (
   request: Request,
   response: Response,
-  next: NextFunction
+  // next: NextFunction
 ) => {
   const message = "Not Found";
 

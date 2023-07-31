@@ -1,11 +1,7 @@
 <template>
   <div class="flex flex-col">
     <h2 class="text-2xl font-medium">Add Harbor</h2>
-    <form-kit
-      type="form"
-      :actions="false"
-      @submit="submitForm"
-    >
+    <form-kit type="form" :actions="false" @submit="submitForm">
       <form-kit
         v-model="harbor.name"
         type="text"
@@ -44,12 +40,7 @@
         name="hasBookRef"
       ></form-kit>
 
-      <form-kit
-        v-if="harbor.hasBookRef"
-        v-model="harbor.book"
-        type="group"
-        name="book"
-      >
+      <form-kit v-if="harbor.hasBookRef" v-model="harbor.book" type="group" name="book">
         <form-kit
           type="text"
           :label="t('harbor.book.title')"
@@ -76,20 +67,14 @@
         </div>
       </form-kit>
 
-      <form-kit
-        v-model="harbor.details"
-        type="list"
-        name="details"
-      >
+      <form-kit v-model="harbor.details" type="list" name="details">
         <div
           v-for="(detail, index) in harbor.details"
           :key="`detail-${index}`"
           class="bg-slate-50 w-full p-4 mb-8 rounded-lg"
         >
           <h3>New detail</h3>
-          <harbor-detail-form-group
-            v-model="harbor.details[index]"
-          ></harbor-detail-form-group>
+          <harbor-detail-form-group v-model="harbor.details[index]"></harbor-detail-form-group>
         </div>
       </form-kit>
 
@@ -124,17 +109,17 @@
   import HarborDetailFormGroup from './formComponents/HarborDetailFormGroup.vue';
   import axios from 'axios';
   import { useI18n } from 'vue-i18n';
+  import { useAuth0 } from '@auth0/auth0-vue';
 
   export default defineComponent({
     name: 'AddHarborForm',
     components: { FormKit, PositionFormGroup, HarborDetailFormGroup },
     setup() {
       const { t } = useI18n();
-      const harbor: CreateHarborFormModel = reactive(
-        new CreateHarborFormModel()
-      );
+      const { getAccessTokenSilently } = useAuth0();
+      const harbor: CreateHarborFormModel = reactive(new CreateHarborFormModel());
       harbor.book = new CreateBookRefInputModel();
-      return { t, harbor };
+      return { t, harbor, getAccessTokenSilently };
     },
     computed: {
       directionValuesComputed() {
@@ -152,9 +137,13 @@
         const inputData = formData.toInputModel();
 
         const url = import.meta.env.VITE_API_URL + '/harbors/create';
-
+        const token = await this.getAccessTokenSilently();
         await axios
-          .post(url, inputData)
+          .post(url, inputData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((res) => {
             console.log(res);
           })

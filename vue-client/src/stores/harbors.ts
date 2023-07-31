@@ -8,6 +8,8 @@ import { HarborMarker } from '../../types/harborMarker';
 
 import type { FetchHarborIM } from 'types/harborInputModels';
 import type { Harbor } from 'types/harborModels';
+import { auth0 } from '@/plugins/auth0';
+
 export const useHarborStore = defineStore({
   id: 'harbors',
   state: () => ({
@@ -44,10 +46,14 @@ export const useHarborStore = defineStore({
         position = { lat: data.lat, lng: data.lng };
       }
       const url = import.meta.env.VITE_API_URL + '/harbors/';
+      const token = await auth0.getAccessTokenSilently();
 
       try {
         const res = await axios.get<Harbor[]>(url, {
           params: { ...position, shieldedDirections: data.directions },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         this.harbors.clear();
@@ -68,5 +74,5 @@ export const useHarborStore = defineStore({
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useHarborStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useHarborStore as any, import.meta.hot))
 }
