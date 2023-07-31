@@ -1,18 +1,9 @@
 <template>
-  <div
-    ref="map"
-    class="z-0 w-full h-full min-h-full"
-  ></div>
+  <div ref="map" class="z-0 w-full h-full min-h-full"></div>
 </template>
 
 <script lang="ts">
-  import {
-    defineComponent,
-    onBeforeUnmount,
-    onMounted,
-    ref,
-    type PropType,
-  } from 'vue';
+  import { defineComponent, onBeforeUnmount, onMounted, ref, type PropType } from 'vue';
   import { usePositionStore } from '../stores/position';
   import L, { LatLng, latLng, type LeafletMouseEvent } from 'leaflet';
   import 'leaflet.locatecontrol';
@@ -132,10 +123,7 @@
           lMap.value.addControl(locationControl);
 
           positionStore.fetchPositionOnce((position) => {
-            center.value = new LatLng(
-              position.coords.latitude,
-              position.coords.longitude
-            );
+            center.value = new LatLng(position.coords.latitude, position.coords.longitude);
             lMap.value?.setView(center.value, zoom.value);
             locationControl.start();
           });
@@ -185,9 +173,7 @@
     },
     methods: {
       panToHarbor(harborId: string) {
-        const harborMarker = this.markers.find(
-          (marker) => marker.harborId === harborId
-        );
+        const harborMarker = this.markers.find((marker) => marker.harborId === harborId);
         if (harborMarker && this.lMap) {
           this.lMap.panTo(harborMarker.getLatLng());
         }

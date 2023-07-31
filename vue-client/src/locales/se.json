@@ -45,9 +45,6 @@
     }
   },
   "auth": {
-    "signIn": "Logga in",
-    "google": {
-      "signIn": "Logga in med Google"
-    }
+    "logIn": "Logga in"
   }
 }

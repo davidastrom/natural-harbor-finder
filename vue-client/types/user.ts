@@ -1,7 +1,7 @@
-export interface user {
+export type user = {
   id: string,
-  userName: string?,
+  userName?: string,
   email: string,
-  profilePicture: string?,
+  profilePicture?: string,
   token: string,
 }

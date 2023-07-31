@@ -1,6 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-import googleAuthService from '@/services/auth/googleAuthService';
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -10,15 +9,7 @@ export const useAuthStore = defineStore('auth', {
 
   },
   actions: {
-    async loginGoogle(credential: string) {
-      return googleAuthService.login(credential)
-      .then(user => {
-        console.log(user)
-      },
-      error => {
-        
-      })
-    }
+    
   }
 })
 

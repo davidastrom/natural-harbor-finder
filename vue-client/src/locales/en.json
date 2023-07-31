@@ -52,9 +52,9 @@
     "findNearestHarbor": "Find nearest harbor"
   },
   "auth": {
-    "signIn": "Sign in",
-    "signOut": "Sign out",
+    "logIn": "Log in",
+    "logOut": "Log out",
     "signUp": "Create account",
-    "pleaseSignIn": "Please sign in"
+    "pleaseLogIn": "Please log in"
   }
 }
