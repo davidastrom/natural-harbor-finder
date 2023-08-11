@@ -7,7 +7,7 @@ import https from 'https';
 import nocache from 'nocache';
 
 import dbSetup from './config/db.config';
-import { validateAccessToken } from './middleware/auth0.middleware';
+import validateAccessToken from './middleware/auth0.middleware';
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/not-found.middleware';
 import router from './routes/routes';
