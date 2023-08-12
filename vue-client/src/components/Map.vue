@@ -96,7 +96,7 @@
           );
 
           lMap.value.addLayer(
-            L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
+            L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
               attribution:
                 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
             })

@@ -45,7 +45,7 @@ const router = createRouter({
       path: '/callback',
       name: 'callback',
       redirect: authRedirect,
-    }
+    },
   ],
 });
 
