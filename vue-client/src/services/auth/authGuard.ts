@@ -3,6 +3,8 @@ import { useLocalStorage } from '@vueuse/core';
 
 import {auth0} from '../../plugins/auth0';
 import { watchEffect } from 'vue';
+import { store } from '@/stores';
+import { useUserStore } from '@/stores/user';
 
 export function useAuthGuard() {
   const BASE_REDIRECT = '/';
@@ -18,6 +20,9 @@ export function useAuthGuard() {
         })
         return;
       }
+
+      const userStore = useUserStore();
+      userStore.setUserData(auth0.user.value)
       
       if (to.meta.requiresAdmin && !auth0.user.value?.['harbor-finder/roles']?.includes('Admin')) {
         next(false)

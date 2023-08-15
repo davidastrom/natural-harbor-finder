@@ -66,6 +66,16 @@ export class User extends BaseModel {
 
         return []
     }
+
+    public async isAdmin(this: DocumentType<User>): Promise<boolean> {
+        await this.populate('roles');
+
+        if (isDocumentArray(this.roles)) {
+            return this.roles.some((role) => role.name === Roles.Admin);
+        }
+
+        return false;
+    }
 }
 
 export const UserModel = getModelForClass(User);
