@@ -6,5 +6,6 @@
   "printWidth": 100,
   "trailingComma": "es5",
   "vueIndentScriptAndStyle": true,
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "bracketSpacing": true
 }

@@ -7,7 +7,7 @@ import MapView from '../views/map/MapView.vue';
 
 import { useAuthGuard } from '../services/auth/authGuard';
 
-const {authGuard, authRedirect} = useAuthGuard();
+const { authGuard, authRedirect } = useAuthGuard();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +18,15 @@ const router = createRouter({
       component: MapView,
       meta: {
         requiresAuth: true,
-      }
+      },
+    },
+    {
+      path: '/harbors/manage',
+      name: 'manageHarbors',
+      component: AddHarborView,
+      meta: {
+        requiresAdmin: true,
+      },
     },
     {
       path: '/add',
@@ -26,7 +34,7 @@ const router = createRouter({
       component: AddHarborView,
       meta: {
         requiresAdmin: true,
-      }
+      },
     },
     {
       path: '/add/detail',
@@ -34,7 +42,7 @@ const router = createRouter({
       component: AddDetailView,
       meta: {
         requiresAdmin: true,
-      }
+      },
     },
     {
       path: '/login',
@@ -49,6 +57,6 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(authGuard)
+router.beforeEach(authGuard);
 
 export default router;
