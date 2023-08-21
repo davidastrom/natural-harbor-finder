@@ -16,7 +16,10 @@
       "title": "Title",
       "page": "Page",
       "ref": "Ref"
-    }
+    },
+    "manageHarbors": "Manage harbors",
+    "select": "Select harbor",
+    "createNew": "Create new harbor"
   },
   "location": {
     "useMyLocation": "Use my location",
@@ -52,6 +55,7 @@
     "findNearestHarbor": "Find nearest harbor"
   },
   "auth": {
+    "profile": "Profile",
     "logIn": "Log in",
     "logOut": "Log out",
     "signUp": "Create account",

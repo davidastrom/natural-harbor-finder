@@ -45,13 +45,9 @@
 
     if (userStore.user?.isAdmin) {
       items.push({
-        items: [
-          {
-            label: 'Manage harbors',
-            icon: 'fa-light fa-anchor',
-            url: '/harbors/manage',
-          },
-        ],
+        label: 'Manage harbors',
+        icon: 'fa-solid fa-anchor mr-2',
+        url: '/harbors/manage',
       });
     }
 
@@ -62,7 +58,7 @@
       items: [
         {
           label: 'Log out',
-          icon: 'fa-light fa-sign-out-alt',
+          icon: 'fa-solid fa-sign-out-alt mr-2',
           command: () => {
             logout();
           },

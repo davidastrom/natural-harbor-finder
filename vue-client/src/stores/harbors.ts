@@ -17,22 +17,18 @@ export const useHarborStore = defineStore({
     selectedHarbor: null as string | null,
   }),
   getters: {
-    getHarborsAsMarkers(state) {
+    getHarborsAsMarkers() {
       const harbors = new Array<HarborMarker>();
-      state.harbors.forEach((harbor) =>
+      this.harbors.forEach((harbor) =>
         harbors.push(
-          new HarborMarker(
-            new LatLng(harbor.location.lat, harbor.location.lng),
-            harbor._id,
-            {
-              icon: new Icon({
-                iconUrl: icon,
-                shadowUrl: iconShadow,
-                iconSize: [24, 36],
-                iconAnchor: [12, 36],
-              }),
-            }
-          )
+          new HarborMarker(new LatLng(harbor.location.lat, harbor.location.lng), harbor._id, {
+            icon: new Icon({
+              iconUrl: icon,
+              shadowUrl: iconShadow,
+              iconSize: [24, 36],
+              iconAnchor: [12, 36],
+            }),
+          })
         )
       );
       return harbors;
@@ -50,7 +46,7 @@ export const useHarborStore = defineStore({
 
       try {
         const res = await axios.get<Harbor[]>(url, {
-          params: { ...position, shieldedDirections: data.directions },
+          params: { ...position, shieldedDirections: data.directions, take: data.take },
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -74,5 +70,5 @@ export const useHarborStore = defineStore({
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useHarborStore as any, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useHarborStore as any, import.meta.hot));
 }

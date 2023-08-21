@@ -10,6 +10,7 @@ export interface FetchHarborIM {
   lat?: number;
   lng?: number;
   directions: Direction[];
+  take?: number;
 }
 
 export interface ICreateHarborFormModel {
@@ -35,9 +36,7 @@ export class CreateHarborFormModel implements ICreateHarborFormModel {
 
   static fromInterface(data: ICreateHarborFormModel): CreateHarborFormModel {
     const harbor = new CreateHarborFormModel();
-    data.details = data.details.map((detail) =>
-      CreateHarborDetailFormModel.fromInterface(detail)
-    );
+    data.details = data.details.map((detail) => CreateHarborDetailFormModel.fromInterface(detail));
     Object.assign(harbor, data);
     if (!harbor.hasBookRef) {
       harbor.book = undefined;
@@ -54,10 +53,7 @@ export class CreateHarborFormModel implements ICreateHarborFormModel {
   book?: CreateBookRefInputModel;
 
   toInputModel(): CreateHarborInputModel {
-    const location = StringLocationToDdLocation(
-      this.location.lat,
-      this.location.lng
-    );
+    const location = StringLocationToDdLocation(this.location.lat, this.location.lng);
 
     const harborDetails = this.details.map((detail) => detail.toInputModel());
 
@@ -86,9 +82,7 @@ export interface ICreateHarborDetailFormModel {
   harborType?: HarborType;
 }
 
-export class CreateHarborDetailFormModel
-  implements ICreateHarborDetailFormModel
-{
+export class CreateHarborDetailFormModel implements ICreateHarborDetailFormModel {
   constructor(name?: string) {
     this.name = name ?? '';
     this.shieldedDirections = [];
@@ -109,9 +103,7 @@ export class CreateHarborDetailFormModel
   hasSpecificHarborType: boolean;
   harborType?: HarborType;
 
-  static fromInterface(
-    data: ICreateHarborDetailFormModel
-  ): CreateHarborDetailFormModel {
+  static fromInterface(data: ICreateHarborDetailFormModel): CreateHarborDetailFormModel {
     const detail = new CreateHarborDetailFormModel();
     Object.assign(detail, data);
 
@@ -129,10 +121,7 @@ export class CreateHarborDetailFormModel
   toInputModel(): CreateHarborDetailInputModel {
     let location: LatLng | undefined;
     if (this.location) {
-      location = StringLocationToDdLocation(
-        this.location.lat,
-        this.location.lng
-      );
+      location = StringLocationToDdLocation(this.location.lat, this.location.lng);
     }
     return {
       ...this,
