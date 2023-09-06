@@ -9,7 +9,17 @@
     "detail": {
       "specificHarborType": "Har särskild position",
       "specificLocation": "Är särskild hamntyp"
-    }
+    },
+    "book": {
+      "hasBookRef": "Har bokreferens",
+      "page": "Sida",
+      "ref": "Referens",
+      "title": "Titel"
+    },
+    "chartNum": "Sjökort #",
+    "createNew": "Lägg till ny hamn",
+    "manageHarbors": "Hantera hamnar",
+    "select": "Välj befintlig hamn"
   },
   "location": {
     "useMyLocation": "Använd min position",
@@ -45,6 +55,10 @@
     }
   },
   "auth": {
-    "logIn": "Logga in"
+    "logIn": "Logga in",
+    "logOut": "Logga ut",
+    "pleaseLogIn": "Logga in",
+    "profile": "Min profil",
+    "signUp": "Skapa konto"
   }
 }

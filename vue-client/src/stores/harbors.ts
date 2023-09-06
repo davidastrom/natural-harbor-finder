@@ -66,6 +66,9 @@ export const useHarborStore = defineStore({
         this.selectedHarbor = id;
       }
     },
+    addHarbor(harbor: Harbor) {
+      this.harbors.set(harbor._id, harbor);
+    },
   },
 });
 

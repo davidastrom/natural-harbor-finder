@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { getModelForClass, prop, ReturnModelType } from '@typegoose/typegoose';
 
 import { Direction } from '../../types/enums/direction';
@@ -12,8 +14,8 @@ export class Harbor extends BaseModel {
     @prop()
     public name!: string;
 
-    @prop({ type: () => HarborDetail })
-    public details!: HarborDetail[];
+    @prop({ type: () => [HarborDetail], default: [], required: true })
+    public details!: mongoose.Types.DocumentArray<HarborDetail>;
 
     @prop()
     public location!: Position;
@@ -24,7 +26,7 @@ export class Harbor extends BaseModel {
     @prop({ enum: HarborType })
     public harborType!: HarborType;
 
-    @prop()
+    @prop({ type: () => BookRef, default: undefined })
     public book?: BookRef;
 
     public static async getHarbors(

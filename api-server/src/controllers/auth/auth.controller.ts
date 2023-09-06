@@ -4,7 +4,6 @@ import { UserModel } from '../../models/users/user.model';
 
 export async function loginUser(req: Request, res: Response) {
     const tokenPayload = req.auth?.payload;
-    console.log(tokenPayload)
     if (!tokenPayload) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -14,7 +13,7 @@ export async function loginUser(req: Request, res: Response) {
     if (!user) {
         return res.status(401).json({ message: 'User does not exist' });
     }
-    
+
     const isAdmin = await user.isAdmin();
 
     return res.json({

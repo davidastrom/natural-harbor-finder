@@ -1,7 +1,9 @@
+import { DdToDms } from '@/helpers/locationHelpers';
+
 export class StringLocation {
-  constructor() {
-    this.lat = '';
-    this.lng = '';
+  constructor(lat?: number, lng?: number) {
+    this.lat = lat ? DdToDms(lat, true) : '';
+    this.lng = lng ? DdToDms(lng, false) : '';
   }
 
   lat: string;

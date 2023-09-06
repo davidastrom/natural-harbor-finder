@@ -1,11 +1,7 @@
-import type { LatLng } from 'leaflet';
-
-import { StringLocationToDdLocation } from '@/helpers/locationHelpers';
-
-import { HarborType } from './harborType';
-import { StringLocation } from './stringLocation';
+import type { StringLocation } from './stringLocation';
 
 import type { Direction } from './direction';
+import type { BookRef, Harbor, HarborDetail } from './harborModels';
 export interface FetchHarborIM {
   lat?: number;
   lng?: number;
@@ -13,127 +9,160 @@ export interface FetchHarborIM {
   take?: number;
 }
 
-export interface ICreateHarborFormModel {
-  name: string;
-  details: ICreateHarborDetailFormModel[];
-  location: StringLocation;
-  chartNumber: number;
-  harborType: HarborType;
+export interface ManageHarborInputModel extends Omit<Harbor, '_id' | 'details' | 'book'> {
+  _id?: string;
+  details: ManageHarborDetailInputModel[];
+  book?: ManageBookRefInputModel;
+}
+
+export interface ManageHarborDetailInputModel extends Omit<HarborDetail, '_id'> {
+  _id?: string;
+}
+
+export interface ManageBookRefInputModel extends Omit<BookRef, '_id'> {
+  _id?: string;
+}
+
+export interface ManageHarborFormModel
+  extends Pick<Harbor, '_id'>,
+    Omit<ManageHarborInputModel, 'details' | '_id' | 'location' | 'book'> {
   hasBookRef: boolean;
-  book?: CreateBookRefInputModel;
-}
-
-export class CreateHarborFormModel implements ICreateHarborFormModel {
-  constructor() {
-    this.name = '';
-    this.details = [];
-    this.location = new StringLocation();
-    this.chartNumber = 0;
-    this.harborType = HarborType.NATURAL;
-    this.hasBookRef = false;
-    this.book = undefined;
-  }
-
-  static fromInterface(data: ICreateHarborFormModel): CreateHarborFormModel {
-    const harbor = new CreateHarborFormModel();
-    data.details = data.details.map((detail) => CreateHarborDetailFormModel.fromInterface(detail));
-    Object.assign(harbor, data);
-    if (!harbor.hasBookRef) {
-      harbor.book = undefined;
-    }
-    return harbor;
-  }
-
-  name: string;
-  details: CreateHarborDetailFormModel[];
+  details: ManageHarborDetailFormModel[];
   location: StringLocation;
-  chartNumber: number;
-  harborType: HarborType;
-  hasBookRef: boolean;
-  book?: CreateBookRefInputModel;
-
-  toInputModel(): CreateHarborInputModel {
-    const location = StringLocationToDdLocation(this.location.lat, this.location.lng);
-
-    const harborDetails = this.details.map((detail) => detail.toInputModel());
-
-    return {
-      ...this,
-      location: location,
-      details: harborDetails,
-    } as CreateHarborInputModel;
-  }
+  book: ManageBookRefInputModel;
 }
 
-export interface CreateHarborInputModel
-  extends Omit<CreateHarborFormModel, 'location' | 'details'> {
-  location: LatLng;
-  details: CreateHarborDetailInputModel[];
-}
-
-export interface ICreateHarborDetailFormModel {
-  name: string;
-  shieldedDirections: Direction[];
-  anchor: boolean;
-  SXKBuoy: boolean;
+export interface ManageHarborDetailFormModel
+  extends Omit<ManageHarborDetailInputModel, 'location'> {
   hasSpecificLocation: boolean;
-  location?: StringLocation;
   hasSpecificHarborType: boolean;
-  harborType?: HarborType;
+  location: StringLocation;
 }
 
-export class CreateHarborDetailFormModel implements ICreateHarborDetailFormModel {
-  constructor(name?: string) {
-    this.name = name ?? '';
-    this.shieldedDirections = [];
-    this.anchor = false;
-    this.SXKBuoy = false;
-    this.hasSpecificLocation = false;
-    this.location = new StringLocation();
-    this.hasSpecificHarborType = false;
-    this.harborType = HarborType.NATURAL;
-  }
+// export interface ICreateHarborFormModel {
+//   name: string;
+//   details: ICreateHarborDetailFormModel[];
+//   location: StringLocation;
+//   chartNumber: number;
+//   harborType: HarborType;
+//   hasBookRef: boolean;
+//   book?: CreateBookRefInputModel;
+// }
 
-  name: string;
-  shieldedDirections: Direction[];
-  anchor: boolean;
-  SXKBuoy: boolean;
-  hasSpecificLocation: boolean;
-  location?: StringLocation;
-  hasSpecificHarborType: boolean;
-  harborType?: HarborType;
+// export class CreateHarborFormModel implements ICreateHarborFormModel {
+//   constructor() {
+//     this.name = '';
+//     this.details = [];
+//     this.location = new StringLocation();
+//     this.chartNumber = 0;
+//     this.harborType = HarborType.NATURAL;
+//     this.hasBookRef = false;
+//     this.book = undefined;
+//   }
 
-  static fromInterface(data: ICreateHarborDetailFormModel): CreateHarborDetailFormModel {
-    const detail = new CreateHarborDetailFormModel();
-    Object.assign(detail, data);
+//   static fromInterface(data: ICreateHarborFormModel): CreateHarborFormModel {
+//     const harbor = new CreateHarborFormModel();
+//     data.details = data.details.map((detail) => CreateHarborDetailFormModel.fromInterface(detail));
+//     Object.assign(harbor, data);
+//     if (!harbor.hasBookRef) {
+//       harbor.book = undefined;
+//     }
+//     return harbor;
+//   }
 
-    if (!detail.hasSpecificLocation) {
-      detail.location = undefined;
-    }
+//   name: string;
+//   details: CreateHarborDetailFormModel[];
+//   location: StringLocation;
+//   chartNumber: number;
+//   harborType: HarborType;
+//   hasBookRef: boolean;
+//   book?: CreateBookRefInputModel;
 
-    if (!detail.hasSpecificHarborType) {
-      detail.harborType = undefined;
-    }
+//   toInputModel(): CreateHarborInputModel {
+//     const location = StringLocationToDdLocation(this.location.lat, this.location.lng);
 
-    return detail;
-  }
+//     const harborDetails = this.details.map((detail) => detail.toInputModel());
 
-  toInputModel(): CreateHarborDetailInputModel {
-    let location: LatLng | undefined;
-    if (this.location) {
-      location = StringLocationToDdLocation(this.location.lat, this.location.lng);
-    }
-    return {
-      ...this,
-      location: location,
-    } as CreateHarborDetailInputModel;
-  }
-}
+//     return {
+//       ...this,
+//       location: location,
+//       details: harborDetails,
+//     } as CreateHarborInputModel;
+//   }
+// }
 
-export interface CreateHarborDetailInputModel
-  extends Omit<CreateHarborDetailFormModel, 'location'> {
-  location?: LatLng;
-}
+// export interface ICreateHarborDetailFormModel {
+//   _id?: string;
+//   name: string;
+//   shieldedDirections: Direction[];
+//   anchor: boolean;
+//   SXKBuoy: boolean;
+//   hasSpecificLocation: boolean;
+//   location?: StringLocation;
+//   hasSpecificHarborType: boolean;
+//   harborType?: HarborType;
+// }
+
+// export class CreateHarborDetailFormModel implements ICreateHarborDetailFormModel {
+//   constructor(name?: string) {
+//     this.name = name ?? '';
+//     this.shieldedDirections = [];
+//     this.anchor = false;
+//     this.SXKBuoy = false;
+//     this.hasSpecificLocation = false;
+//     this.location = new StringLocation();
+//     this.hasSpecificHarborType = false;
+//     this.harborType = HarborType.NATURAL;
+//   }
+
+//   constructor(harborDetail: HarborDetail) {
+//     this._id = harborDetail._id;
+//     this.name = harborDetail.name;
+//     this.shieldedDirections = harborDetail.shieldedDirections;
+//     this.anchor = harborDetail.anchor;
+//     this.SXKBuoy = harborDetail.SXKBuoy;
+//     this.hasSpecificLocation = !!harborDetail.location;
+//     this.location = harborDetail.location ?? new StringLocation();
+//     this.hasSpecificHarborType = !!harborDetail.harborType;
+//     this.harborType = harborDetail.harborType ?? HarborType.NATURAL;
+//   }
+
+//   _id?: string;
+//   name: string;
+//   shieldedDirections: Direction[];
+//   anchor: boolean;
+//   SXKBuoy: boolean;
+//   hasSpecificLocation: boolean;
+//   location?: StringLocation;
+//   hasSpecificHarborType: boolean;
+//   harborType?: HarborType;
+
+//   static fromInterface(data: ICreateHarborDetailFormModel): CreateHarborDetailFormModel {
+//     const detail = new CreateHarborDetailFormModel();
+//     Object.assign(detail, data);
+
+//     if (!detail.hasSpecificLocation) {
+//       detail.location = undefined;
+//     }
+
+//     if (!detail.hasSpecificHarborType) {
+//       detail.harborType = undefined;
+//     }
+
+//     return detail;
+//   }
+
+//   toInputModel(): CreateHarborDetailInputModel {
+//     let location: LatLng | undefined;
+//     if (this.location) {
+//       location = StringLocationToDdLocation(this.location.lat, this.location.lng);
+//     }
+//     return {
+//       ...this,
+//       location: location,
+//     } as CreateHarborDetailInputModel;
+//   }
+// }
 
 export class CreateBookRefInputModel {
   constructor() {

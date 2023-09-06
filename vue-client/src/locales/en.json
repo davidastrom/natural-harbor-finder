@@ -15,11 +15,15 @@
       "hasBookRef": "Has book reference",
       "title": "Title",
       "page": "Page",
-      "ref": "Ref"
+      "ref": "Reference"
     },
     "manageHarbors": "Manage harbors",
-    "select": "Select harbor",
-    "createNew": "Create new harbor"
+    "select": "Select existing harbor",
+    "createNew": "Create new harbor",
+    "harborDetail": "Harbor detail",
+    "addDetail": "Add detail",
+    "newHarbor": "New harbor",
+    "newDetail": "New detail"
   },
   "location": {
     "useMyLocation": "Use my location",

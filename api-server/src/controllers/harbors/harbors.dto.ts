@@ -10,6 +10,7 @@ export interface getAllHarborInputModel {
 }
 
 export interface createHarborInputModel {
+    _id?: string;
     name: string;
     details: createHarborDetailInputModel[];
     location: createPositionInputModel;
@@ -19,6 +20,7 @@ export interface createHarborInputModel {
 }
 
 export interface createHarborDetailInputModel {
+    _id?: string;
     name: string;
     shieldedDirections?: Direction[];
     anchor: boolean;

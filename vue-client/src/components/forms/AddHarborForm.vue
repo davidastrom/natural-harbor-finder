@@ -1,19 +1,19 @@
 <template>
-  <div class="flex flex-col">
-    <h2 class="text-2xl font-medium">Add Harbor</h2>
-    <form-kit type="form" :actions="false" @submit="submitForm">
+  <div class="flex flex-col" v-if="currentHarbor">
+    <h2 class="text-2xl font-medium">{{ originalName ?? t('harbor.newHarbor') }}</h2>
+    <form-kit type="form" :actions="false" @submit="onSubmit">
       <form-kit
-        v-model="harbor.name"
+        v-model="currentHarbor.name"
         type="text"
         :label="t('harbor.name')"
         input-class="w-full rounded-full"
         name="name"
       ></form-kit>
 
-      <position-form-group v-model="harbor.location"></position-form-group>
+      <position-form-group v-model="currentHarbor.location"></position-form-group>
 
       <form-kit
-        v-model="harbor.chartNumber"
+        v-model="currentHarbor.chartNumber"
         type="number"
         :label="t('harbor.chartNum')"
         input-class="w-full rounded-full"
@@ -21,7 +21,7 @@
       ></form-kit>
 
       <form-kit
-        v-model="harbor.harborType"
+        v-model="currentHarbor.harborType"
         type="select"
         :options="harborTypeValuesComputed"
         :label="t('harbor.harborType')"
@@ -30,7 +30,7 @@
       ></form-kit>
 
       <form-kit
-        v-model="harbor.hasBookRef"
+        v-model="currentHarbor.hasBookRef"
         type="checkbox"
         :label="t('harbor.book.hasBookRef')"
         label-class="ml-2"
@@ -40,7 +40,12 @@
         name="hasBookRef"
       ></form-kit>
 
-      <form-kit v-if="harbor.hasBookRef" v-model="harbor.book" type="group" name="book">
+      <form-kit
+        v-if="currentHarbor.hasBookRef"
+        v-model="currentHarbor.book"
+        type="group"
+        name="book"
+      >
         <form-kit
           type="text"
           :label="t('harbor.book.title')"
@@ -67,100 +72,75 @@
         </div>
       </form-kit>
 
-      <form-kit v-model="harbor.details" type="list" name="details">
+      <form-kit v-model="currentHarbor.details" type="list" name="details">
         <div
-          v-for="(detail, index) in harbor.details"
+          v-for="(detail, index) in currentHarbor.details"
           :key="`detail-${index}`"
           class="bg-slate-50 w-full p-4 mb-8 rounded-lg"
         >
-          <h3>New detail</h3>
-          <harbor-detail-form-group v-model="harbor.details[index]"></harbor-detail-form-group>
+          <harbor-detail-form-group
+            v-model="currentHarbor.details[index]"
+            @remove="adminStore.removeHarborDetail(index)"
+          ></harbor-detail-form-group>
         </div>
       </form-kit>
+      <div class="flex flex-col">
+        <Button
+          rounded
+          severity="secondary"
+          class="justify-center w-full"
+          @click="adminStore.addHarborDetail"
+        >
+          <i class="fas fa-plus" />
+          Add detail
+        </Button>
 
-      <form-kit
-        type="button"
-        input-class="px-auto bg-stone-200 relative w-full py-2 font-medium capitalize rounded-full"
-        @click="addDetail"
-      >
-        <i class="fas fa-plus" />
-        Add detail
-      </form-kit>
-
-      <form-kit
-        type="submit"
-        input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
-      ></form-kit>
+        <Button
+          rounded
+          severity="secondary"
+          class="justify-center w-full"
+          @click="adminStore.clearHarborData(currentHarbor._id)"
+        >
+          Cancel
+        </Button>
+        <form-kit
+          type="submit"
+          input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
+        ></form-kit>
+      </div>
     </form-kit>
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, reactive } from 'vue';
+<script setup lang="ts">
+  import { computed, defineComponent, onMounted, reactive } from 'vue';
   import { FormKit } from '@formkit/vue';
-  import {
-    CreateHarborFormModel,
-    CreateHarborDetailFormModel,
-    CreateBookRefInputModel,
-    type ICreateHarborFormModel,
-  } from 'types/harborInputModels';
   import { directionValues, harborTypeValues } from '@/helpers/enumHelpers';
   import PositionFormGroup from './formComponents/PositionFormGroup.vue';
   import HarborDetailFormGroup from './formComponents/HarborDetailFormGroup.vue';
-  import axios from 'axios';
   import { useI18n } from 'vue-i18n';
-  import { useAuth0 } from '@auth0/auth0-vue';
+  import { useHarborAdminStore } from '@/stores/harborAdmin';
+  import { storeToRefs } from 'pinia';
+  import Button from 'primevue/button';
 
-  export default defineComponent({
-    name: 'AddHarborForm',
-    components: { FormKit, PositionFormGroup, HarborDetailFormGroup },
-    setup() {
-      const { t } = useI18n();
-      const { getAccessTokenSilently } = useAuth0();
-      const harbor: CreateHarborFormModel = reactive(new CreateHarborFormModel());
-      harbor.book = new CreateBookRefInputModel();
-      return { t, harbor, getAccessTokenSilently };
-    },
-    computed: {
-      directionValuesComputed() {
-        return directionValues();
-      },
-      harborTypeValuesComputed() {
-        return harborTypeValues();
-      },
-    },
-    methods: {
-      async submitForm(data: unknown) {
-        const interfaceData = data as ICreateHarborFormModel;
-        const formData = CreateHarborFormModel.fromInterface(interfaceData);
+  const { t } = useI18n();
+  const adminStore = useHarborAdminStore();
 
-        const inputData = formData.toInputModel();
+  const { currentHarbor } = storeToRefs(adminStore);
 
-        const url = import.meta.env.VITE_API_URL + '/harbors/create';
-        const token = await this.getAccessTokenSilently();
-        await axios
-          .post(url, inputData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      },
-      addDetail() {
-        const detail = new CreateHarborDetailFormModel();
-
-        detail.harborType = this.harbor.harborType;
-        detail.location = this.harbor.location;
-
-        this.harbor.details.push(detail);
-      },
-    },
+  const directionValuesComputed = computed(() => {
+    return directionValues();
   });
+
+  const harborTypeValuesComputed = computed(() => {
+    return harborTypeValues();
+  });
+  const originalName =
+    currentHarbor.value?.name && currentHarbor.value.name != '' ? currentHarbor.value?.name : null;
+
+  const onSubmit = (e: Event) => {
+    adminStore.submitHarbor();
+  };
 </script>
 
 <style lang="scss"></style>
