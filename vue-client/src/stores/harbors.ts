@@ -73,5 +73,5 @@ export const useHarborStore = defineStore({
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useHarborStore as any, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useHarborStore as never, import.meta.hot));
 }

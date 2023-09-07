@@ -8,14 +8,14 @@
       >
         <i
           class="fa-solid fa-map-location-dot fa-fw text-stone-800 mr-1 text-sm"
-        ></i>
+        />
         <span class="text-stone-600 text-sm">
           {{ latitudeComputed }} |
           {{ longitudeComputed }}
         </span>
       </div>
       <div class="flex-nowrap flex items-center">
-        <i class="fa-solid fa-compass fa-fw text-stone-800 mr-1 text-sm"></i>
+        <i class="fa-solid fa-compass fa-fw text-stone-800 mr-1 text-sm" />
         <span class="text-stone-600 text-sm">
           {{ shieldedDirectionsComputed }}
         </span>

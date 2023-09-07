@@ -11,7 +11,7 @@
         outer-class="w-1/2 pr-1"
         input-class="w-full rounded-full"
         name="lat"
-      ></form-kit>
+      />
       <form-kit
         v-model="location.lng"
         type="text"
@@ -19,7 +19,7 @@
         outer-class="w-1/2 pl-1"
         input-class="w-full rounded-full"
         name="lng"
-      ></form-kit>
+      />
     </div>
   </form-kit>
 </template>

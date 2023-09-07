@@ -1,4 +1,3 @@
-import { LatLng } from 'leaflet';
 import { defineStore } from 'pinia';
 import type { Harbor } from 'types/harborModels';
 import { useHarborStore } from './harbors';
@@ -134,6 +133,11 @@ export const useHarborAdminStore = defineStore({
         res = await this.createHarbor(harborInput);
       } else {
         res = await this.updateHarbor(harborInput);
+      }
+      if (res) {
+        const harborStore = useHarborStore();
+        harborStore.addHarbor(res);
+        this.clearHarborData(harbor._id);
       }
     },
 

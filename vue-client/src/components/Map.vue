@@ -1,5 +1,8 @@
 <template>
-  <div ref="map" class="z-0 w-full h-full min-h-full"></div>
+  <div
+    ref="map"
+    class="z-0 w-full h-full min-h-full"
+  />
 </template>
 
 <script lang="ts">

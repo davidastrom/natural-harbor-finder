@@ -3,7 +3,7 @@
     class="fa-solid"
     :class="iconClassComputed"
     :title="harborTypeNameComputed"
-  ></i>
+  />
 </template>
 
 <script lang="ts">

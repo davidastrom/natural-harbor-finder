@@ -1,5 +1,10 @@
 <template>
-  <button class="rounded-lg" @click="handleLogin">Log In</button>
+  <button
+    class="rounded-lg"
+    @click="handleLogin"
+  >
+    Log In
+  </button>
 </template>
 
 <script setup>

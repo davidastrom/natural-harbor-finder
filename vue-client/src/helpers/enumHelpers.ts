@@ -7,7 +7,7 @@ export function directionValues() {
   const values = Object.entries(Direction)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .filter(([text, value]) => isNaN(Number(value)) === false)
-    .map(([text, val]) => {
+    .map(([_text, val]) => {
       return {
         value: val,
         label: i18n.global.t(`directions.long[${val}]`),

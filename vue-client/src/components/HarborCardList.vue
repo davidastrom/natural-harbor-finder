@@ -7,7 +7,7 @@
       :selected="harbor._id === harborStore.selectedHarbor"
       class="last:mb-0 mb-4"
       @select-harbor="selectHarbor($event)"
-    ></harbor-card>
+    />
   </div>
 </template>
 

@@ -1,10 +1,10 @@
 <template>
-  <button
+  <Button
     type="button"
     class="rounded-full"
     aria-haspopup="true"
-    @click="toggle"
     aria-controls="profile-menu"
+    @click="toggle"
   >
     <Avatar
       class="overflow-hidden"
@@ -13,9 +13,14 @@
       :icon="showIcon ? 'fa-light fa-user' : undefined"
       size="large"
       shape="circle"
-    ></Avatar>
-  </button>
-  <Menu ref="menu" id="profile-menu" :popup="true" :model="menuItems" />
+    />
+  </Button>
+  <Menu
+    id="profile-menu"
+    ref="menu"
+    :popup="true"
+    :model="menuItems"
+  />
 </template>
 
 <script setup lang="ts">
@@ -33,11 +38,11 @@
   });
 
   const showLabel = computed(() => {
-    return showImage ? false : userStore.user?.userName || userStore.user?.name;
+    return showImage.value ? false : userStore.user?.userName || userStore.user?.name;
   });
 
   const showIcon = computed(() => {
-    return showImage || showLabel ? false : true;
+    return showImage.value || showLabel ? false : true;
   });
 
   const menuItems = computed(() => {

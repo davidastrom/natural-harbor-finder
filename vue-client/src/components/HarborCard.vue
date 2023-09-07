@@ -5,24 +5,26 @@
     @click="selectCard"
   >
     <div class="flex items-start justify-between">
-      <h3 class="text-xl font-normal">{{ harbor.name }}</h3>
+      <h3 class="text-xl font-normal">
+        {{ harbor.name }}
+      </h3>
       <div class="text-stone-800 flex gap-2 text-base">
-        <harbor-type-icon :harbor-type="harbor.harborType"></harbor-type-icon>
-        <i class="fa-solid fa-star text-stone-200"></i>
+        <harbor-type-icon :harbor-type="harbor.harborType" />
+        <i class="fa-solid fa-star text-stone-200" />
       </div>
     </div>
     <div class="gap-x-2 flex flex-wrap">
       <div class="flex-nowrap flex items-center">
         <i
           class="fa-solid fa-map-location-dot fa-fw text-stone-800 mr-1 text-sm"
-        ></i>
+        />
         <span class="text-stone-600 text-sm">
           {{ latitudeComputed }} |
           {{ longitudeComputed }}
         </span>
       </div>
       <div class="flex-nowrap flex items-center">
-        <i class="fa-solid fa-compass fa-fw text-stone-800 mr-1 text-sm"></i>
+        <i class="fa-solid fa-compass fa-fw text-stone-800 mr-1 text-sm" />
         <span class="text-stone-600 text-sm">
           {{ shieldedDirectionsComputed }}
         </span>
@@ -33,7 +35,7 @@
         v-if="harbor.book"
         class="flex"
       >
-        <i class="fa-solid fa-book fa-fw text-stone-800 mr-1 text-sm"></i>
+        <i class="fa-solid fa-book fa-fw text-stone-800 mr-1 text-sm" />
         <span class="text-stone-800 text-sm">
           {{ harbor.book.title }}
         </span>
@@ -56,7 +58,7 @@
           :key="`d-${index}`"
           class="hover:bg-stone-50 ml-2 rounded-md"
         >
-          <harbor-detail-card :detail="detail"></harbor-detail-card>
+          <harbor-detail-card :detail="detail" />
         </li>
       </ul>
     </template>

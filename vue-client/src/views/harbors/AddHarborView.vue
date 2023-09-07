@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center w-full">
-    <add-harbor-form class="w-full max-w-lg"></add-harbor-form>
+    <add-harbor-form class="w-full max-w-lg" />
   </div>
 </template>
 
@@ -8,7 +8,6 @@
   import { defineComponent } from 'vue';
 
   import AddHarborForm from '@/components/forms/AddHarborForm.vue';
-  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: 'AddHarborView',

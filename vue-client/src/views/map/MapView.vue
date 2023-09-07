@@ -1,6 +1,9 @@
 <template>
   <!-- <nav-bar></nav-bar> -->
-  <div id="page-container" class="flex flex-row h-screen max-h-screen">
+  <div
+    id="page-container"
+    class="flex flex-row h-screen max-h-screen"
+  >
     <div
       id="side-bar"
       class="w-96 bg-stone-50 drop-shadow z-40 flex flex-col flex-none h-full max-h-full p-4 overflow-y-auto"
@@ -9,21 +12,21 @@
         :external-location="mapSelectedPosition"
         class="mb-4"
         @current-position-chosen="clearMapClickMarker"
-      ></search-form>
+      />
       <harbor-card-list
         :harbors="Array.from(harborStore.$state.harbors.values())"
-      ></harbor-card-list>
+      />
     </div>
     <div class="relative z-0 flex-auto h-full max-h-full">
       <div class="top-4 right-4 absolute z-10">
-        <avatar-menu></avatar-menu>
+        <avatar-menu />
       </div>
       <map-component
         ref="map"
         :markers="harborStore.getHarborsAsMarkers"
         @map-click="setSelectedPosition"
         @marker-click="setSelectedHarbor"
-      ></map-component>
+      />
     </div>
   </div>
 </template>

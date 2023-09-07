@@ -1,12 +1,14 @@
 <template>
   <div class="flex flex-col">
-    <h2 class="text-2xl font-medium">{{ t('ui.findNearestHarbor') }}</h2>
+    <h2 class="text-2xl font-medium">
+      {{ t('ui.findNearestHarbor') }}
+    </h2>
     <form-kit
       type="form"
       :actions="false"
       @submit="submitForm"
     >
-      <position-form-group v-model="location"></position-form-group>
+      <position-form-group v-model="location" />
 
       <form-kit
         type="button"
@@ -23,7 +25,7 @@
                   ? 'fa-solid fa-circle-notch fa-spin'
                   : 'fa-solid fa-location-crosshairs'
               "
-            ></i>
+            />
           </div>
         </template>
       </form-kit>
@@ -33,12 +35,12 @@
           <direction-form-input
             v-model="directions"
             name="directions"
-          ></direction-form-input>
+          />
 
           <form-kit
             type="submit"
             input-class="px-auto text-stone-100 hover:bg-blue-600 active:bg-blue-700 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
-          ></form-kit>
+          />
         </div>
       </transition>
     </form-kit>
@@ -49,7 +51,7 @@
         @click="hideForm = false"
       >
         {{ t('location.useMyLocation') }}
-        <i class="fa-solid fa-caret-down"></i>
+        <i class="fa-solid fa-caret-down" />
       </button>
     </transition>
   </div>
