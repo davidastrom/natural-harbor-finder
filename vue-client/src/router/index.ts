@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import AddDetailView from '../views/harbors/AddDetailView.vue';
-import AddHarborView from '../views/harbors/AddHarborView.vue';
 import LoginView from '../views/auth/LoginView.vue';
 import MapView from '../views/map/MapView.vue';
 
@@ -25,22 +23,6 @@ const router = createRouter({
       path: '/harbors/manage',
       name: 'manageHarbors',
       component: ManageHarborView,
-      meta: {
-        requiresAdmin: true,
-      },
-    },
-    {
-      path: '/add',
-      name: 'addHarbor',
-      component: AddHarborView,
-      meta: {
-        requiresAdmin: true,
-      },
-    },
-    {
-      path: '/add/detail',
-      name: 'addDetail',
-      component: AddDetailView,
       meta: {
         requiresAdmin: true,
       },

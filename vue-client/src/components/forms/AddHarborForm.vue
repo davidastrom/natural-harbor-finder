@@ -6,128 +6,123 @@
     <h2 class="text-2xl font-medium">
       {{ originalName ?? t('harbor.newHarbor') }}
     </h2>
-    <form-kit
-      type="form"
-      :actions="false"
-      @submit="onSubmit"
-    >
-      <form-kit
+    
+    <div class="flex flex-col gap-1 mb-2 flex-1">
+      <label for="name">{{ t('harbor.name') }}</label>
+      <InputText
         v-model="currentHarbor.name"
-        type="text"
-        :label="t('harbor.name')"
-        input-class="w-full rounded-full"
-        name="name"
+        input-id="name"
       />
+    </div>
+    
 
-      <position-form-group v-model="currentHarbor.location" />
+    <position-form-group v-model="currentHarbor.location" />
 
-      <form-kit
+    <div class="flex flex-col gap-1 mb-2 flex-1">
+      <label for="chartNumber">{{ t('harbor.chartNum') }}</label>
+      <InputNumber
         v-model="currentHarbor.chartNumber"
-        type="number"
-        :label="t('harbor.chartNum')"
-        input-class="w-full rounded-full"
-        name="chartNumber"
+        input-id="chartNumber"
       />
+    </div>
 
-      <form-kit
+    <div class="flex flex-col gap-1 mb-4 flex-1">
+      <label for="harborType">{{ t('harbor.harborType') }}</label>
+      <Dropdown
         v-model="currentHarbor.harborType"
-        type="select"
+        input-id="harborType"
         :options="harborTypeValuesComputed"
-        :label="t('harbor.harborType')"
-        input-class="w-full rounded-full"
-        name="harborType"
+        option-label="label"
+        option-value="value"
       />
+    </div>
 
-      <form-kit
+    <div class="flex gap-2 flex-1 mb-2">
+      <Checkbox
         v-model="currentHarbor.hasBookRef"
-        type="checkbox"
-        :label="t('harbor.book.hasBookRef')"
-        label-class="ml-2"
-        outer-class="mt-4"
-        inner-class="flex items-center"
-        wrapper-class="align-center flex flex-row justify-start"
-        name="hasBookRef"
+        input-id="hasBookRef"
+        binary
+        class="mr-2"
       />
+      <label for="hasBookRef">{{ t('harbor.book.hasBookRef') }}</label>
+    </div>
 
-      <form-kit
-        v-if="currentHarbor.hasBookRef"
-        v-model="currentHarbor.book"
-        type="group"
-        name="book"
-      >
-        <form-kit
-          type="text"
-          :label="t('harbor.book.title')"
-          outer-class="mt-2"
-          input-class="w-full rounded-full"
-          name="title"
-        />
-
-        <div class="flex flex-wrap pb-2">
-          <form-kit
-            type="number"
-            :label="t('harbor.book.page')"
-            outer-class="w-1/2 pr-1"
-            input-class="w-full rounded-full"
-            name="page"
-          />
-          <form-kit
-            type="text"
-            :label="t('harbor.book.ref')"
-            outer-class="w-1/2 pl-1"
-            input-class="w-full rounded-full"
-            name="ref"
-          />
-        </div>
-      </form-kit>
-
-      <form-kit
-        v-model="currentHarbor.details"
-        type="list"
-        name="details"
-      >
-        <div
-          v-for="(detail, index) in currentHarbor.details"
-          :key="`detail-${index}`"
-          class="bg-slate-50 w-full p-4 mb-8 rounded-lg"
-        >
-          <harbor-detail-form-group
-            v-model="currentHarbor.details[index]"
-            @remove="adminStore.removeHarborDetail(index)"
-          />
-        </div>
-      </form-kit>
-      <div class="flex flex-col">
-        <Button
-          rounded
-          severity="secondary"
-          class="justify-center w-full"
-          @click="adminStore.addHarborDetail"
-        >
-          <i class="fas fa-plus" />
-          Add detail
-        </Button>
-
-        <Button
-          rounded
-          severity="secondary"
-          class="justify-center w-full"
-          @click="adminStore.clearHarborData(currentHarbor._id)"
-        >
-          Cancel
-        </Button>
-        <form-kit
-          type="submit"
-          input-class="px-auto text-stone-100 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
+    <div
+      v-show="currentHarbor.hasBookRef"
+      class="mb-4"
+    >
+      <div class="flex flex-col gap-1 mb-2">
+        <label for="title">{{ t('harbor.book.title') }}</label>
+        <InputText
+          v-model="currentHarbor.book.title"
+          input-id="title"
         />
       </div>
-    </form-kit>
+      
+
+      <div class="flex flex-wrap gap-2 mb-2">
+        <div class="flex flex-col gap-1 flex-1">
+          <label for="page">{{ t('harbor.book.page') }}</label>
+          <InputNumber
+            v-model="currentHarbor.book.page"
+            input-id="page"
+          />
+        </div>
+        
+        <div class="flex flex-col gap-1 flex-1">
+          <label for="ref">{{ t('harbor.book.ref') }}</label>
+          <InputText
+            v-model="currentHarbor.book.ref"
+            input-id="ref"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-for="(detail, index) in currentHarbor.details"
+      :key="`detail-${index}`"
+      class="bg-slate-50 w-full p-4 mb-4 rounded-lg"
+    >
+      <harbor-detail-form-group
+        v-model="currentHarbor.details[index]"
+        @remove="adminStore.removeHarborDetail(index)"
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <Button
+        rounded
+        severity="secondary"
+        class="justify-center w-full mb-8"
+        @click="adminStore.addHarborDetail"
+      >
+        <i class="fas fa-plus mr-2" />
+        Add detail
+      </Button>
+
+      <Button
+        rounded
+        severity="secondary"
+        class="justify-center w-full mb-2"
+        @click="adminStore.clearHarborData(currentHarbor._id)"
+      >
+        Cancel
+      </Button>
+      <Button
+        rounded
+        class="justify-center w-full mb-2"
+        @click="onSubmit"
+      >
+        <i class="fas fa-save mr-2" />
+        Submit
+      </Button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { computed } from 'vue';
-  import { FormKit } from '@formkit/vue';
   import { harborTypeValues } from '@/helpers/enumHelpers';
   import PositionFormGroup from './formComponents/PositionFormGroup.vue';
   import HarborDetailFormGroup from './formComponents/HarborDetailFormGroup.vue';
@@ -135,6 +130,11 @@
   import { useHarborAdminStore } from '@/stores/harborAdmin';
   import { storeToRefs } from 'pinia';
   import Button from 'primevue/button';
+  import InputText from 'primevue/inputtext';
+  import InputNumber from 'primevue/inputnumber';
+  import Dropdown from 'primevue/dropdown';
+  import Checkbox from 'primevue/checkbox';
+  
 
   const { t } = useI18n();
   const adminStore = useHarborAdminStore();

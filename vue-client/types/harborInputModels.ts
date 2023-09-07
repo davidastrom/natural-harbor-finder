@@ -163,15 +163,3 @@ export interface ManageHarborDetailFormModel
 //     } as CreateHarborDetailInputModel;
 //   }
 // }
-
-export class CreateBookRefInputModel {
-  constructor() {
-    this.title = '';
-    this.page = undefined;
-    this.ref = undefined;
-  }
-
-  title: string;
-  page?: number;
-  ref?: string;
-}
