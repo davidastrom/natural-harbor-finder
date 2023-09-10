@@ -1,135 +1,146 @@
 <template>
-  <div class="flex gap-2">
-    <h3 class="text-lg font-medium flex-1">
-      {{ originalName ?? t('harbor.newDetail') }}
-    </h3>
-    <PButton
-      rounded
-      text
-      severity="secondary"
-      icon="fas fa-times"
-      @click="$emit('remove')"
-    >
-      <!-- <template #icon>
-      <i class="" />
-    </template> -->
-    </PButton>
-  </div>
-  <form-kit
-    v-model="detail"
-    type="group"
+  <Panel 
+    :header="originalName ?? t('harbor.newDetail')"
+    toggleable
+    :collapsed="initialCollapse"
   >
-    <form-kit
-      type="text"
-      :label="t('harbor.name')"
-      input-class="w-full rounded-full"
-      name="name"
-    />
-
-    <direction-form-input name="shieldedDirections" />
-
-    <div class="flex flex-wrap w-full pb-2">
-      <form-kit
-        type="checkbox"
-        :label="t('harbor.anchor')"
-        outer-class="grow mt-4"
-        inner-class="flex items-center"
-        wrapper-class="flex flex-row items-center justify-start"
-        label-class="ml-2"
-        name="anchor"
-      />
-      <form-kit
-        type="checkbox"
-        :label="t('harbor.sxk')"
-        outer-class="grow mt-4"
-        inner-class="flex items-center"
-        wrapper-class="flex flex-row items-center justify-start"
-        label-class="ml-2"
-        name="SXKBuoy"
+    <template #icons>
+      <Button
+        rounded
+        text
+        severity="secondary"
+        class="w-8 h-8 !p-0 !justify-center"
+        @click="$emit('remove')"
+      >
+        <i class="fas fa-trash-can" />
+      </Button>
+    </template>
+    
+  
+    <div class="flex flex-col gap-1 mb-4 flex-1">
+      <label :for="`${detailId}-name`">{{ t('harbor.name') }}</label>
+      <InputText
+        v-model="detail.name"
+        :input-id="`${detailId}-name`"
       />
     </div>
 
-    <form-kit
-      v-model="detail.hasSpecificLocation"
-      type="checkbox"
-      :label="t('harbor.detail.specificLocation')"
-      label-class="ml-2"
-      outer-class="mt-4"
-      inner-class="flex items-center"
-      wrapper-class="align-center flex flex-row justify-start"
-      name="hasSpecificLocation"
+    <direction-form-input
+      :id="`${detailId}-directions`"
+      v-model="detail.shieldedDirections"
+      class="mb-8"
+      name="shieldedDirections"
     />
+
+    <div class="flex gap-2 flex-1 mb-2">
+      <Checkbox
+        v-model="detail.anchor"
+        :input-id="`${detailId}-anchor`"
+        binary
+        class="mr-2"
+      />
+      <label :for="`${detailId}-anchor`">{{ t('harbor.anchor') }}</label>
+    </div>
+
+    <div class="flex gap-2 flex-1 mb-2">
+      <Checkbox
+        v-model="detail.SXKBuoy"
+        :input-id="`${detailId}-SXKBuoy`"
+        binary
+        class="mr-2"
+      />
+      <label :for="`${detailId}-SXKBuoy`">{{ t('harbor.sxk') }}</label>
+    </div>
+
+    <div class="flex gap-2 flex-1 mb-2">
+      <Checkbox
+        v-model="detail.hasSpecificLocation"
+        :input-id="`${detailId}-hasSpecificLocation`"
+        binary
+        class="mr-2"
+      />
+      <label :for="`${detailId}-hasSpecificLocation`">{{ t('harbor.detail.specificLocation') }}</label>
+    </div>
 
     <position-form-group
       v-if="detail.hasSpecificLocation"
+      :id="`${detailId}-location`"
       v-model="detail.location"
     />
 
-    <form-kit
-      v-model="detail.hasSpecificHarborType"
-      type="checkbox"
-      :label="t('harbor.detail.specificLocation')"
-      label-class="ml-2"
-      outer-class="mt-4"
-      inner-class="flex items-center"
-      wrapper-class="align-center flex flex-row justify-start"
-      name="hasSpecificHarborType"
-    />
+    <div class="flex gap-2 flex-1 mb-2">
+      <Checkbox
+        v-model="detail.hasSpecificHarborType"
+        :input-id="`${detailId}-hasSpecificHarborType`"
+        binary
+        class="mr-2"
+      />
+      <label :for="`${detailId}-hasSpecificHarborType`">{{ t('harbor.detail.specificHarborType') }}</label>
+    </div>
 
-    <form-kit
-      v-if="detail.hasSpecificHarborType"
-      v-model="detail.harborType"
-      type="select"
-      :options="harborTypeValuesComputed"
-      :label="t('harbor.harborType')"
-      input-class="w-full rounded-full"
-      name="harborType"
-    />
-  </form-kit>
+    <div
+      v-if="detail.hasSpecificHarborType" 
+      class="flex flex-col gap-2 flex-1 mb-2"
+    >
+      <label :for="`${detailId}-harborType`">{{ t('harbor.harborType') }}</label>
+      <Dropdown
+        v-model="detail.harborType"
+        :input-id="`${detailId}-harborType`"
+        :options="harborTypeValuesComputed"
+        option-label="label"
+        option-value="value"
+      />
+    </div>
+  </Panel> 
 </template>
 
-<script lang="ts">
-  import { defineComponent, type PropType } from 'vue';
-  import type { ManageHarborDetailFormModel } from 'types/harborInputModels';
-  import { harborTypeValues } from '@/helpers/enumHelpers';
-  import PositionFormGroup from './PositionFormGroup.vue';
-  import DirectionFormInput from './DirectionFormInput.vue';
-  import { useI18n } from 'vue-i18n';
-  import Button from 'primevue/button';
+<script setup lang="ts">
+import { computed, type PropType } from 'vue';
+import type { ManageHarborDetailFormModel } from 'types/harborInputModels';
+import PositionFormGroup from './PositionFormGroup.vue';
+import DirectionFormInput from './DirectionFormInput.vue';
+import { useI18n } from 'vue-i18n';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import { useVModel } from '@vueuse/core';
+import Dropdown from 'primevue/dropdown';
+import Checkbox from 'primevue/checkbox';
+import { HarborType } from 'types/harborType';
+import Panel from 'primevue/panel';
 
-  export default defineComponent({
-    name: 'HarborDetailFormGroup',
-    components: { PositionFormGroup, DirectionFormInput, PButton: Button },
-    props: {
-      name: {
-        type: String,
-        default: '',
-      },
-      modelValue: {
-        type: Object as PropType<ManageHarborDetailFormModel>,
-        default: null,
-      },
-    },
-    emits: ['update:modelValue', 'remove'],
-    setup(props) {
-      const originalName = props.modelValue?.name != '' ? props.modelValue?.name : null;
-      const { t } = useI18n();
-      return { t, originalName };
-    },
-    computed: {
-      detail: {
-        get() {
-          return this.modelValue;
-        },
-        set(detail: ManageHarborDetailFormModel) {
-          this.$emit('update:modelValue', detail);
-        },
-      },
-      harborTypeValuesComputed() {
-        return harborTypeValues();
-      },
-    },
-  });
+const props = defineProps({
+  name: {
+    type: String,
+    default: '',
+  },
+  modelValue: {
+    type: Object as PropType<ManageHarborDetailFormModel>,
+    default: null,
+  },
+  detailId: {
+    type: String,
+    default: null,
+  },
+  initialCollapse: {
+    type: Boolean,
+    default: true,
+  },
+})
+
+const emits = defineEmits(['update:modelValue', 'remove'])
+
+const originalName = props.modelValue?.name != '' ? props.modelValue?.name : null;
+const { t } = useI18n();
+const detail = useVModel(props, 'modelValue', emits);
+      
+const harborTypeValuesComputed = computed(() => {
+  return Object.entries(HarborType).map(([text, value]) => ({
+    label: (
+          text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+        ).replace(/_/g, ' '),
+    value,
+  }));
+})
 </script>
 
 <style lang="scss"></style>

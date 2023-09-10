@@ -7,8 +7,8 @@
     "position": "Position",
     "harborType": "Hamntyp",
     "detail": {
-      "specificHarborType": "Har särskild position",
-      "specificLocation": "Är särskild hamntyp"
+      "specificHarborType": "Är särskild hamntyp",
+      "specificLocation": "Har särskild position"
     },
     "book": {
       "hasBookRef": "Har bokreferens",
@@ -19,7 +19,12 @@
     "chartNum": "Sjökort #",
     "createNew": "Lägg till ny hamn",
     "manageHarbors": "Hantera hamnar",
-    "select": "Välj befintlig hamn"
+    "select": "Välj befintlig hamn",
+    "addDetail": "Lägg till detalj",
+    "harborDetail": "Detalj",
+    "newDetail": "Ny detalj",
+    "newHarbor": "Ny hamn",
+    "harborDetails": "Hamndetaljer"
   },
   "location": {
     "useMyLocation": "Använd min position",
@@ -60,5 +65,9 @@
     "pleaseLogIn": "Logga in",
     "profile": "Min profil",
     "signUp": "Skapa konto"
+  },
+  "shared": {
+    "cancel": "Avbryt",
+    "save": "Spara"
   }
 }

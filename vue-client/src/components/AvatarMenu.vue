@@ -1,5 +1,5 @@
 <template>
-  <Button
+  <button
     type="button"
     class="rounded-full"
     aria-haspopup="true"
@@ -14,7 +14,7 @@
       size="large"
       shape="circle"
     />
-  </Button>
+  </button>
   <Menu
     id="profile-menu"
     ref="menu"
@@ -25,7 +25,6 @@
 
 <script setup lang="ts">
   import Avatar from 'primevue/avatar';
-  import Button from 'primevue/button';
   import Menu from 'primevue/menu';
   import { useUserStore } from '@/stores/user';
   import { computed, ref } from 'vue';

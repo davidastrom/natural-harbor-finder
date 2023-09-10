@@ -1,36 +1,33 @@
 <template>
-  <form-kit
-    type="group"
-    name="location"
-  >
-    <div class="flex flex-wrap pb-2">
-      <form-kit
+  <div class="flex pb-2 gap-2">
+    <div class="flex flex-col gap-1 mb-2 flex-1 min-w-0">
+      <label :for="`${id}-lat`">{{ t('location.latitude') }}</label>
+      <InputText
         v-model="location.lat"
-        type="text"
-        :label="t('location.latitude')"
-        outer-class="w-1/2 pr-1"
-        input-class="w-full rounded-full"
-        name="lat"
-      />
-      <form-kit
-        v-model="location.lng"
-        type="text"
-        :label="t('location.longitude')"
-        outer-class="w-1/2 pl-1"
-        input-class="w-full rounded-full"
-        name="lng"
+        :input-id="`${id}-lat`"
       />
     </div>
-  </form-kit>
+    <div class="flex flex-col gap-1 mb-2 flex-1 min-w-0">
+      <label :for="`${id}-lng`">{{ t('location.longitude') }}</label>
+      <InputText
+        v-model="location.lng"
+        :input-id="`${id}-lng`"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
   import { defineComponent, type PropType } from 'vue';
   import { StringLocation } from 'types/stringLocation';
   import { useI18n } from 'vue-i18n';
+  import InputText from 'primevue/inputtext';
 
   export default defineComponent({
     name: 'PositionFormGroup',
+    components: {
+      InputText,
+    },
     props: {
       name: {
         type: String,
@@ -41,6 +38,10 @@
         default: () => {
           return new StringLocation();
         },
+      },
+      id: {
+        type: String,
+        default: 'location',
       },
     },
     emits: ['update:modelValue'],

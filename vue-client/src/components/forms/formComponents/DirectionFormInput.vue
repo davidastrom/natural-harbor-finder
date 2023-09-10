@@ -1,26 +1,54 @@
 <template>
-  <form-kit
-    v-model="directions"
-    :label="t('harbor.shieldedDirections')"
-    type="checkbox"
-    :options="directionValuesComputed"
-    outer-class="mt-4"
-    inner-class="flex items-center"
-    wrapper-class="flex flex-row items-center justify-start"
-    label-class="ml-2"
-    input-class="hover:shadow-inner hover:shadow-stone-200 hover:checked:shadow-blue-700 rounded-sm cursor-pointer"
-    :name="name"
-  />
+  <fieldset class="flex flex-col gap-2">
+    <legend class="">
+      {{ t('harbor.shieldedDirections') }}
+    </legend>
+    <div class="flex gap-2">
+      <div class="flex flex-col flex-1 gap-2">
+        <div
+          v-for="direction in directionValuesComputed.slice(0, 4)"
+          :key="direction.value"
+          class="flex flex-1 items-center gap-2"
+        >
+          <Checkbox
+            v-model="directions"
+            :input-id="`${id}-${direction.value.toString()}`"
+            :value="direction.value"
+            :name="name"
+          />
+          <label :for="`${id}-${direction.value.toString()}`">{{ direction.label }}</label>
+        </div>
+      </div>
+      <div class="flex flex-col flex-1 gap-2">
+        <div
+          v-for="direction in directionValuesComputed.slice(4, 8)"
+          :key="direction.value"
+          class="flex flex-1 items-center gap-2"
+        >
+          <Checkbox
+            v-model="directions"
+            :input-id="`${id}-${direction.value.toString()}`"
+            :value="direction.value"
+            :name="name"
+          />
+          <label :for="`${id}-${direction.value.toString()}`">{{ direction.label }}</label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
 </template>
 
 <script lang="ts">
   import { defineComponent, type PropType } from 'vue';
-  import type { Direction } from 'types/direction';
-  import { directionValues } from '@/helpers/enumHelpers';
+  import { Direction } from 'types/direction';
   import { useI18n } from 'vue-i18n';
+  import Checkbox from 'primevue/checkbox';
 
   export default defineComponent({
     name: 'DirectionFormInput',
+    components: {
+      Checkbox,
+    },
     props: {
       name: {
         type: String,
@@ -30,6 +58,10 @@
         type: Array as PropType<Direction[]>,
         default: () => [],
       },
+      id: {
+        type: String,
+        default: 'shieldedDirections',
+      }
     },
     emits: ['update:modelValue'],
     setup() {
@@ -46,7 +78,10 @@
         },
       },
       directionValuesComputed() {
-        return directionValues();
+        return Object.values(Direction).map((value) => ({
+          label: this.t(`directions.long.${value}`),
+          value,
+        }));
       },
     },
   });

@@ -23,7 +23,8 @@
     "harborDetail": "Harbor detail",
     "addDetail": "Add detail",
     "newHarbor": "New harbor",
-    "newDetail": "New detail"
+    "newDetail": "New detail",
+    "harborDetails": "Harbor details"
   },
   "location": {
     "useMyLocation": "Use my location",
@@ -64,5 +65,9 @@
     "logOut": "Log out",
     "signUp": "Create account",
     "pleaseLogIn": "Please log in"
+  },
+  "shared": {
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }
