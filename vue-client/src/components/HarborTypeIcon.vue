@@ -8,17 +8,14 @@
 
 <script lang="ts">
   import { HarborType } from 'types/harborType';
-  import { defineComponent } from 'vue';
+  import { defineComponent, type PropType } from 'vue';
 
   export default defineComponent({
     name: 'HarborTypeIcon',
     props: {
       harborType: {
-        type: Number,
+        type: Number as PropType<HarborType>,
         required: true,
-        validator: (val: number) => {
-          return !!HarborType[val];
-        },
       },
     },
     computed: {
@@ -35,7 +32,7 @@
         }
       },
       harborTypeNameComputed() {
-        const name = HarborType[this.harborType].toLowerCase();
+        const name = Object.keys(HarborType).find((key: string) => HarborType[key as keyof typeof HarborType] === this.harborType)?.toLowerCase() ?? '';
         return name[0].toUpperCase() + name.slice(1);
       },
     },

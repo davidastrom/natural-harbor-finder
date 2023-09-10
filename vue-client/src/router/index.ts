@@ -1,10 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-import LoginView from '../views/auth/LoginView.vue';
-import MapView from '../views/map/MapView.vue';
-
 import { useAuthGuard } from '../services/auth/authGuard';
-import ManageHarborView from '@/views/harbors/ManageHarborView.vue';
 
 const { authGuard, authRedirect } = useAuthGuard();
 
@@ -14,7 +9,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: MapView,
+      component: () => import('@/views/map/MapView.vue') ,
       meta: {
         requiresAuth: true,
       },
@@ -22,7 +17,7 @@ const router = createRouter({
     {
       path: '/harbors/manage',
       name: 'manageHarbors',
-      component: ManageHarborView,
+      component: () => import('@/views/harbors/ManageHarborView.vue'),
       meta: {
         requiresAdmin: true,
       },
@@ -30,7 +25,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
+      component: () => import('@/views/auth/LoginView.vue'),
     },
     {
       path: '/callback',

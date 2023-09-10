@@ -123,7 +123,7 @@
         <Button
           severity="secondary"
           class="justify-center"
-          @click="adminStore.clearHarborData(currentHarbor._id)"
+          @click="adminStore.clearHarborData(currentHarbor?._id)"
         >
           {{ t('shared.cancel') }}
         </Button>
