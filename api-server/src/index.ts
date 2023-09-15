@@ -82,6 +82,7 @@ async function main() {
         console.log(
             `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
         );
+        console.log(httpsServer.address());
     });
 }
 
