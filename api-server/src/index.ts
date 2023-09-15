@@ -22,6 +22,7 @@ async function main() {
 
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
+    const host = process.env.HOST ?? 'localhost';
 
     app.use(express.json());
     app.set('json spaces', 2);
@@ -77,9 +78,9 @@ async function main() {
 
     const httpsServer = https.createServer(credentials, app);
 
-    httpsServer.listen(PORT, () => {
+    httpsServer.listen(PORT, host, () => {
         console.log(
-            `⚡️[server]: Server is running at https://localhost:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
+            `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
         );
     });
 }
