@@ -54,7 +54,7 @@ async function main() {
     app.use(
         cors({
             origin: CLIENT_ORIGIN_URL,
-            exposedHeaders: ['Authorization', 'Content-Type'],
+            allowedHeaders: ['Authorization', 'Content-Type'],
         })
     );
 
