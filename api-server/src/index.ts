@@ -23,9 +23,8 @@ async function main() {
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 
-    app.use(cors({ origin: '*' }));
     app.use(express.json());
-    app.set("json spaces", 2);
+    app.set('json spaces', 2);
 
     app.use(
         helmet({
@@ -35,43 +34,40 @@ async function main() {
             contentSecurityPolicy: {
                 useDefaults: false,
                 directives: {
-                    "default-src": ["'none'"],
-                    "frame-ancestors": ["'none'"],
+                    'default-src': ["'none'"],
+                    'frame-ancestors': ["'none'"],
                 },
             },
             frameguard: {
-                action: "deny",
+                action: 'deny',
             },
         })
     );
 
     app.use((req, res, next) => {
-        res.contentType("application/json; charset=utf-8");
+        res.contentType('application/json; charset=utf-8');
         next();
     });
 
     app.use(nocache());
-    
+
     app.use(
         cors({
             origin: CLIENT_ORIGIN_URL,
-            methods: ["GET"],
-            allowedHeaders: ["Authorization", "Content-Type"],
-            maxAge: 86400,
+            exposedHeaders: ['Authorization', 'Content-Type'],
         })
     );
 
-    app.use(validateAccessToken)
+    app.use(validateAccessToken);
 
     app.use('/', router);
 
-    app.use(errorHandler)
-    app.use(notFoundHandler)
+    app.use(errorHandler);
+    app.use(notFoundHandler);
 
-    let credentials = {}
+    let credentials = {};
 
     if (process.env.NODE_ENV == 'local') {
-    
         const key = fs.readFileSync(__dirname + '/../ssl/selfsigned.key');
         const cert = fs.readFileSync(__dirname + '/../ssl/selfsigned.crt');
 
