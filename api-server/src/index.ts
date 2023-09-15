@@ -78,7 +78,7 @@ async function main() {
 
     httpsServer.listen(PORT, () => {
         console.log(
-            `⚡️[server]: Server is running at https://localhost:${PORT}`
+            `⚡️[server]: Server is running at https://localhost:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
         );
     });
 }
