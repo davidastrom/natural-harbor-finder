@@ -77,13 +77,16 @@ async function main() {
     }
 
     const httpsServer = https.createServer(credentials, app);
-
-    httpsServer.listen(PORT, host, () => {
-        console.log(
-            `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
-        );
+    const httpServer = app.listen(PORT, host, () => {
+        `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`;
         console.log(httpsServer.address());
     });
+    // httpsServer.listen(PORT, host, () => {
+    //     console.log(
+    //         `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
+    //     );
+    //     console.log(httpsServer.address());
+    // });
 }
 
 main();
