@@ -54,7 +54,8 @@ async function main() {
     app.use(
         cors({
             origin: CLIENT_ORIGIN_URL,
-            allowedHeaders: ['Authorization', 'Content-Type'],
+            allowedHeaders: ['Authorization', 'Content-Type', 'Origin'],
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
         })
     );
 
