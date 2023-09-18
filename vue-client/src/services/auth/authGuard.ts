@@ -33,7 +33,7 @@ export function useAuthGuard() {
       const userStore = useUserStore();
       userStore.setUserData(auth0.user.value);
 
-      if (to.meta.requiresAdmin && !auth0.user.value?.['harbor-finder/roles']?.includes('Admin')) {
+      if (to.meta.requiresAdmin && !userStore.user?.isAdmin) {
         next(false);
         return;
       }
