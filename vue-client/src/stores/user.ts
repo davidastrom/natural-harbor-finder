@@ -44,7 +44,6 @@ export const useUserStore = defineStore('user', {
           const res = await axios.post<LoginReturnModel>(url, null, {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
             },
           });
   

@@ -3,165 +3,142 @@
     <h2 class="text-2xl font-medium">
       {{ t('ui.findNearestHarbor') }}
     </h2>
-    <form-kit
-      type="form"
-      :actions="false"
-      @submit="submitForm"
+    
+    <position-form-group v-model="location" />
+
+    <Button
+      rounded
+      severity="secondary"
+      class="w-full mb-4"
+      @click="setCurrentLocation"
     >
-      <position-form-group v-model="location" />
-
-      <form-kit
-        type="button"
-        input-class="px-auto bg-stone-200 hover:bg-stone-300 active:bg-stone-400 relative w-full py-2 font-medium capitalize rounded-full"
-        @click="setCurrentLocation"
-      >
-        {{ t('location.useMyLocation') }}
-        <template #suffix>
-          <div class="right-3 top-1/2 absolute -translate-y-1/2">
-            <i
-              class="text-xl"
-              :class="
-                locationLoading
-                  ? 'fa-solid fa-circle-notch fa-spin'
-                  : 'fa-solid fa-location-crosshairs'
-              "
-            />
-          </div>
-        </template>
-      </form-kit>
-
-      <transition>
-        <div v-show="!hideForm">
-          <direction-form-input
-            v-model="directions"
-            name="directions"
-          />
-
-          <form-kit
-            type="submit"
-            input-class="px-auto text-stone-100 hover:bg-blue-600 active:bg-blue-700 w-full py-2 mt-4 font-medium capitalize bg-blue-500 rounded-full"
-          />
-        </div>
-      </transition>
-    </form-kit>
+      {{ t('location.useMyLocation') }}
+      <div class="right-3 top-1/2 absolute -translate-y-1/2">
+        <i
+          class="text-xl"
+          :class="
+            locationLoading
+              ? 'fa-solid fa-circle-notch fa-spin'
+              : 'fa-solid fa-location-crosshairs'
+          "
+        />
+      </div>
+    </Button>
     <transition>
-      <button
+      <div
+        v-show="!hideForm"
+        class="flex flex-col gap-4"
+      >
+        <direction-form-input
+          v-model="directions"
+          name="directions"
+        />
+        <Button
+          rounded
+          class="w-full"
+          @click="submitForm"
+        >
+          {{ t('ui.findNearestHarbor') }}
+        </Button>
+      </div>
+    </transition>
+    <transition>
+      <Button
         v-show="hideForm"
-        class="px-auto w-full py-2 mt-2 font-medium bg-transparent"
+        rounded
+        class="w-full"
         @click="hideForm = false"
       >
-        {{ t('location.useMyLocation') }}
-        <i class="fa-solid fa-caret-down" />
-      </button>
+        {{ t('ui.expand') }}
+        <i class="ml-2 fa-solid fa-caret-down" />
+      </Button>
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, reactive, ref, type PropType } from 'vue';
-  import { FormKit } from '@formkit/vue';
-  import { usePositionStore } from '../../stores/position';
-  import { useHarborStore } from '../../stores/harbors';
-  import type { Direction } from 'types/direction';
-  import PositionFormGroup from './formComponents/PositionFormGroup.vue';
-  import DirectionFormInput from './formComponents/DirectionFormInput.vue';
-  import type { StringLocation } from 'types/stringLocation';
-  import type { FetchHarborIM } from 'types/harborInputModels';
-  import type { LatLng } from 'leaflet';
-  import { useI18n } from 'vue-i18n';
-  import {
-    DdToDms,
-    StringLocationToDdLocation,
-  } from '../../helpers/locationHelpers';
+<script setup lang="ts">
+import { reactive, ref, type PropType, watch, toRef } from 'vue';
+import { usePositionStore } from '../../stores/position';
+import { useHarborStore } from '../../stores/harbors';
+import type { Direction } from 'types/direction';
+import PositionFormGroup from './formComponents/PositionFormGroup.vue';
+import DirectionFormInput from './formComponents/DirectionFormInput.vue';
+import type { StringLocation } from 'types/stringLocation';
+import type { FetchHarborIM } from 'types/harborInputModels';
+import type { LatLng } from 'leaflet';
+import { useI18n } from 'vue-i18n';
+import Button from 'primevue/button';
+import {
+  DdToDms,
+  StringLocationToDdLocation,
+} from '../../helpers/locationHelpers';
 
-  export default defineComponent({
-    name: 'SearchForm',
-    components: {
-      FormKit,
-      PositionFormGroup,
-      DirectionFormInput,
+const props = defineProps({
+  externalLocation: {
+    type: Object as PropType<LatLng | null>,
+    default: null,
+  },
+});
+
+const externalLocation = toRef(props, 'externalLocation')
+const emit = defineEmits(['currentPositionChosen']);
+const { t } = useI18n();
+
+const positionStore = usePositionStore();
+const harborStore = useHarborStore();
+
+const location: StringLocation = reactive({ lat: '', lng: '' });
+const directions = ref<Direction[]>([]);
+
+const locationLoading = ref(false);
+const hideForm = ref(false);
+
+      
+watch(
+  externalLocation, (newLocation: LatLng | null, oldLocation: LatLng | null) => {
+    if (newLocation && newLocation !== oldLocation) {
+      setSelectedLocation(newLocation);
+    }
+  },
+);
+
+const setCurrentLocation = async () => {
+  locationLoading.value = true;
+  emit('currentPositionChosen');
+  hideForm.value = false;
+  return positionStore.fetchPositionOnce(
+    (position) => {
+      location.lat = DdToDms(position.coords.latitude, true);
+      location.lng = DdToDms(position.coords.longitude, false);
+      locationLoading.value = false;
     },
-    props: {
-      externalLocation: {
-        type: Object as PropType<LatLng | null>,
-        default: null,
-      },
-    },
-    emits: ['currentPositionChosen'],
-    setup() {
-      const { t } = useI18n();
+    () => {
+      const userLocation = positionStore.getUserPosition;
+      location.lat = DdToDms(userLocation.lat, true);
+      location.lng = DdToDms(userLocation.lng, false);
+      locationLoading.value = false;
+    }
+  );
+};
 
-      const positionStore = usePositionStore();
-      const harborStore = useHarborStore();
+const submitForm = async () => {
+  const ddLocation = StringLocationToDdLocation(
+    location.lat,
+    location.lng
+  );
+  const fetchData: FetchHarborIM = {
+    lat: ddLocation.lat,
+    lng: ddLocation.lng,
+    directions: directions.value,
+  };
+  await harborStore.fetchHarbors(fetchData);
+  hideForm.value = true;
+}
 
-      const location: StringLocation = reactive({ lat: '', lng: '' });
-      const directions: Direction[] = reactive([]);
-
-      const locationLoading = ref(false);
-      const hideForm = ref(false);
-
-      return {
-        t,
-        positionStore,
-        harborStore,
-        location,
-        directions,
-        locationLoading,
-        hideForm,
-      };
-    },
-    computed: {},
-    watch: {
-      externalLocation(newLocation: LatLng | null, oldLocation: LatLng | null) {
-        if (newLocation && newLocation !== oldLocation) {
-          this.setSelectedLocation(newLocation);
-        }
-      },
-    },
-    methods: {
-      async setCurrentLocation() {
-        this.locationLoading = true;
-        this.$emit('currentPositionChosen');
-        this.hideForm = false;
-        return this.positionStore.fetchPositionOnce(
-          (position) => {
-            this.location.lat = DdToDms(position.coords.latitude, true);
-            this.location.lng = DdToDms(position.coords.longitude, false);
-            this.locationLoading = false;
-          },
-          () => {
-            const location = this.positionStore.getUserPosition;
-            this.location.lat = DdToDms(location.lat, true);
-            this.location.lng = DdToDms(location.lng, false);
-            this.locationLoading = false;
-          }
-        );
-      },
-      async submitForm(data: unknown) {
-        const formData = data as FormResults;
-        const ddLocation = StringLocationToDdLocation(
-          formData.location.lat,
-          formData.location.lng
-        );
-        const fetchData: FetchHarborIM = {
-          lat: ddLocation.lat,
-          lng: ddLocation.lng,
-          directions: formData.directions,
-        };
-        await this.harborStore.fetchHarbors(fetchData);
-        this.hideForm = true;
-      },
-      setSelectedLocation(location: LatLng) {
-        this.location.lat = DdToDms(location.lat, true);
-        this.location.lng = DdToDms(location.lng, false);
-      },
-    },
-  });
-
-  interface FormResults {
-    location: StringLocation;
-    directions: Direction[];
-  }
+const setSelectedLocation = (newLocation: LatLng) => {
+  location.lat = DdToDms(newLocation.lat, true);
+  location.lng = DdToDms(newLocation.lng, false);
+}
 </script>
 
 <style scoped></style>
