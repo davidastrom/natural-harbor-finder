@@ -21,7 +21,7 @@ export function useAuthGuard() {
     _from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
-    const fn = () => {
+    const fn = async () => {
       if ((to.meta.requiresAuth || to.meta.requiresAdmin) && !auth0.isAuthenticated.value) {
         redirectPath.value = to.path;
         next({
@@ -31,10 +31,12 @@ export function useAuthGuard() {
       }
 
       const userStore = useUserStore();
-      userStore.setUserData(auth0.user.value);
+      await userStore.setUserData(auth0.user.value);
 
       if (to.meta.requiresAdmin && !userStore.user?.isAdmin) {
-        next(false);
+        next({
+          name: 'home'
+        });
         return;
       }
 
@@ -42,7 +44,7 @@ export function useAuthGuard() {
     };
 
     if (!auth0.isLoading.value) {
-      fn();
+      await fn();
       return;
     }
 
@@ -55,7 +57,7 @@ export function useAuthGuard() {
       });
     });
 
-    fn();
+    await fn();
   };
 
   const authRedirect = (_to: RouteLocation): RouteLocationRaw => {
