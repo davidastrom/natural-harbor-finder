@@ -22,7 +22,7 @@ export function useAuthGuard() {
     next: NavigationGuardNext
   ) => {
     const fn = async () => {
-      if ((to.meta.requiresAuth || to.meta.requiresAdmin) && !auth0.isAuthenticated.value) {
+      if ((to.meta.requiresAuth || to.meta.requiresAdmin) && (!auth0.isAuthenticated.value || !auth0.user.value)) {
         redirectPath.value = to.path;
         next({
           name: 'login',
@@ -30,8 +30,11 @@ export function useAuthGuard() {
         return;
       }
 
+
       const userStore = useUserStore();
-      await userStore.setUserData(auth0.user.value);
+      if (auth0.user.value) {
+        await userStore.setUserData(auth0.user.value);
+      }
 
       if (to.meta.requiresAdmin && !userStore.user?.isAdmin) {
         next({
