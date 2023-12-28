@@ -13,7 +13,7 @@ module.exports = {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
       backgroundImage: {
-        fullscreen: "url('./img/archibelago-bg.jpg')",
+        fullscreen: "url('/img/archibelago-bg.jpg')",
       },
       boxShadow: {
         1: '0px 1px 4px 0px rgba(29, 41, 57, 0.08), 0px 1px 2px 0px rgba(29, 41, 57, 0.10)',

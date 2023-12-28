@@ -50,14 +50,14 @@
         @click="hideForm = false"
       >
         {{ t('ui.expand') }}
-        <i class="ml-2 fa-solid fa-caret-down" />
+        <i class="fa-solid fa-caret-down ml-2" />
       </Button>
     </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, type PropType, watch, toRef } from 'vue';
+import { ref, type PropType, watch, toRef } from 'vue';
 import { usePositionStore } from '../../stores/position';
 import { useHarborStore } from '../../stores/harbors';
 import type { Direction } from 'types/direction';
@@ -87,7 +87,7 @@ const { t } = useI18n();
 const positionStore = usePositionStore();
 const harborStore = useHarborStore();
 
-const location: StringLocation = reactive({ lat: '', lng: '' });
+const location = ref<StringLocation>({ lat: '', lng: '' });
 const directions = ref<Direction[]>([]);
 
 const locationLoading = ref(false);
@@ -108,14 +108,14 @@ const setCurrentLocation = async () => {
   hideForm.value = false;
   return positionStore.fetchPositionOnce(
     (position) => {
-      location.lat = DdToDms(position.coords.latitude, true);
-      location.lng = DdToDms(position.coords.longitude, false);
+      location.value.lat = DdToDms(position.coords.latitude, true);
+      location.value.lng = DdToDms(position.coords.longitude, false);
       locationLoading.value = false;
     },
     () => {
       const userLocation = positionStore.getUserPosition;
-      location.lat = DdToDms(userLocation.lat, true);
-      location.lng = DdToDms(userLocation.lng, false);
+      location.value.lat = DdToDms(userLocation.lat, true);
+      location.value.lng = DdToDms(userLocation.lng, false);
       locationLoading.value = false;
     }
   );
@@ -123,8 +123,8 @@ const setCurrentLocation = async () => {
 
 const submitForm = async () => {
   const ddLocation = StringLocationToDdLocation(
-    location.lat,
-    location.lng
+    location.value.lat,
+    location.value.lng
   );
   const fetchData: FetchHarborIM = {
     lat: ddLocation.lat,
@@ -136,8 +136,8 @@ const submitForm = async () => {
 }
 
 const setSelectedLocation = (newLocation: LatLng) => {
-  location.lat = DdToDms(newLocation.lat, true);
-  location.lng = DdToDms(newLocation.lng, false);
+  location.value.lat = DdToDms(newLocation.lat, true);
+  location.value.lng = DdToDms(newLocation.lng, false);
 }
 </script>
 
