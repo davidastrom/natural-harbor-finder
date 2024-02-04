@@ -6,7 +6,6 @@ import helmet from 'helmet';
 import https from 'https';
 import nocache from 'nocache';
 
-import dbSetup from './config/db.config';
 import validateAccessToken from './middleware/auth0.middleware';
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/not-found.middleware';
@@ -18,11 +17,11 @@ async function main() {
     }
 
     const app = express();
-    await dbSetup(process.env.MONGODB_CONNECTION_STRING ?? '');
 
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
     const host = process.env.HOST ?? 'localhost';
+    console.log(host);
 
     app.use(express.json());
     app.set('json spaces', 2);
@@ -84,8 +83,8 @@ async function main() {
     } else {
         app.listen(PORT, host, () => {
             console.log(
-            `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
-            )
+                `⚡️[server]: Server is running at ${host}:${PORT}, in ${process.env.NODE_ENV} mode, accepting requests from ${CLIENT_ORIGIN_URL}`
+            );
         });
     }
 }
