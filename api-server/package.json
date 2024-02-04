@@ -10,7 +10,8 @@
         "start": "NODE_PATH=./dist node dist/index.js",
         "dev": "nodemon",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-        "generate-migration": "drizzle-kit generate:pg"
+        "db:generate": "drizzle-kit generate:pg",
+        "db:push": "ts-node src/db/db.migrate"
     },
     "dependencies": {
         "cors": "^2.8.5",
