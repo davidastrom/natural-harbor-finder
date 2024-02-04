@@ -5,12 +5,14 @@ import {
     pgTable,
     primaryKey,
     serial,
+    text,
 } from 'drizzle-orm/pg-core';
 
 import {
     AuthPermissions,
     AuthPermissionsTuple,
 } from '../../types/enums/authPermissions';
+import { Roles } from '../../types/enums/roles';
 import { userRoles } from './user';
 
 export const permissionEnum = pgEnum<
@@ -20,6 +22,7 @@ export const permissionEnum = pgEnum<
 
 export const roles = pgTable('roles', {
     id: serial('id').primaryKey(),
+    name: text('name').notNull().unique().$type<Roles>(),
 });
 
 export const rolesRelations = relations(roles, ({ many }) => ({
