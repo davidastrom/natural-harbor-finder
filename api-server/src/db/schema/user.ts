@@ -15,6 +15,9 @@ export const users = pgTable('users', {
     profilePicture: text('profile_picture'),
 });
 
+export type UserSelect = typeof users.$inferSelect;
+export type UserInsert = typeof users.$inferInsert;
+
 export const usersRelations = relations(users, ({ many }) => ({
     roles: many(userRoles),
 }));
@@ -33,6 +36,9 @@ export const userRoles = pgTable(
         pk: primaryKey({ columns: [t.roleId, t.userId] }),
     })
 );
+
+export type UserRoleSelect = typeof userRoles.$inferSelect;
+export type UserRoleInsert = typeof userRoles.$inferInsert;
 
 export const userRolesRelations = relations(userRoles, ({ one }) => ({
     user: one(users, {

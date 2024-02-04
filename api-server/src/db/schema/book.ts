@@ -8,6 +8,9 @@ export const books = pgTable('books', {
     title: text('title').notNull(),
 });
 
+export type BookSelect = typeof books.$inferSelect;
+export type BookInsert = typeof books.$inferInsert;
+
 export const booksRelations = relations(books, ({ many }) => ({
     harborRefs: many(bookRefs),
 }));
@@ -22,6 +25,9 @@ export const bookRefs = pgTable('book_refs', {
         .references(() => harbors.id)
         .primaryKey(),
 });
+
+export type BookRefSelect = typeof bookRefs.$inferSelect;
+export type BookRefInsert = typeof bookRefs.$inferInsert;
 
 export const bookRefsRelations = relations(bookRefs, ({ one }) => ({
     book: one(books),

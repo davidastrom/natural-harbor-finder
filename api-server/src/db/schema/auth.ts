@@ -25,6 +25,9 @@ export const roles = pgTable('roles', {
     name: text('name').notNull().unique().$type<Roles>(),
 });
 
+export type RoleSelect = typeof roles.$inferSelect;
+export type RoleInsert = typeof roles.$inferInsert;
+
 export const rolesRelations = relations(roles, ({ many }) => ({
     permissions: many(rolePermissions),
     users: many(userRoles),
@@ -44,3 +47,6 @@ export const rolePermissions = pgTable(
         pk: primaryKey({ columns: [t.roleId, t.permission] }),
     })
 );
+
+export type RolePermissionSelect = typeof rolePermissions.$inferSelect;
+export type RolePermissionInsert = typeof rolePermissions.$inferInsert;

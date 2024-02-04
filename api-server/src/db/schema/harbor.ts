@@ -22,6 +22,9 @@ export const harbors = pgTable('harbors', {
     harborType: integer('harbor_type').notNull().$type<HarborType>(),
 });
 
+export type HarborSelect = typeof harbors.$inferSelect;
+export type HarborInsert = typeof harbors.$inferInsert;
+
 export const harborsRelations = relations(harbors, ({ many, one }) => ({
     details: many(harborDetails),
     book: one(bookRefs),
@@ -39,6 +42,9 @@ export const harborDetails = pgTable('harbor_details', {
     longitude: numeric('longitude'),
     harborType: integer('harbor_type').$type<HarborType>(),
 });
+
+export type HarborDetailSelect = typeof harborDetails.$inferSelect;
+export type HarborDetailInsert = typeof harborDetails.$inferInsert;
 
 export const harborDetailsRelations = relations(
     harborDetails,
@@ -63,3 +69,6 @@ export const harborDetailShieldedDirections = pgTable(
         pk: primaryKey({ columns: [t.harborDetailId, t.direction] }),
     })
 );
+
+export type HarborDetailShieldedDirectionSelect = typeof harborDetailShieldedDirections.$inferSelect;
+export type HarborDetailShieldedDirectionInsert = typeof harborDetailShieldedDirections.$inferInsert;
