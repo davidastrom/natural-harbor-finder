@@ -1,18 +1,10 @@
-import { prop } from '@typegoose/typegoose';
-
-import { BaseModel } from './base.model';
-
-export class Position extends BaseModel {
+export class Position {
     constructor(lat: number, lng: number) {
-        super();
         this.lat = lat;
         this.lng = lng;
     }
 
-    @prop()
     public lng!: number;
-
-    @prop()
     public lat!: number;
 
     public asRadians(): Position {
