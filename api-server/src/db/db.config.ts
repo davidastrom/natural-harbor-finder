@@ -11,6 +11,11 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
+import * as auth from './schema/auth';
+import * as book from './schema/book';
+import * as harbor from './schema/harbor';
+import * as user from './schema/user';
+
 // or
 export const pool = new Pool({
     host: process.env.PG_HOST,
@@ -20,4 +25,6 @@ export const pool = new Pool({
     database: process.env.PG_DATABASE,
 });
 
-export const db = drizzle(pool);
+export const db = drizzle(pool, {
+    schema: { ...auth, ...user, ...harbor, ...book },
+});

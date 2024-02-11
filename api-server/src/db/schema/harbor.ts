@@ -41,34 +41,17 @@ export const harborDetails = pgTable('harbor_details', {
     latitude: numeric('latitude'),
     longitude: numeric('longitude'),
     harborType: integer('harbor_type').$type<HarborType>(),
+    shieldedDirections: integer('shielded_directions')
+        .array()
+        .$type<Direction[]>(),
 });
 
 export type HarborDetailSelect = typeof harborDetails.$inferSelect;
 export type HarborDetailInsert = typeof harborDetails.$inferInsert;
 
-export const harborDetailsRelations = relations(
-    harborDetails,
-    ({ one, many }) => ({
-        harbor: one(harbors, {
-            fields: [harborDetails.harborId],
-            references: [harbors.id],
-        }),
-        shieldedDirections: many(harborDetailShieldedDirections),
-    })
-);
-
-export const harborDetailShieldedDirections = pgTable(
-    'harbor_detail_shielded_directions',
-    {
-        harborDetailId: integer('harbor_detail_id')
-            .notNull()
-            .references(() => harborDetails.id),
-        direction: integer('direction').notNull().$type<Direction>(),
-    },
-    (t) => ({
-        pk: primaryKey({ columns: [t.harborDetailId, t.direction] }),
-    })
-);
-
-export type HarborDetailShieldedDirectionSelect = typeof harborDetailShieldedDirections.$inferSelect;
-export type HarborDetailShieldedDirectionInsert = typeof harborDetailShieldedDirections.$inferInsert;
+export const harborDetailsRelations = relations(harborDetails, ({ one }) => ({
+    harbor: one(harbors, {
+        fields: [harborDetails.harborId],
+        references: [harbors.id],
+    }),
+}));

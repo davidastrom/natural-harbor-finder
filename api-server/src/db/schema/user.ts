@@ -11,7 +11,7 @@ import { roles } from './auth';
 
 export const users = pgTable('users', {
     id: bigserial('id', { mode: 'number' }).primaryKey(),
-    auth0Id: text('auth0_id'),
+    auth0Id: text('auth0_id').unique().notNull(),
     profilePicture: text('profile_picture'),
 });
 
