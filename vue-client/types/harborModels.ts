@@ -3,7 +3,7 @@ import type { Direction } from './direction';
 import type { LatLng } from 'leaflet';
 
 export type Harbor = {
-  _id: string;
+  id: string;
   name: string;
   details: HarborDetail[];
   location: LatLng;
@@ -13,7 +13,7 @@ export type Harbor = {
 };
 
 export type HarborDetail = {
-  _id: string;
+  id: string;
   name: string;
   shieldedDirections: Direction[];
   anchor: boolean;
@@ -23,7 +23,7 @@ export type HarborDetail = {
 };
 
 export type BookRef = {
-  _id: string;
+  id: string;
   title: string;
   page?: number;
   ref?: string;

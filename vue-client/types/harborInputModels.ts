@@ -9,23 +9,23 @@ export interface FetchHarborIM {
   take?: number;
 }
 
-export interface ManageHarborInputModel extends Omit<Harbor, '_id' | 'details' | 'book'> {
-  _id?: string;
+export interface ManageHarborInputModel extends Omit<Harbor, 'id' | 'details' | 'book'> {
+  id?: string;
   details: ManageHarborDetailInputModel[];
   book?: ManageBookRefInputModel;
 }
 
-export interface ManageHarborDetailInputModel extends Omit<HarborDetail, '_id'> {
-  _id?: string;
+export interface ManageHarborDetailInputModel extends Omit<HarborDetail, 'id'> {
+  id?: string;
 }
 
-export interface ManageBookRefInputModel extends Omit<BookRef, '_id'> {
-  _id?: string;
+export interface ManageBookRefInputModel extends Omit<BookRef, 'id'> {
+  id?: string;
 }
 
 export interface ManageHarborFormModel
-  extends Pick<Harbor, '_id'>,
-    Omit<ManageHarborInputModel, 'details' | '_id' | 'location' | 'book'> {
+  extends Pick<Harbor, 'id'>,
+    Omit<ManageHarborInputModel, 'details' | 'id' | 'location' | 'book'> {
   hasBookRef: boolean;
   details: ManageHarborDetailFormModel[];
   location: StringLocation;
@@ -92,7 +92,7 @@ export interface ManageHarborDetailFormModel
 // }
 
 // export interface ICreateHarborDetailFormModel {
-//   _id?: string;
+//   id?: string;
 //   name: string;
 //   shieldedDirections: Direction[];
 //   anchor: boolean;
@@ -116,7 +116,7 @@ export interface ManageHarborDetailFormModel
 //   }
 
 //   constructor(harborDetail: HarborDetail) {
-//     this._id = harborDetail._id;
+//     this.id = harborDetail.id;
 //     this.name = harborDetail.name;
 //     this.shieldedDirections = harborDetail.shieldedDirections;
 //     this.anchor = harborDetail.anchor;
@@ -127,7 +127,7 @@ export interface ManageHarborDetailFormModel
 //     this.harborType = harborDetail.harborType ?? HarborType.NATURAL;
 //   }
 
-//   _id?: string;
+//   id?: string;
 //   name: string;
 //   shieldedDirections: Direction[];
 //   anchor: boolean;

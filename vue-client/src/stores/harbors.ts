@@ -21,7 +21,7 @@ export const useHarborStore = defineStore({
       const harbors = new Array<HarborMarker>();
       this.harbors.forEach((harbor) =>
         harbors.push(
-          new HarborMarker(new LatLng(harbor.location.lat, harbor.location.lng), harbor._id, {
+          new HarborMarker(new LatLng(harbor.location.lat, harbor.location.lng), harbor.id, {
             icon: new Icon({
               iconUrl: icon,
               shadowUrl: iconShadow,
@@ -55,7 +55,7 @@ export const useHarborStore = defineStore({
         this.harbors.clear();
         this.selectedHarbor = null;
         res.data.forEach((harbor) => {
-          this.harbors.set(harbor._id, harbor);
+          this.harbors.set(harbor.id, harbor);
         });
       } catch (error) {
         console.log(error);
@@ -67,7 +67,7 @@ export const useHarborStore = defineStore({
       }
     },
     addHarbor(harbor: Harbor) {
-      this.harbors.set(harbor._id, harbor);
+      this.harbors.set(harbor.id, harbor);
     },
   },
 });

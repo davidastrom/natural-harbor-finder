@@ -11,10 +11,10 @@
           <div class="flex gap-2">
             <Dropdown
               :model-value="
-                adminStore.currentHarbor?._id === undefined ||
-                  adminStore.currentHarbor?._id === NEW_HARBOR_ID
+                adminStore.currentHarbor?.id === undefined ||
+                  adminStore.currentHarbor?.id === NEW_HARBOR_ID
                   ? null
-                  : adminStore.currentHarbor?._id
+                  : adminStore.currentHarbor?.id
               "
               :options="harborOptions"
               :placeholder="t('harbor.select')"
@@ -34,7 +34,7 @@
         
           <AddHarborFormVue
             v-if="adminStore.currentHarbor"
-            :key="adminStore.currentHarbor?._id"
+            :key="adminStore.currentHarbor?.id"
             class="mt-4"
           />
         </div>
@@ -58,9 +58,9 @@
   const adminStore = useHarborAdminStore();
 
   const harborOptions = computed(() => {
-    return Array.from(harborStore.harbors).map(([_id, harbor]) => ({
+    return Array.from(harborStore.harbors).map(([id, harbor]) => ({
       label: harbor.name,
-      value: _id,
+      value: id,
     }));
   });
 
