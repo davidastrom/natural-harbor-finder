@@ -8,6 +8,7 @@
 //     role.save();
 // }
 
+import dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
@@ -15,6 +16,10 @@ import * as auth from './schema/auth';
 import * as book from './schema/book';
 import * as harbor from './schema/harbor';
 import * as user from './schema/user';
+
+if (process.env.NODE_ENV != 'production') {
+    dotenv.config();
+}
 
 // or
 export const pool = new Pool({
