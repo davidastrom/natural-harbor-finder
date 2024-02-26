@@ -25,15 +25,19 @@ export async function getAllHarbors(
     const position =
         input.lat && input.lng ? new Position(input.lat, input.lng) : null;
     const directions = input.shieldedDirections || [];
+    const detailsInclude =
+        directions.length > 0
+            ? {
+                  where: arrayOverlaps(
+                      harborDetails.shieldedDirections,
+                      directions
+                  ),
+              }
+            : true;
     const dbHarbors = await db.query.harbors.findMany({
         with: {
-            details: {
-                where: arrayOverlaps(
-                    harborDetails.shieldedDirections,
-                    directions
-                ),
-            },
-            book: {
+            details: detailsInclude,
+            bookRef: {
                 with: {
                     book: true,
                 },
@@ -152,7 +156,7 @@ export async function updateHarbor(req: Request, res: Response): Promise<void> {
             )[0];
             existingBookId = newBook.id;
         }
-        if (!harbor.book) {
+        if (!harbor.bookRef) {
             await db.insert(bookRefs).values({
                 bookId: existingBookId,
                 harborId,
@@ -168,10 +172,10 @@ export async function updateHarbor(req: Request, res: Response): Promise<void> {
                 .where(eq(bookRefs.harborId, harborId));
         }
     } else {
-        if (harbor.book) {
+        if (harbor.bookRef) {
             await db
                 .delete(bookRefs)
-                .where(eq(bookRefs.harborId, harbor.book.harborId));
+                .where(eq(bookRefs.harborId, harbor.bookRef.harborId));
         }
     }
 
@@ -185,7 +189,7 @@ async function getHarborById(harborId: number) {
         where: eq(harbors.id, harborId),
         with: {
             details: true,
-            book: {
+            bookRef: {
                 with: {
                     book: true,
                 },

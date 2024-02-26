@@ -30,6 +30,12 @@ export type BookRefSelect = typeof bookRefs.$inferSelect;
 export type BookRefInsert = typeof bookRefs.$inferInsert;
 
 export const bookRefsRelations = relations(bookRefs, ({ one }) => ({
-    book: one(books),
-    harbor: one(harbors),
+    book: one(books, {
+        fields: [bookRefs.bookId],
+        references: [books.id],
+    }),
+    harbor: one(harbors, {
+        fields: [bookRefs.harborId],
+        references: [harbors.id],
+    }),
 }));

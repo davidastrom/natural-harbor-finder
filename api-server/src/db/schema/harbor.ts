@@ -5,7 +5,6 @@ import {
     integer,
     numeric,
     pgTable,
-    primaryKey,
     text,
 } from 'drizzle-orm/pg-core';
 
@@ -27,7 +26,10 @@ export type HarborInsert = typeof harbors.$inferInsert;
 
 export const harborsRelations = relations(harbors, ({ many, one }) => ({
     details: many(harborDetails),
-    book: one(bookRefs),
+    bookRef: one(bookRefs, {
+        fields: [harbors.id],
+        references: [bookRefs.harborId],
+    }),
 }));
 
 export const harborDetails = pgTable('harbor_details', {
