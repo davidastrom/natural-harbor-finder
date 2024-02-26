@@ -10,12 +10,12 @@
         {{ t('auth.pleaseLogIn') }}
       </h1>
       <div>
-        <button
+        <Button
           class="text-blue-50 hover:bg-blue-600 flex justify-center w-full px-3 py-2 bg-blue-500 rounded-lg"
+          :label="t('auth.logIn')"
           @click="login"
         >
-          {{ t('auth.logIn') }}
-        </button>
+        </Button>
       </div>
     </div>
   </div>
@@ -24,6 +24,7 @@
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n';
   import { useAuth0 } from '@auth0/auth0-vue';
+import Button from 'primevue/button';
 
   const { t } = useI18n();
 

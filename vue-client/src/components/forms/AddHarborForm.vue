@@ -1,14 +1,14 @@
 <template>
   <Card
     v-if="currentHarbor"
-    class="flex flex-col dark:bg-gray-800"
+    class="dark:bg-gray-800 flex flex-col"
   >
     <template #title>
       {{ originalName ?? t('harbor.newHarbor') }}
     </template>
 
     <template #content>
-      <div class="flex flex-col gap-1 mb-2 flex-1">
+      <div class="flex flex-col flex-1 gap-1 mb-2">
         <label for="name">{{ t('harbor.name') }}</label>
         <InputText
           v-model="currentHarbor.name"
@@ -20,7 +20,7 @@
       <position-form-group v-model="currentHarbor.location" />
 
       <div class="flex gap-2">
-        <div class="flex flex-col gap-1 mb-2 flex-1 min-w-0">
+        <div class="flex flex-col flex-1 min-w-0 gap-1 mb-2">
           <label for="chartNumber">{{ t('harbor.chartNum') }}</label>
           <InputNumber
             v-model="currentHarbor.chartNumber"
@@ -30,7 +30,7 @@
           />
         </div>
 
-        <div class="flex flex-col gap-1 mb-4 flex-1 min-w-0">
+        <div class="flex flex-col flex-1 min-w-0 gap-1 mb-4">
           <label for="harborType">{{ t('harbor.harborType') }}</label>
           <Dropdown
             v-model="currentHarbor.harborType"
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="flex gap-2 flex-1 mb-2">
+      <div class="flex flex-1 gap-2 mb-2">
         <Checkbox
           v-model="currentHarbor.hasBookRef"
           input-id="hasBookRef"
@@ -69,7 +69,7 @@
       
 
             <div class="flex flex-wrap gap-2 mb-2">
-              <div class="flex flex-col gap-1 flex-1">
+              <div class="flex flex-col flex-1 gap-1">
                 <label for="page">{{ t('harbor.book.page') }}</label>
                 <InputNumber
                   v-model="currentHarbor.book.page"
@@ -77,7 +77,7 @@
                 />
               </div>
         
-              <div class="flex flex-col gap-1 flex-1">
+              <div class="flex flex-col flex-1 gap-1">
                 <label for="ref">{{ t('harbor.book.ref') }}</label>
                 <InputText
                   v-model="currentHarbor.book.ref"
@@ -89,7 +89,7 @@
         </template>
       </Card>
 
-      <h3 class="text-xl font-medium mb-2">
+      <h3 class="mb-2 text-xl font-medium">
         {{ t('harbor.harborDetails') }}
       </h3>
   
@@ -108,31 +108,31 @@
           severity="secondary"
           size="small"
           class="justify-center w-full"
+          icon="fas fa-plus"
+          :label="t('harbor.addDetail')"
           @click="adminStore.addHarborDetail"
         >
-          <i class="fas fa-plus mr-2" />
-          {{ t('harbor.addDetail') }}
         </Button>
       </div>
     </template>
 
     <template #footer>
       <div
-        class="flex flex-1 justify-end gap-2"
+        class="flex justify-end flex-1 gap-2"
       >
         <Button
           severity="secondary"
           class="justify-center"
+          :label="t('shared.cancel')"
           @click="adminStore.clearHarborData(currentHarbor?.id)"
         >
-          {{ t('shared.cancel') }}
         </Button>
         <Button
           class="justify-center"
+          icon="fas fa-save"
+          :label="t('shared.save')"
           @click="onSubmit"
         >
-          <i class="fas fa-save mr-2" />
-          {{ t('shared.save') }}
         </Button>
       </div>
     </template>

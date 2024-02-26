@@ -24,11 +24,11 @@
               @update:model-value="adminStore.selectHarbor"
             />
             <Button
-              class="justify-center"
+              class="whitespace-nowrap"
+              icon="fa-solid fa-plus"
+              :label="t('harbor.createNew')"
               @click="adminStore.prepareNewHarbor"
             >
-              <i class="fa-solid fa-plus mr-2" />
-              {{ t('harbor.createNew') }}
             </Button>
           </div>
         

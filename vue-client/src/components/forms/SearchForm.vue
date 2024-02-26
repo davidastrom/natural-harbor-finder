@@ -10,19 +10,14 @@
       rounded
       severity="secondary"
       class="w-full mb-4"
+      :label="t('location.useMyLocation')"
+      icon="fa-solid fa-location-crosshairs"
+      icon-pos="right"
+      :loading="locationLoading"
+      loading-icon="fa-solid fa-circle-notch fa-spin"
       @click="setCurrentLocation"
     >
-      {{ t('location.useMyLocation') }}
-      <div class="right-3 top-1/2 absolute -translate-y-1/2">
-        <i
-          class="text-xl"
-          :class="
-            locationLoading
-              ? 'fa-solid fa-circle-notch fa-spin'
-              : 'fa-solid fa-location-crosshairs'
-          "
-        />
-      </div>
+  
     </Button>
     <transition>
       <div
@@ -36,9 +31,9 @@
         <Button
           rounded
           class="w-full"
+          :label="t('ui.findNearestHarbor')"
           @click="submitForm"
         >
-          {{ t('ui.findNearestHarbor') }}
         </Button>
       </div>
     </transition>
@@ -47,6 +42,9 @@
         v-show="hideForm"
         rounded
         class="w-full"
+        :label="t('ui.expand')"
+        icon="fa-solid fa-caret-down"
+        icon-pos="right"
         @click="hideForm = false"
       >
         {{ t('ui.expand') }}
