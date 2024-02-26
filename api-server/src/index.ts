@@ -69,8 +69,8 @@ async function main() {
     let credentials = {};
 
     if (process.env.NODE_ENV == 'local') {
-        const key = fs.readFileSync(__dirname + '/../ssl/selfsigned.key');
-        const cert = fs.readFileSync(__dirname + '/../ssl/selfsigned.crt');
+        const key = fs.readFileSync(__dirname + '/../.cert/key.pem');
+        const cert = fs.readFileSync(__dirname + '/../.cert/cert.pem');
 
         credentials = { key: key, cert: cert };
         const httpsServer = https.createServer(credentials, app);

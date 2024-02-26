@@ -11,7 +11,8 @@
         "dev": "nodemon",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
         "db:generate": "drizzle-kit generate:pg",
-        "db:push": "ts-node src/db/db.migrate"
+        "db:push": "ts-node src/db/db.migrate",
+        "new-cert": "mkdir .cert && mkcert -cert-file ./.cert/cert.pem -key-file ./.cert/key.pem localhost"
     },
     "dependencies": {
         "cors": "^2.8.5",
