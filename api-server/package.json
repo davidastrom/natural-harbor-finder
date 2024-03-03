@@ -7,7 +7,7 @@
     "keywords": [],
     "scripts": {
         "build": "tsc -p ./ --outDir ./dist",
-        "start": "NODE_PATH=./dist node dist/index.js",
+        "start": "node dist/src/index.js",
         "dev": "nodemon",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
         "db:generate": "drizzle-kit generate:pg",

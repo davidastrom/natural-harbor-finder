@@ -21,7 +21,6 @@ async function main() {
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
     const host = process.env.HOST ?? 'localhost';
-    console.log(host);
 
     app.use(express.json());
     app.set('json spaces', 2);
