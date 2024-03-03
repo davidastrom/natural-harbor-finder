@@ -4,17 +4,17 @@ import { Request, Response } from 'express';
 import { db } from '../../db/db.config';
 import { bookRefs, books } from '../../db/schema/book';
 import {
-    HarborDetailInsert,
-    harborDetails,
-    HarborInsert,
-    harbors,
+  HarborDetailInsert,
+  harborDetails,
+  HarborInsert,
+  harbors
 } from '../../db/schema/harbor';
 import { Position } from '../../models/position.model';
 import { haversineNautical } from '../../utils/distance.util';
 import {
-    createHarborDetailInputModel,
-    createHarborInputModel,
-    getAllHarborInputModel,
+  createHarborDetailInputModel,
+  createHarborInputModel,
+  getAllHarborInputModel
 } from './harbors.dto';
 
 export async function getAllHarbors(
@@ -48,6 +48,13 @@ export async function getAllHarbors(
     let harbors = dbHarbors.map((harbor) => ({
         ...harbor,
         location: new Position(+harbor.latitude, +harbor.longitude),
+        details: harbor.details.map((detail) => ({
+            ...detail,
+            location:
+                detail.latitude && detail.longitude
+                    ? new Position(+detail.latitude, +detail.longitude)
+                    : undefined,
+        })),
     }));
 
     if (position) {

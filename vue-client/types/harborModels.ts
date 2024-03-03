@@ -17,7 +17,7 @@ export type HarborDetail = {
   name: string;
   shieldedDirections: Direction[];
   anchor: boolean;
-  SXKBuoy: boolean;
+  sxkBuoy: boolean;
   location?: LatLng;
   harborType?: HarborType;
 };

@@ -44,7 +44,7 @@
 
     <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
-        v-model="detail.SXKBuoy"
+        v-model="detail.sxkBuoy"
         :input-id="`${detailId}-SXKBuoy`"
         binary
         class="mr-2"
