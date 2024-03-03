@@ -1,0 +1,17 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
+
+import { db } from './db.config';
+
+
+migrate(db, { migrationsFolder: './src/db/migrations' })
+    .then(() => {
+        console.log('Migrations complete!');
+        process.exit(0);
+    })
+    .catch((err) => {
+        console.error('Migrations failed!', err);
+        process.exit(1);
+    });

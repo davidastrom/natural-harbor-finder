@@ -1,0 +1,1 @@
+ALTER TABLE "roles" RENAME COLUMN "permission" TO "permissions";

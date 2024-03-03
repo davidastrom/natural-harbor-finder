@@ -35,7 +35,8 @@
   },
   "ui": {
     "expand": "Expandera",
-    "findNearestHarbor": "Hitta närmsta hamn"
+    "findNearestHarbor": "Hitta närmsta hamn",
+    "backToMap": "Tillbaka till kartan"
   },
   "directions": {
     "long": {

@@ -57,7 +57,8 @@
   },
   "ui": {
     "expand": "Expand",
-    "findNearestHarbor": "Find nearest harbor"
+    "findNearestHarbor": "Find nearest harbor",
+    "backToMap": "Back to map"
   },
   "auth": {
     "profile": "Profile",

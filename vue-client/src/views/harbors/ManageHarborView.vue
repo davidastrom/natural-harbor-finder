@@ -2,19 +2,32 @@
   <div class="flex justify-center w-full">
     <Card class="w-full max-w-lg gap-2 my-8">
       <template #title>
-        <h1 class="text-2xl font-medium">
-          {{ t('harbor.manageHarbors') }}
-        </h1>
+        <div class="flex justify-between">
+          <h1 class="text-2xl font-medium">
+            {{ t('harbor.manageHarbors') }}
+          </h1>
+          <RouterLink
+            to="/"
+          >
+            <Button
+              icon="fa-solid fa-arrow-left"
+              :label="t('ui.backToMap')"
+              size="small"
+              severity="secondary"
+              >
+            </Button>
+          </RouterLink>        
+        </div>
       </template>
       <template #content>
         <div class="-mb-5">
           <div class="flex gap-2">
             <Dropdown
               :model-value="
-                adminStore.currentHarbor?._id === undefined ||
-                  adminStore.currentHarbor?._id === NEW_HARBOR_ID
+                adminStore.currentHarbor?.id === undefined ||
+                  adminStore.currentHarbor?.id === NEW_HARBOR_ID
                   ? null
-                  : adminStore.currentHarbor?._id
+                  : adminStore.currentHarbor?.id
               "
               :options="harborOptions"
               :placeholder="t('harbor.select')"
@@ -24,17 +37,17 @@
               @update:model-value="adminStore.selectHarbor"
             />
             <Button
-              class="justify-center"
+              class="whitespace-nowrap"
+              icon="fa-solid fa-plus"
+              :label="t('harbor.createNew')"
               @click="adminStore.prepareNewHarbor"
             >
-              <i class="fa-solid fa-plus mr-2" />
-              {{ t('harbor.createNew') }}
             </Button>
           </div>
         
           <AddHarborFormVue
             v-if="adminStore.currentHarbor"
-            :key="adminStore.currentHarbor?._id"
+            :key="adminStore.currentHarbor?.id"
             class="mt-4"
           />
         </div>
@@ -52,15 +65,16 @@
   import { useHarborAdminStore, NEW_HARBOR_ID } from '@/stores/harborAdmin';
   import AddHarborFormVue from '@/components/forms/AddHarborForm.vue';
   import Card from 'primevue/card';
+import { RouterLink } from 'vue-router';
 
   const { t } = useI18n();
   const harborStore = useHarborStore();
   const adminStore = useHarborAdminStore();
 
   const harborOptions = computed(() => {
-    return Array.from(harborStore.harbors).map(([_id, harbor]) => ({
+    return Array.from(harborStore.harbors).map(([id, harbor]) => ({
       label: harbor.name,
-      value: _id,
+      value: id,
     }));
   });
 

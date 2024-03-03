@@ -2,9 +2,9 @@
   <div class="flex flex-col">
     <harbor-card
       v-for="harbor in harbors"
-      :key="`h-${harbor._id}`"
+      :key="`h-${harbor.id}`"
       :harbor="harbor"
-      :selected="harbor._id === harborStore.selectedHarbor"
+      :selected="harbor.id === harborStore.selectedHarbor"
       class="last:mb-0 mb-4"
       @select-harbor="selectHarbor($event)"
     />

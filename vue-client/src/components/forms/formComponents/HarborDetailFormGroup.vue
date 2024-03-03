@@ -9,15 +9,15 @@
         rounded
         text
         severity="secondary"
+        icon="fa-solid fa-trash"
         class="w-8 h-8 !p-0 !justify-center"
         @click="$emit('remove')"
       >
-        <i class="fas fa-trash-can" />
       </Button>
     </template>
     
   
-    <div class="flex flex-col gap-1 mb-4 flex-1">
+    <div class="flex flex-col flex-1 gap-1 mb-4">
       <label :for="`${detailId}-name`">{{ t('harbor.name') }}</label>
       <InputText
         v-model="detail.name"
@@ -32,7 +32,7 @@
       name="shieldedDirections"
     />
 
-    <div class="flex gap-2 flex-1 mb-2">
+    <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
         v-model="detail.anchor"
         :input-id="`${detailId}-anchor`"
@@ -42,9 +42,9 @@
       <label :for="`${detailId}-anchor`">{{ t('harbor.anchor') }}</label>
     </div>
 
-    <div class="flex gap-2 flex-1 mb-2">
+    <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
-        v-model="detail.SXKBuoy"
+        v-model="detail.sxkBuoy"
         :input-id="`${detailId}-SXKBuoy`"
         binary
         class="mr-2"
@@ -52,7 +52,7 @@
       <label :for="`${detailId}-SXKBuoy`">{{ t('harbor.sxk') }}</label>
     </div>
 
-    <div class="flex gap-2 flex-1 mb-2">
+    <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
         v-model="detail.hasSpecificLocation"
         :input-id="`${detailId}-hasSpecificLocation`"
@@ -68,7 +68,7 @@
       v-model="detail.location"
     />
 
-    <div class="flex gap-2 flex-1 mb-2">
+    <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
         v-model="detail.hasSpecificHarborType"
         :input-id="`${detailId}-hasSpecificHarborType`"
@@ -80,7 +80,7 @@
 
     <div
       v-if="detail.hasSpecificHarborType" 
-      class="flex flex-col gap-2 flex-1 mb-2"
+      class="flex flex-col flex-1 gap-2 mb-2"
     >
       <label :for="`${detailId}-harborType`">{{ t('harbor.harborType') }}</label>
       <Dropdown

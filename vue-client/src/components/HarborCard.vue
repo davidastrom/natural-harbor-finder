@@ -108,7 +108,7 @@
           ...new Set(this.harbor.details.flatMap((d) => d.shieldedDirections)),
         ];
         return set
-          .sort()
+          .sort((a, b) => a.toString().localeCompare(b.toString()))
           .map((d) => DirectionShort[d])
           .join(' | ');
       },
@@ -121,7 +121,7 @@
     },
     methods: {
       selectCard() {
-        this.$emit('selectHarbor', this.harbor._id);
+        this.$emit('selectHarbor', this.harbor.id);
       },
     },
   });

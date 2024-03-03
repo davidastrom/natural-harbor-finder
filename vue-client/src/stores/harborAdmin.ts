@@ -20,10 +20,10 @@ export const useHarborAdminStore = defineStore({
     selectHarbor(id: string) {
       const harborStore = useHarborStore();
       if (this.currentHarbor) {
-        if (this.currentHarbor._id === id) {
+        if (this.currentHarbor.id === id) {
           return;
         }
-        this.harborStates.set(this.currentHarbor._id, this.currentHarbor);
+        this.harborStates.set(this.currentHarbor.id, this.currentHarbor);
       }
 
       if (this.harborStates.has(id)) {
@@ -33,7 +33,7 @@ export const useHarborAdminStore = defineStore({
 
       if (id === NEW_HARBOR_ID) {
         this.currentHarbor = {
-          _id: NEW_HARBOR_ID,
+          id: NEW_HARBOR_ID,
           name: '',
           details: [],
           location: new StringLocation(),
@@ -102,7 +102,7 @@ export const useHarborAdminStore = defineStore({
 
     clearHarborData(id: string = NEW_HARBOR_ID) {
       this.harborStates.delete(id);
-      if (this.currentHarbor?._id === id) {
+      if (this.currentHarbor?.id === id) {
         this.currentHarbor = null;
       }
     },
@@ -117,11 +117,11 @@ export const useHarborAdminStore = defineStore({
 
       const harborInput: ManageHarborInputModel = {
         ...harbor,
-        _id: harbor._id === NEW_HARBOR_ID ? undefined : harbor._id,
+        id: harbor.id === NEW_HARBOR_ID ? undefined : harbor.id,
         location: StringLocationToDdLocation(harbor.location.lat, harbor.location.lng),
         details: harbor.details.map((detail) => ({
           ...detail,
-          _id: detail._id === NEW_HARBOR_ID ? undefined : detail._id,
+          id: detail.id === NEW_HARBOR_ID ? undefined : detail.id,
           location: detail.hasSpecificLocation
             ? StringLocationToDdLocation(detail.location?.lat ?? '0', detail.location?.lng ?? '0')
             : undefined,
@@ -129,7 +129,7 @@ export const useHarborAdminStore = defineStore({
         })),
         book: harbor.hasBookRef ? harbor.book : undefined,
       };
-      if (harbor._id === NEW_HARBOR_ID) {
+      if (harbor.id === NEW_HARBOR_ID) {
         res = await this.createHarbor(harborInput);
       } else {
         res = await this.updateHarbor(harborInput);
@@ -137,7 +137,7 @@ export const useHarborAdminStore = defineStore({
       if (res) {
         const harborStore = useHarborStore();
         harborStore.addHarbor(res);
-        this.clearHarborData(harbor._id);
+        this.clearHarborData(harbor.id);
       }
     },
 
@@ -158,10 +158,10 @@ export const useHarborAdminStore = defineStore({
     },
 
     async updateHarbor(harbor: ManageHarborInputModel): Promise<Harbor | null> {
-      if (!harbor._id) {
+      if (!harbor.id) {
         return null;
       }
-      const url = import.meta.env.VITE_API_URL + `/harbors/harbor/${harbor._id}/update`;
+      const url = import.meta.env.VITE_API_URL + `/harbors/harbor/${harbor.id}/update`;
       const token = await auth0.getAccessTokenSilently();
       try {
         const res = await axios.put<Harbor>(url, harbor, {
