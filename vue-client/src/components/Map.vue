@@ -7,10 +7,10 @@
 
 <script lang="ts">
   import { defineComponent, onBeforeUnmount, onMounted, ref, type PropType } from 'vue';
-  import { usePositionStore } from '../stores/position';
   import L, { LatLng, latLng, type LeafletMouseEvent } from 'leaflet';
   import 'leaflet.locatecontrol';
   import type { HarborMarker } from 'types/harborMarker';
+import { useGeolocation } from '@vueuse/core';
 
   export default defineComponent({
     name: 'MapComponent',
@@ -29,9 +29,9 @@
       },
     },
     setup(props, { emit }) {
-      const positionStore = usePositionStore();
       const lMap = ref<L.Map>();
-      const watchPositionId = ref(0);
+      const { coords, error: locationError } = useGeolocation();
+      const mapStartPosInitiated = ref(false);
       const center = ref(latLng(0, 0));
       const zoom = ref(12);
 
@@ -124,11 +124,15 @@
           });
           lMap.value.addControl(locationControl);
 
-          positionStore.fetchPositionOnce((position) => {
-            center.value = new LatLng(position.coords.latitude, position.coords.longitude);
+
+          if (coords.value && coords.value.latitude !== Infinity && coords.value.longitude !== Infinity) {
+            console.log('coords', coords.value);
+            center.value = new LatLng(coords.value.latitude, coords.value.longitude);
             lMap.value?.setView(center.value, zoom.value);
-            locationControl.start();
-          });
+            mapStartPosInitiated.value = true;
+          }
+          
+          locationControl.start();
 
           lMap.value.on('click', onMapClick).on('dblclick', onMapDblClick);
 
@@ -137,13 +141,10 @@
       }
 
       onMounted(() => {
-        watchPositionId.value = positionStore.watchPosition();
-
         initMap();
       });
 
       onBeforeUnmount(() => {
-        positionStore.stopWatchingPosition(watchPositionId.value);
         if (markerLayer) {
           markerLayer.remove();
         }
@@ -153,16 +154,17 @@
       });
 
       return {
-        positionStore,
         lMap,
         map,
-        watchPositionId,
         center,
         zoom,
         clickMarker,
         markerLayer,
         clearClickMarker,
         initMap,
+        mapStartPosInitiated,
+        coords,
+        locationError,
       };
     },
     watch: {
@@ -186,6 +188,13 @@
           } else {
             this.initMap();
           }
+        }
+      },
+      coords(newCoords: GeolocationCoordinates) {
+        if (newCoords && !this.mapStartPosInitiated && newCoords.latitude !== Infinity && newCoords.longitude !== Infinity) {
+          this.center = new LatLng(newCoords.latitude, newCoords.longitude);
+          this.lMap?.setView(this.center, this.zoom);
+          this.mapStartPosInitiated = true;
         }
       },
     },
