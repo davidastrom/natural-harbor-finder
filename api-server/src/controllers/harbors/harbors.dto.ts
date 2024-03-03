@@ -24,7 +24,7 @@ export interface createHarborDetailInputModel {
     name: string;
     shieldedDirections?: Direction[];
     anchor: boolean;
-    SXKBuoy: boolean;
+    sxkBuoy: boolean;
     location?: Position;
     harborType?: HarborType;
 }

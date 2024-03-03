@@ -227,6 +227,6 @@ function getHarborDetailInsert(
         longitude: detailInput.location?.lng.toString(),
         name: detailInput.name,
         shieldedDirections: detailInput.shieldedDirections,
-        sxkBuoy: detailInput.SXKBuoy,
+        sxkBuoy: detailInput.sxkBuoy,
     };
 }

@@ -45,11 +45,11 @@
     <div class="flex flex-1 gap-2 mb-2">
       <Checkbox
         v-model="detail.sxkBuoy"
-        :input-id="`${detailId}-SXKBuoy`"
+        :input-id="`${detailId}-sxkBuoy`"
         binary
         class="mr-2"
       />
-      <label :for="`${detailId}-SXKBuoy`">{{ t('harbor.sxk') }}</label>
+      <label :for="`${detailId}-sxkBuoy`">{{ t('harbor.sxk') }}</label>
     </div>
 
     <div class="flex flex-1 gap-2 mb-2">

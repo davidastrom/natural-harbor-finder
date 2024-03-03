@@ -85,7 +85,7 @@ export const useHarborAdminStore = defineStore({
         name: '',
         shieldedDirections: [],
         anchor: false,
-        SXKBuoy: false,
+        sxkBuoy: false,
         hasSpecificLocation: false,
         location: new StringLocation(),
         hasSpecificHarborType: false,

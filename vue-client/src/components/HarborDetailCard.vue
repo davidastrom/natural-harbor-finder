@@ -23,7 +23,7 @@
     </div>
     <div class="flex flex-wrap gap-1 text-xs">
       <div
-        v-if="detail.SXKBuoy"
+        v-if="detail.sxkBuoy"
         class="px-2 py-1 text-white bg-blue-500 rounded-full"
       >
         SXK-buoy
