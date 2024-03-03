@@ -81,11 +81,10 @@
         }
       }
 
-      onMounted(() => {
-        watchPositionId.value = positionStore.watchPosition();
-
+      function initMap() {
         if (map.value) {
-          lMap.value = L.map(map.value, {
+
+        lMap.value = L.map(map.value, {
             zoomControl: false,
             maxZoom: 17,
           });
@@ -135,6 +134,12 @@
 
           markerLayer.addTo(lMap.value);
         }
+      }
+
+      onMounted(() => {
+        watchPositionId.value = positionStore.watchPosition();
+
+        initMap();
       });
 
       onBeforeUnmount(() => {
@@ -157,6 +162,7 @@
         clickMarker,
         markerLayer,
         clearClickMarker,
+        initMap,
       };
     },
     watch: {
@@ -171,6 +177,15 @@
         });
         if (newMarkers.length > 0 && this.lMap) {
           this.lMap.flyTo(newMarkers[0].getLatLng());
+        }
+      },
+      map(newMap: HTMLElement, oldMap: HTMLElement) {
+        if (newMap !== oldMap) {
+          if (this.lMap) {
+            this.lMap.invalidateSize();
+          } else {
+            this.initMap();
+          }
         }
       },
     },
