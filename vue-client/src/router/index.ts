@@ -28,6 +28,11 @@ const router = createRouter({
       component: () => import('@/views/auth/LoginView.vue'),
     },
     {
+      path: '/logout',
+      name: 'logout',
+      redirect: { name: 'home' }
+    },
+    {
       path: '/callback',
       name: 'callback',
       redirect: authRedirect,

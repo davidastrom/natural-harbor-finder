@@ -56,7 +56,8 @@ export const useUserStore = defineStore('user', {
             isAdmin: res.data.isAdmin,
           }
         } catch (error) {
-          console.log(error);
+          this.user = null;
+          auth0.logout();
         }
       }
 

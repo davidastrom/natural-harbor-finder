@@ -1,12 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-    integer,
-    pgEnum,
-    pgTable,
-    primaryKey,
-    serial,
-    text,
-} from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, serial, text } from 'drizzle-orm/pg-core';
 
 import {
     AuthPermissions,

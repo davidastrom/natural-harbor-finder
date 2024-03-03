@@ -34,6 +34,8 @@ export function useAuthGuard() {
       const userStore = useUserStore();
       if (auth0.user.value) {
         await userStore.setUserData(auth0.user.value);
+      } else {
+        userStore.$reset();
       }
 
       if (to.meta.requiresAdmin && !userStore.user?.isAdmin) {
