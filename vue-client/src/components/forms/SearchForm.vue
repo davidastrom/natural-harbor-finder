@@ -70,6 +70,7 @@ import {
   DdToDms,
   StringLocationToDdLocation,
 } from '../../helpers/locationHelpers';
+import { set, useGeolocation } from '@vueuse/core';
 
 const props = defineProps({
   externalLocation: {
@@ -82,7 +83,7 @@ const externalLocation = toRef(props, 'externalLocation')
 const emit = defineEmits(['currentPositionChosen']);
 const { t } = useI18n();
 
-const positionStore = usePositionStore();
+const { coords } = useGeolocation();
 const harborStore = useHarborStore();
 
 const location = ref<StringLocation>({ lat: '', lng: '' });
@@ -104,20 +105,24 @@ const setCurrentLocation = async () => {
   locationLoading.value = true;
   emit('currentPositionChosen');
   hideForm.value = false;
-  return positionStore.fetchPositionOnce(
-    (position) => {
-      location.value.lat = DdToDms(position.coords.latitude, true);
-      location.value.lng = DdToDms(position.coords.longitude, false);
-      locationLoading.value = false;
-    },
-    () => {
-      const userLocation = positionStore.getUserPosition;
-      location.value.lat = DdToDms(userLocation.lat, true);
-      location.value.lng = DdToDms(userLocation.lng, false);
-      locationLoading.value = false;
-    }
-  );
+  if (coords.value.latitude !== Infinity && coords.value.longitude !== Infinity) {
+      setLocation(coords.value.latitude, coords.value.longitude);
+  };
 };
+
+watch(
+  coords, (newCoords) => {
+    if (locationLoading.value && newCoords.latitude !== Infinity && newCoords.longitude !== Infinity) {
+      setLocation(newCoords.latitude, newCoords.longitude);
+    }
+  },
+);
+
+function setLocation(latitude: number, longitude: number) {
+  location.value.lat = DdToDms(latitude, true);
+  location.value.lng = DdToDms(longitude, false);
+  locationLoading.value = false;
+}
 
 const submitForm = async () => {
   const ddLocation = StringLocationToDdLocation(
