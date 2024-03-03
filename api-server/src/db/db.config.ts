@@ -28,6 +28,7 @@ export const pool = new Pool({
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE,
+    ssl: process.env.NODE_ENV == 'production' ? true : false,
 });
 
 export const db = drizzle(pool, {

@@ -1,10 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
 import { db } from './db.config';
 
+dotenv.config();
 
 migrate(db, { migrationsFolder: './src/db/migrations' })
     .then(() => {
