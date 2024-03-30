@@ -187,8 +187,19 @@ export async function updateHarbor(req: Request, res: Response): Promise<void> {
     }
 
     const updatedHarbor = await getHarborById(harborId);
+    const mappedHarbor = {
+        ...updatedHarbor,
+        location: new Position(+harbor.latitude, +harbor.longitude),
+        details: harbor.details.map((detail) => ({
+            ...detail,
+            location:
+                detail.latitude && detail.longitude
+                    ? new Position(+detail.latitude, +detail.longitude)
+                    : undefined,
+        })),
+    }
 
-    res.send(updatedHarbor);
+    res.send(mappedHarbor);
 }
 
 async function getHarborById(harborId: number) {

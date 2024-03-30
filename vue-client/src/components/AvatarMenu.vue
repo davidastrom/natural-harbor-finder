@@ -29,6 +29,9 @@
   import { useUserStore } from '@/stores/user';
   import { computed, ref } from 'vue';
   import { useAuth0 } from '@auth0/auth0-vue';
+import { useI18n } from 'vue-i18n';
+
+  const {t} = useI18n();
 
   const userStore = useUserStore();
 
@@ -49,7 +52,7 @@
 
     if (userStore.user?.isAdmin) {
       items.push({
-        label: 'Manage harbors',
+        label: t('harbor.manageHarbors'),
         icon: 'fa-solid fa-anchor mr-2',
         url: '/harbors/manage',
       });
@@ -61,7 +64,7 @@
       label: 'Profile',
       items: [
         {
-          label: 'Log out',
+          label: t('auth.logOut'),
           icon: 'fa-solid fa-sign-out-alt mr-2',
           command: () => {
             logout();
